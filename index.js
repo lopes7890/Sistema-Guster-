@@ -24,7 +24,10 @@ connection.query(`CREATE DATABASE IF NOT EXISTS ${DB_NAME};`).then(() => {
 });
 
 
-
+import Medico from "./models/Medico.js";
+import Aparelho from "./models/Aparelho.js";
+import Paciente from "./models/Paciente.js";
+import Sintoma from "./models/Sintoma.js";
 
 
 
