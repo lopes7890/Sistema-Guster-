@@ -1,0 +1,19 @@
+{
+  "name": "sistema-guster",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx nodemon index.js"
+  },
+  "dependencies": {
+    "ejs": "^7.0.1",
+    "express": "^5.2.1",
+    "mysql2": "^3.24.5",
+    "nodemon": "^1.14.10",
+    "sequelize": "^3.30.0"
+  }
+}
