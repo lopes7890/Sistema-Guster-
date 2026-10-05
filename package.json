@@ -14,6 +14,6 @@
     "express": "^5.2.1",
     "mysql2": "^3.24.5",
     "nodemon": "^1.14.10",
-    "sequelize": "^3.30.0"
+    "sequelize": "^6.37.8"
   }
 }
