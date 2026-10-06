@@ -8,8 +8,11 @@ const Aparelho = connection.define('aparelhos', {
         allowNull: false
     },
     status_aparelho: {
-        type: Sequelize.ENUM("disponível", "indisponível")
+        type: Sequelize.ENUM("Disponível", "Indisponível"),
+        defaultValue: 'Disponível'
     }
 });
+
+Aparelho.sync({force: false});
 
 export default Aparelho;

@@ -28,6 +28,12 @@ import Medico from "./models/Medico.js";
 import Aparelho from "./models/Aparelho.js";
 import Paciente from "./models/Paciente.js";
 import Sintoma from "./models/Sintoma.js";
+import TelefonesPaciente from "./models/TelefonesPaciente.js";
+import Exame from "./models/Exame.js";
+import PacienteSintoma from "./models/PacienteSintoma.js";
+import Processamento from "./models/Processamento.js";
+import Relatorio from "./models/Relatorio.js";
+import "./models/relacioanamentos.js";
 
 
 

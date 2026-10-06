@@ -4,7 +4,8 @@ import Sequelize from "sequelize";
 
 const Paciente = connection.define('pacientes', {
     status_visualizacao: {
-        type: Sequelize.ENUM("Disponível", "Indisponível")
+        type: Sequelize.ENUM("Disponível", "Arquivado"),
+        defaultValue: "Disponível"
     },
     nome: {
         type: Sequelize.STRING,
@@ -28,5 +29,7 @@ const Paciente = connection.define('pacientes', {
         type: Sequelize.STRING
     }
 });
+
+Paciente.sync({force: false});
 
 export default Paciente;

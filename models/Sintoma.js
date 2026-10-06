@@ -24,4 +24,6 @@ const Sintoma = connection.define('sintomas', {
     }
 });
 
+Sintoma.sync({force: false});
+
 export default Sintoma;
