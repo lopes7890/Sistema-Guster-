@@ -13,6 +13,5 @@ const Aparelho = connection.define('aparelhos', {
     }
 });
 
-Aparelho.sync({force: false});
 
 export default Aparelho;

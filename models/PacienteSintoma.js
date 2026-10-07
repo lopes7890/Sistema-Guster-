@@ -13,7 +13,6 @@ const PacienteSintoma = connection.define('pacientes_sintomas', {
     }
 });
 
-PacienteSintoma.sync({force: false});
 
 export default PacienteSintoma;
 

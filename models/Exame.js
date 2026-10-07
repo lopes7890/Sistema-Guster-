@@ -29,6 +29,5 @@ const Exame = connection.define('exames', {
     }
 });
 
-Exame.sync({force: false});
 
 export default Exame;

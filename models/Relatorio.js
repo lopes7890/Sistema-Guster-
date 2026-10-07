@@ -13,7 +13,6 @@ const Relatorio = connection.define('relatorios', {
     }
 });
 
-Relatorio.sync({force: false});
 
 export default Relatorio;
 

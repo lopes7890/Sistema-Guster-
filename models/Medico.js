@@ -34,6 +34,5 @@ const Medico = connection.define('medicos', {
     }
 });
 
-Medico.sync({force: false});
 
 export default Medico;
