@@ -12,6 +12,5 @@ const TelefonesPaciente = connection.define('telefones_pacientes', {
     }
 });
 
-TelefonesPaciente.sync({force: false});
 
 export default TelefonesPaciente;

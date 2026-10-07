@@ -30,6 +30,5 @@ const Paciente = connection.define('pacientes', {
     }
 });
 
-Paciente.sync({force: false});
 
 export default Paciente;

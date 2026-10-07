@@ -16,6 +16,5 @@ const Processamento = connection.define('processamentos', {
     }
 });
 
-Processamento.sync({force: false});
 
 export default Processamento;

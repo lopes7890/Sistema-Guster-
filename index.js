@@ -23,6 +23,18 @@ connection.query(`CREATE DATABASE IF NOT EXISTS ${DB_NAME};`).then(() => {
     console.log(`Erro ao criar o banco de dados. Erro ${error}`);
 });
 
+Promise.all([
+    Medico.sync({force: false}),
+    Paciente.sync({force: false}),
+    Sintoma.sync({force: false}),
+    Aparelho.sync({force: false}),
+    TelefonesPaciente.sync({force: false}),
+    Exame.sync({force: false}),
+    PacienteSintoma.sync({force: false}),
+    Processamento.sync({force: false}),
+    Relatorio.sync({force: false})
+]);
+
 
 import Medico from "./models/Medico.js";
 import Aparelho from "./models/Aparelho.js";
@@ -33,9 +45,9 @@ import Exame from "./models/Exame.js";
 import PacienteSintoma from "./models/PacienteSintoma.js";
 import Processamento from "./models/Processamento.js";
 import Relatorio from "./models/Relatorio.js";
-import "./models/relacioanamentos.js";
+import defineAssociations from "./config/associations.js"
 
-
+defineAssociations();
 
 const port = 8080;
 app.listen(port, function(erro){
