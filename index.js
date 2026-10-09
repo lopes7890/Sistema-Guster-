@@ -49,6 +49,10 @@ import defineAssociations from "./config/associations.js"
 
 defineAssociations();
 
+app.get("/", (req, res) => {
+    res.render("index");
+});
+
 const port = 8080;
 app.listen(port, function(erro){
     if(erro){

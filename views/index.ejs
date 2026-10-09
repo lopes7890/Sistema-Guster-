@@ -1,11 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
+<%- include ('partials/header.ejs') %>
+    <main>
+        <div class="card">
+            <div class="header-card">
+                <div class="img-logo">
+                    <img src="/imgs/Logo-Vetorizada.png" alt="Logo do sistema Guster">
+                </div>
+                <h3>Realizar Login</h3>
+            </div>
+
+            <form class="body-card" action="#" method="post">
+                <div class="field">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="exemplo@gmail.com" required>
+                </div>
+
+                <div class="field">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" placeholder="************" required>
+                </div>
+
+                <button type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <path d="M10 17l5-5-5-5"/>
+                        <path d="M15 12H3"/>
+                    </svg>
+                    Acessar Plataforma
+                </button>
+
+                <p class="signup">Primeiro acesso? <a href="/cadastro">Cadastre-se</a></p>
+            </form>
+        </div>
+    </main>
 </body>
 </html>
