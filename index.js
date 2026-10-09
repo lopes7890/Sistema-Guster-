@@ -49,6 +49,10 @@ import defineAssociations from "./config/associations.js"
 
 defineAssociations();
 
+app.get("/cadastro", (req, res) => {
+    res.render("cadastro");
+});
+
 app.get("/", (req, res) => {
     res.render("index");
 });
