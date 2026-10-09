@@ -1,4 +1,181 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+ 
+html,
+body {
+    height: 100%;
+}
+ 
+body {
+    background-color: #0B1220;
+}
+ 
+main {
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+ 
+.card {
+    background-color: white;
+    width: 840px;
+    max-width: 100%;
+    min-height: 703px;
+    border: 1px solid #0F5D8C;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 20px 60px;
+}
+ 
+/* ---------- Cabeçalho ---------- */
+.header-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+ 
+.img-logo {
+    width: 93px;
+    height: 108px;
+}
+ 
+.img-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+ 
+.header-card h3 {
+    margin-top: 8px;
+    font-family: "Exo 2", sans-serif;
+    font-size: 32px;
+    font-weight: normal;
+    font-style: normal;
+    color: #090E18;
+}
+ 
+/* ---------- Formulário ---------- */
+.body-card {
+    width: 640px;
+    max-width: 100%;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+ 
+.field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 22px;
+}
+ 
+.body-card label {
+    padding-left: 14px;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    font-style: normal;
+    color: #090E18;
+}
+ 
+.body-card input {
+    width: 100%;
+    height: 59px;
+    padding: 0 30px;
+    border-radius: 20px;
+    border: solid 1px #090E18;
+    background-color: white;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    color: #090E18;
+}
+ 
+.body-card input::placeholder {
+    color: #8A8A8A;
+}
+ 
+.body-card input:focus {
+    outline: 2px solid #EB0E6D;
+    outline-offset: 2px;
+}
+ 
+/* ---------- Botão ---------- */
+.body-card button {
+    margin-top: 55px;
+    width: 420px;
+    max-width: 100%;
+    height: 65px;
+    border: none;
+    border-radius: 20px;
+    background-color: #EB0E6D;
+    color: white;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    font-style: normal;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.2s;
+}
+ 
+.body-card button:hover {
+    background-color: #C70B5C;
+}
+ 
+.body-card button:focus-visible {
+    outline: 2px solid #0F5D8C;
+    outline-offset: 3px;
+}
+ 
+/* ---------- Link de cadastro ---------- */
+.signup {
+    margin-top: 22px;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    color: #090E18;
+}
+ 
+.signup a {
+    color: inherit;
+    font-weight: bold;
+    text-decoration: none;
+}
+ 
+.signup a:hover {
+    text-decoration: underline;
+}
+ 
+/* ---------- Mobile ---------- */
+@media (max-width: 700px) {
+    .card {
+        min-height: auto;
+        padding-bottom: 40px;
+    }
+ 
+    .header-card h3 {
+        font-size: 26px;
+    }
+ 
+    .body-card input {
+        padding: 0 20px;
+    }
+ 
+    .body-card button {
+        margin-top: 36px;
+    }
 }
