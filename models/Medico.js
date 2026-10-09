@@ -16,7 +16,7 @@ const Medico = connection.define('medicos', {
         allowNull: false
     },
     data_nasc: {
-        type: Sequelize.DATE
+        type: Sequelize.DataTypes.DATEONLY
     },
     endereco: {
         type: Sequelize.STRING,
@@ -26,7 +26,8 @@ const Medico = connection.define('medicos', {
     },
     email: {
         type: Sequelize.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
     },
     senha: {
         type: Sequelize.STRING,

@@ -47,7 +47,12 @@ import Processamento from "./models/Processamento.js";
 import Relatorio from "./models/Relatorio.js";
 import defineAssociations from "./config/associations.js"
 
+import MedicoControllers from "./controllers/MedicoControllers.js";
+
+
 defineAssociations();
+
+app.use("/", MedicoControllers);
 
 app.get("/cadastro", (req, res) => {
     res.render("cadastro");

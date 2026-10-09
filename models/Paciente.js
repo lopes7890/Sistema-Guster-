@@ -12,7 +12,7 @@ const Paciente = connection.define('pacientes', {
         allowNull: false
     },
     data_nasc: {
-        type: Sequelize.DATE,
+        type: Sequelize.DataTypes.DATEONLY,
     },
     cpf: {
         type: Sequelize.STRING,
