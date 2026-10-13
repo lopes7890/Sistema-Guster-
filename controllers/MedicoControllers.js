@@ -3,6 +3,7 @@ import Medico from "../models/Medico.js"
 import validarCPF from "../utils/validarCPF.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import autenticado from "../utils/autenticado.js";
 
 const JWT_SECRET = "chave-secreta";
 
@@ -121,17 +122,21 @@ router.post("/login/medico", (req, res) => {
 
       const token = jwt.sign(
         {
-          id: medico.id_medico,
+          id: medico.id,
           email: medico.email,
         },
         JWT_SECRET,
         { expiresIn: "8h" }
       );
 
-      return res.status(200).json({
-        message: "Login realizado com sucesso!",
-        token,
-      });
+      return res.cookie("token", token, 
+        {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 8 * 60 * 60 * 1000
+        })
+        .redirect("/home");
     })
     .catch((error) => {
       console.error("Erro ao fazer login:", error);

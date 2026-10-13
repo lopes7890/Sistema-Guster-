@@ -1,0 +1,106 @@
+<%- include ('partials/header.ejs') %>
+<%
+    /* Dados de exemplo.*/
+    const lista = typeof consultas !== 'undefined' ? consultas : [
+        { id: 1, paciente: 'Mariana Silva Prado', idade: 34, prontuario: 1234, data: 'Hoje 10:05 AM',    sessao: 1, status: 'Concluído', diagnostico: 'Hipogeusia', cor: 'rosa' },
+        { id: 2, paciente: 'José Luiz',           idade: 24, prontuario: 1244, data: 'Ontem 05:05 PM', sessao: 5, status: 'Concluído', diagnostico: 'Ageusia',    cor: 'amarelo' }
+    ];
+%>
+    <div class="layout">
+        <%- include ('partials/sidebar.ejs', { paginaAtiva: 'home' }) %>
+
+        <div class="layout-conteudo">
+            <%- include ('partials/topbar.ejs') %>
+
+            <main class="home">
+                <section class="painel painel-busca">
+                    <div class="busca">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="M21 21l-4.35-4.35"/>
+                        </svg>
+                        <input type="search" name="busca" placeholder="Buscar pacientes por nome, CPF ou prontuário clínico..." aria-label="Buscar pacientes">
+                    </div>
+
+                    <div class="filtros">
+                        <select name="periodo" aria-label="Período">
+                            <option value="hoje">Hoje</option>
+                            <option value="ontem">Ontem</option>
+                            <option value="semana">Últimos 7 dias</option>
+                            <option value="todos">Todos</option>
+                        </select>
+
+                        <button type="button" class="btn-filtros">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                            </svg>
+                            Filtros
+                        </button>
+                    </div>
+                </section>
+
+                <section class="painel painel-historico">
+                    <div class="historico-header">
+                        <div>
+                            <h2>Histórico de consultas</h2>
+                            <p>Últimas consultas registradas no sistema</p>
+                        </div>
+
+                        <a href="/consultas/arquivadas" class="link-arquivadas">
+                            Visualizar consultas arquivadas
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="tabela-wrapper">
+                        <table class="tabela">
+                            <thead>
+                                <tr>
+                                    <th>Paciente</th>
+                                    <th>Data e Horário</th>
+                                    <th class="centro">Status</th>
+                                    <th class="centro">Diagnóstico</th>
+                                    <th class="centro">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% lista.forEach(function (c) { %>
+                                <tr>
+                                    <td>
+                                        <div class="paciente">
+                                            <div class="paciente-avatar"></div>
+                                            <div>
+                                                <strong><%= c.paciente %></strong>
+                                                <span><%= c.idade %> anos - Prontuário #<%= c.prontuario %></span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="consulta-data">
+                                            <strong><%= c.data %></strong>
+                                            <span>Sessão n° <%= c.sessao %></span>
+                                        </div>
+                                    </td>
+                                    <td class="centro"><span class="tag tag-verde"><%= c.status %></span></td>
+                                    <td class="centro"><span class="tag tag-<%= c.cor %>"><%= c.diagnostico %></span></td>
+                                    <td class="centro">
+                                        <div class="acoes">
+                                            <a href="/laudos/<%= c.id %>" class="btn-acao">Abrir Laudo</a>
+                                            <form action="/consultas/<%= c.id %>/arquivar" method="post">
+                                                <button type="submit" class="btn-acao">Arquivar</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

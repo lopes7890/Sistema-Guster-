@@ -1,0 +1,20 @@
+<header class="topbar">
+    <div class="topbar-titulo">
+        <h1>Olá Dr. <%= medico.nome %></h1>
+        <p>Painel Central</p>
+    </div>
+
+    <div class="topbar-direita">
+        <div class="topbar-usuario">
+            <div class="topbar-avatar"></div>
+            <div class="topbar-dados">
+                <strong><%= medico.nome %></strong>
+                <small>CRM: <%= medico.crm %></small>
+            </div>
+        </div>
+
+        <span class="topbar-divisor"></span>
+
+        <a href="/consulta/nova" class="btn-nova-consulta">+ Nova Consulta</a>
+    </div>
+</header>
