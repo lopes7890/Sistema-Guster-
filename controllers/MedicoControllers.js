@@ -2,6 +2,9 @@ import express from "express";
 import Medico from "../models/Medico.js"
 import validarCPF from "../utils/validarCPF.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+const JWT_SECRET = "chave-secreta";
 
 const router = express.Router();
 
@@ -70,6 +73,71 @@ router.post("/cadastro/medico", (req, res) => {
 
       return res.status(500).json({
         message: "Falha interna ao cadastrar médico.",
+      });
+    });
+});
+
+router.post("/login/medico", (req, res) => {
+  const { email, senha } = req.body;
+
+  if (!email || !senha) {
+    return res.status(400).json({
+      message: "Preencha todos os dados obrigatórios!",
+    });
+  }
+
+  const emailNormalizado = email.trim().toLowerCase();
+
+  Medico.findOne({
+    where: {
+      email: emailNormalizado,
+    },
+  })
+    .then((medico) => {
+      if (!medico) {
+        return null;
+      }
+
+      return bcrypt.compare(senha, medico.senha)
+        .then((isMatch) => ({
+          medico,
+          isMatch,
+        }));
+    })
+    .then((resultado) => {
+      if (!resultado) {
+        return res.status(401).json({
+          message: "Credenciais inválidas!",
+        });
+      }
+
+      const { medico, isMatch } = resultado;
+
+      if (!isMatch) {
+        return res.status(401).json({
+          message: "Credenciais inválidas!",
+        });
+      }
+
+      const token = jwt.sign(
+        {
+          id: medico.id_medico,
+          email: medico.email,
+        },
+        JWT_SECRET,
+        { expiresIn: "8h" }
+      );
+
+      return res.status(200).json({
+        message: "Login realizado com sucesso!",
+        token,
+      });
+    })
+    .catch((error) => {
+      console.error("Erro ao fazer login:", error);
+
+      return res.status(500).json({
+        message: "Falha interna ao fazer login.",
       });
     });
 });
