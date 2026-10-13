@@ -442,7 +442,7 @@ main.home {
     background-color: #EAF2F8;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1700px) {
     .sidebar {
         width: 300px;
     }
@@ -459,6 +459,11 @@ main.home {
 
     .topbar-divisor {
         margin: 0 28px;
+    }
+
+    .topbar {
+        height: 120px;
+        padding: 0 28px;
     }
 }
 
