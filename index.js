@@ -50,11 +50,13 @@ import Relatorio from "./models/Relatorio.js";
 import defineAssociations from "./config/associations.js"
 
 import MedicoControllers from "./controllers/MedicoControllers.js";
+import HomeControllers from "./controllers/HomeControllers.js";
 
 
 defineAssociations();
 
 app.use("/", MedicoControllers);
+app.use("/", HomeControllers);
 
 app.get("/cadastro", (req, res) => {
     res.render("cadastro");

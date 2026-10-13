@@ -66,25 +66,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% lista.forEach(function (c) { %>
+                                <% exames.forEach(function (c) { %>
                                 <tr>
                                     <td>
                                         <div class="paciente">
                                             <div class="paciente-avatar"></div>
                                             <div>
-                                                <strong><%= c.paciente %></strong>
-                                                <span><%= c.idade %> anos - Prontuário #<%= c.prontuario %></span>
+                                                <strong><%= c.Paciente.nome %></strong>
+                                                <span><%= c.Paciente.idade %> anos - Prontuário #<%= c.Paciente.id %></span>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="consulta-data">
-                                            <strong><%= c.data %></strong>
-                                            <span>Sessão n° <%= c.sessao %></span>
+                                            <strong><%= c.data_realizacao %></strong>
+                                            <span>Sessão n° <%= c.id %></span>
                                         </div>
                                     </td>
-                                    <td class="centro"><span class="tag tag-verde"><%= c.status %></span></td>
-                                    <td class="centro"><span class="tag tag-<%= c.cor %>"><%= c.diagnostico %></span></td>
+                                    <td class="centro"><span class="tag tag-verde"><%= c.status_exame %></span></td>
+                                    <td class="centro"><span class="tag tag-<%= c.cor %>"><%= c.Processamentos[0]?.resultado %></span></td>
                                     <td class="centro">
                                         <div class="acoes">
                                             <a href="/laudos/<%= c.id %>" class="btn-acao">Abrir Laudo</a>

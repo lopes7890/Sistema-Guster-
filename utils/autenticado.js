@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = "chave-secreta";
 
-const autenticado = (req, res, next) => {
+function autenticado (req, res, next){
   const token = req.cookies.token;
 
   if (!token) {

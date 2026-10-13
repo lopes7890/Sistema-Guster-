@@ -1,9 +1,9 @@
 import express from "express";
-import Medico from "../models/Medico.js"
+import Medico from "../models/Medico.js";
 import validarCPF from "../utils/validarCPF.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import autenticado from "../utils/autenticado.js";
+
 
 const JWT_SECRET = "chave-secreta";
 

@@ -11,62 +11,76 @@ import Relatorio from "../models/Relatorio.js";
 const defineAssociations = () => {
   Medico.hasMany(Exame, {
     foreignKey: "id_medico",
+    as: "Exames",
   });
 
   Exame.belongsTo(Medico, {
-    foregnKey: "id_medico",
+    foreignKey: "id_medico",
+    as: "Medico",
   });
 
   Aparelho.hasMany(Exame, {
-    foregnKey: "id_aparelho",
+    foreignKey: "id_aparelho",
+    as: "Exames",
   });
 
   Exame.belongsTo(Aparelho, {
     foreignKey: "id_aparelho",
+    as: "Aparelho",
   });
 
   Paciente.hasMany(Exame, {
     foreignKey: "id_paciente",
+    as: "Exames",
   });
 
   Exame.belongsTo(Paciente, {
     foreignKey: "id_paciente",
+    as: "Paciente",
   });
 
   Paciente.belongsToMany(Sintoma, {
     through: PacienteSintoma,
     foreignKey: "id_paciente",
     otherKey: "id_sintoma",
+    as: "Sintomas",
   });
 
   Sintoma.belongsToMany(Paciente, {
     through: PacienteSintoma,
     foreignKey: "id_sintoma",
     otherKey: "id_paciente",
+    as: "Pacientes",
   });
 
   Exame.hasMany(Processamento, {
     foreignKey: "id_exame",
+    as: "Processamentos",
   });
 
   Processamento.belongsTo(Exame, {
-    foreingKey: "id_exame",
+    foreignKey: "id_exame",
+    as: "Exame",
   });
 
   Paciente.hasMany(TelefonesPaciente, {
     foreignKey: "id_paciente",
+    as: "Telefones",
   });
 
   TelefonesPaciente.belongsTo(Paciente, {
     foreignKey: "id_paciente",
+    as: "Paciente",
   });
 
   Processamento.hasMany(Relatorio, {
     foreignKey: "id_processamento",
+    as: "Relatorios",
   });
 
   Relatorio.belongsTo(Processamento, {
     foreignKey: "id_processamento",
+    as: "Processamento",
   });
 };
 
