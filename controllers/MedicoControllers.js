@@ -32,50 +32,29 @@ router.post("/cadastro/medico", (req, res) => {
     },
   })
     .then((medicoExistente) => {
-      if (medicoExistente) {
-        return res.status(409).json({
-          message: "E-mail já cadastrado!",
+      if (medicoExistente == undefined){
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(senha, salt);
+
+        Medico.create({
+          cpf: cpf,
+          nome: nome,
+          email: emailNormalizado,
+          crm: crm,
+          data_nasc: nascimento || null,
+          cep: cep || null,
+          senha: hash
+        }).then(() => {
+          res.redirect("/");
+        }).catch((error) => {
+          console.log(`Erro ao cadastrar o médico: ${error}`);
+          res.status(500).json({message: "Erro ao cadastrar o médico."});
         });
+      } else {
+        console.log(`Erro ao cadastrar o médico: E-mail já em uso.`);
+        res.status(400).json({message: "O e-mail fornecido já está em uso!"});
       }
-
-      return bcrypt.hash(senha, 10);
     })
-    .then((senhaHash) => {
-      if (res.headersSent) {
-        return;
-      }
-
-      return Medico.create({
-        nome: nome,
-        cpf: cpf,
-        email: emailNormalizado,
-        crm: crm,
-        data_nasc: nascimento || null,
-        endereco: endereco || null,
-        cep: cep || null,
-        senha: senhaHash,
-      });
-    })
-    .then((medico) => {
-      if (res.headersSent || !medico) {
-        return;
-      }
-
-      return res.status(201).json({
-        message: "Médico cadastrado com sucesso!",
-      });
-    })
-    .catch((error) => {
-      console.error("Erro ao cadastrar médico:", error);
-
-      if (res.headersSent) {
-        return;
-      }
-
-      return res.status(500).json({
-        message: "Falha interna ao cadastrar médico.",
-      });
-    });
 });
 
 router.post("/login/medico", (req, res) => {
