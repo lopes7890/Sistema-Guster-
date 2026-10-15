@@ -13,20 +13,24 @@ const Paciente = connection.define('pacientes', {
     },
     data_nasc: {
         type: Sequelize.DataTypes.DATEONLY,
+        allowNull: false
     },
     cpf: {
         type: Sequelize.STRING,
         allowNull: false
     },
     endereco: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
     },
     email: {
         type: Sequelize.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
     },
     cep: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
     }
 });
 

@@ -13,8 +13,9 @@
             </div>
         </div>
 
-        <span class="topbar-divisor"></span>
-
-        <a href="/consulta/nova" class="btn-nova-consulta">+ Nova Consulta</a>
+        <% if (locals.mostrarNovaConsulta) { %>
+            <span class="topbar-divisor"></span>
+            <a href="/consulta/nova" class="btn-nova-consulta">+ Nova Consulta</a>
+        <% } %>
     </div>
 </header>

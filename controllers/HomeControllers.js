@@ -57,7 +57,8 @@ router.get("/home", autenticado, (req, res) => {
             return res.render("home", {
                 medico: medico,
                 exames: dadosExames,
-                arquivadas: false
+                arquivadas: false,
+                mostrarNovaConsulta: true
             });
         });
     })
@@ -111,7 +112,8 @@ router.get("/consultas/arquivadas", autenticado, (req, res) => {
             return res.render("home", {
                 medico: medico,
                 exames: dadosExames,
-                arquivadas: true
+                arquivadas: true,
+                mostrarNovaConsulta: true
             });
         });
     })

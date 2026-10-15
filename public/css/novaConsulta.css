@@ -1,0 +1,324 @@
+main.paciente-novo {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 31px 20px 40px;
+    justify-content: center;
+    align-items: flex-start;
+}
+ 
+.paciente-novo-card {
+    flex: none;
+    width: 987px;
+    max-width: 100%;
+    min-height: 795px;
+    padding: 30px 20px 43px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 24px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+ 
+.paciente-novo-card h2 {
+    font-family: "Roboto", sans-serif;
+    font-size: 36px;
+    font-weight: normal;
+    color: #090E18;
+}
+ 
+/* ---------- Stepper (partials/stepper.ejs) ---------- */
+.stepper {
+    margin-top: 24px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+ 
+.passo {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #0F5D8C;
+    border-radius: 50%;
+    background-color: white;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    color: #0F5D8C;
+}
+ 
+.passo + .passo {
+    margin-left: 57px;
+}
+ 
+.passo + .passo::before {
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    width: 57px;
+    height: 3px;
+    transform: translateY(-50%);
+    background-color: #0F5D8C;
+}
+ 
+.passo.ativo {
+    background-color: #0F5D8C;
+    color: white;
+}
+ 
+/* ---------- Formulário ---------- */
+.form-paciente {
+    width: 100%;
+    flex: 1;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+ 
+.form-paciente .campos {
+    width: 764px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+ 
+.form-paciente .linha {
+    display: grid;
+    gap: 34px;
+}
+ 
+.form-paciente .linha-3 { grid-template-columns: 238fr 211fr 247fr; }
+.form-paciente .linha-2 { grid-template-columns: 517fr 218fr; gap: 29px; }
+ 
+.form-paciente .field {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+}
+ 
+.form-paciente label {
+    padding-left: 17px;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    color: #090E18;
+}
+ 
+.form-paciente .linha label {
+    padding-left: 6px;
+}
+ 
+.form-paciente input {
+    width: 100%;
+    height: 59px;
+    padding: 0 20px;
+    border-radius: 20px;
+    border: solid 1px #090E18;
+    background-color: white;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    color: #090E18;
+}
+ 
+.form-paciente .campos > .field input {
+    padding: 0 36px;
+}
+ 
+.form-paciente input::placeholder {
+    color: #6B6B6B;
+}
+ 
+.form-paciente input:focus {
+    outline: 2px solid #EB0E6D;
+    outline-offset: 2px;
+}
+ 
+/* ---------- Botões ---------- */
+.acoes-form {
+    width: 100%;
+    margin-top: auto;
+    padding-top: 40px;
+    padding-right: 17px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 14px;
+}
+ 
+.btn-voltar,
+.btn-avancar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    color: white;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+ 
+.btn-voltar {
+    width: 130px;
+    height: 44px;
+    gap: 10px;
+    border-radius: 22px;
+    background-color: #8A8A8A;
+    font-size: 18px;
+}
+ 
+.btn-voltar:hover {
+    background-color: #6F6F6F;
+}
+ 
+.btn-avancar {
+    width: 177px;
+    height: 54px;
+    gap: 14px;
+    border-radius: 27px;
+    background-color: #EB0E6D;
+    font-size: 20px;
+}
+ 
+.btn-avancar:hover {
+    background-color: #C70B5C;
+}
+ 
+.btn-voltar:focus-visible,
+.btn-avancar:focus-visible {
+    outline: 2px solid #0F5D8C;
+    outline-offset: 3px;
+}
+
+.form-paciente .campos-info {
+    width: 848px;
+}
+ 
+.form-paciente .linha-info {
+    grid-template-columns: 264fr 515fr;
+    gap: 69px;
+}
+ 
+.form-paciente .linha-info input {
+    padding: 0 24px;
+}
+ 
+.form-paciente .campos-info > .field input,
+.form-paciente .campos-info > .field select {
+    padding: 0 28px;
+}
+ 
+.form-paciente .field-medio {
+    width: 617px;
+    max-width: 100%;
+}
+ 
+/* Select com o mesmo visual dos inputs */
+.form-paciente select {
+    width: 100%;
+    height: 59px;
+    padding: 0 48px 0 28px;
+    border: solid 1px #090E18;
+    border-radius: 20px;
+    background-color: white;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23090E18' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    color: #090E18;
+    appearance: none;
+    cursor: pointer;
+}
+ 
+.form-paciente select:invalid {
+    color: #6B6B6B; /* aparência de placeholder enquanto nada foi escolhido */
+}
+ 
+.form-paciente select option {
+    color: #090E18;
+}
+ 
+.form-paciente select:focus {
+    outline: 2px solid #EB0E6D;
+    outline-offset: 2px;
+}
+ 
+/* Remove as setas do input numérico */
+.form-paciente input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+ 
+.form-paciente input[type="number"]::-webkit-inner-spin-button,
+.form-paciente input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+@media (max-width: 700px) {
+    .form-paciente .linha-info {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+ 
+    .form-paciente .campos-info > .field input,
+    .form-paciente .campos-info > .field select,
+    .form-paciente .linha-info input {
+        padding: 0 20px;
+    }
+ 
+    .form-paciente select {
+        padding-left: 20px;
+    }
+}
+ 
+@media (max-width: 900px) {
+    main.paciente-novo {
+        overflow-y: visible;
+        padding: 20px;
+    }
+ 
+    .paciente-novo-card {
+        min-height: auto;
+    }
+}
+ 
+@media (max-width: 700px) {
+    .paciente-novo-card h2 {
+        font-size: 28px;
+    }
+ 
+    .stepper {
+        transform: scale(0.85);
+    }
+ 
+    .form-paciente .linha-3,
+    .form-paciente .linha-2 {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+ 
+    .form-paciente .linha label {
+        padding-left: 17px;
+    }
+ 
+    .form-paciente .campos > .field input,
+    .form-paciente input {
+        padding: 0 20px;
+    }
+ 
+    .acoes-form {
+        padding-right: 0;
+    }
+}
+ 

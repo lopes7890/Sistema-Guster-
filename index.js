@@ -51,12 +51,14 @@ import defineAssociations from "./config/associations.js"
 
 import MedicoControllers from "./controllers/MedicoControllers.js";
 import HomeControllers from "./controllers/HomeControllers.js";
+import NovaConsultaControllers from "./controllers/NovaConsultaControllers.js";
 
 
 defineAssociations();
 
 app.use("/", MedicoControllers);
 app.use("/", HomeControllers);
+app.use("/", NovaConsultaControllers);
 
 app.get("/cadastro", (req, res) => {
     res.render("cadastro");

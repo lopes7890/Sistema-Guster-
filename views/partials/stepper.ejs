@@ -1,0 +1,6 @@
+<% const atual = Number(typeof etapaAtual !== 'undefined' ? etapaAtual : 1); %>
+<ol class="stepper" aria-label="Etapas do cadastro">
+    <% [1, 2, 3].forEach(function (n) { %>
+    <li class="passo<%= n <= atual ? ' ativo' : '' %>"<%- n === atual ? ' aria-current="step"' : '' %>><%= n %></li>
+    <% }); %>
+</ol>
