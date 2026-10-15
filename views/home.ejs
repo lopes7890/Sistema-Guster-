@@ -1,11 +1,4 @@
 <%- include ('partials/header.ejs') %>
-<%
-    /* Dados de exemplo.*/
-    const lista = typeof consultas !== 'undefined' ? consultas : [
-        { id: 1, paciente: 'Mariana Silva Prado', idade: 34, prontuario: 1234, data: 'Hoje 10:05 AM',    sessao: 1, status: 'Concluído', diagnostico: 'Hipogeusia', cor: 'rosa' },
-        { id: 2, paciente: 'José Luiz',           idade: 24, prontuario: 1244, data: 'Ontem 05:05 PM', sessao: 5, status: 'Concluído', diagnostico: 'Ageusia',    cor: 'amarelo' }
-    ];
-%>
     <div class="layout">
         <%- include ('partials/sidebar.ejs', { paginaAtiva: 'home' }) %>
 
@@ -42,12 +35,12 @@
                 <section class="painel painel-historico">
                     <div class="historico-header">
                         <div>
-                            <h2>Histórico de consultas</h2>
-                            <p>Últimas consultas registradas no sistema</p>
+                            <h2><%= arquivadas ? "Consultas arquivadas" : "Histórico de consultas" %></h2>
+                            <p><%= arquivadas ? "Consultas arquivadas no sistema" : "Últimas consultas registradas no sistema" %></p>
                         </div>
 
-                        <a href="/consultas/arquivadas" class="link-arquivadas">
-                            Visualizar consultas arquivadas
+                        <a href="<%= arquivadas ? '/home' : '/consultas/arquivadas' %>" class="link-arquivadas">
+                            <%= arquivadas ? 'Voltar para consultas ativas' : 'Visualizar consultas arquivadas' %>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M9 18l6-6-6-6"/>
                             </svg>
@@ -88,9 +81,15 @@
                                     <td class="centro">
                                         <div class="acoes">
                                             <a href="/laudos/<%= c.id %>" class="btn-acao">Abrir Laudo</a>
-                                            <form action="/consultas/<%= c.id %>/arquivar" method="post">
-                                                <button type="submit" class="btn-acao">Arquivar</button>
-                                            </form>
+                                            <% if (arquivadas) { %>
+                                                <form action="/consultas/<%= c.id %>/desarquivar" method="post">
+                                                    <button type="submit" class="btn-acao" style="color: #FF3F3F;">Desarquivar</button>
+                                                </form>
+                                            <% } else { %>       
+                                                <form action="/consultas/<%= c.id %>/arquivar" method="post">
+                                                    <button type="submit" class="btn-acao">Arquivar</button>
+                                                </form>
+                                            <% } %>
                                         </div>
                                     </td>
                                 </tr>
