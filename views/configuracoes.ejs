@@ -1,0 +1,117 @@
+<%- include ('partials/header.ejs') %>
+<%
+    const dados = typeof perfil !== 'undefined' ? perfil : {};
+    const valor = function (chave) { return dados[chave] || ''; };
+    const primeiroNome = dados.nome ? dados.nome.split(' ')[0] : 'teste';
+    const cargo = dados.cargo || 'Médico';
+%>
+    <div class="layout">
+        <%- include ('partials/sidebar.ejs', { paginaAtiva: 'configuracoes' }) %>
+
+        <div class="layout-conteudo">
+            <%- include ('partials/topbar.ejs') %>
+
+            <main class="configuracoes">
+                <form class="config" action="/configuracoes/editar/<%= dados.id %>" method="post" enctype="multipart/form-data">
+                    <!-- Cartão do perfil -->
+                    <aside class="config-perfil">
+                        <div class="config-avatar">
+                            <% if (dados.foto) { %><img src="<%= dados.foto %>" alt="Foto de <%= primeiroNome %>"><% } %>
+                            <label for="foto" class="config-badge" title="Alterar foto">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/>
+                                </svg>
+                                <span class="sr-only">Alterar foto</span>
+                            </label>
+                            <input type="file" id="foto" name="foto" accept="image/*" hidden>
+                        </div>
+
+                        <h3><%= primeiroNome %></h3>
+                        <span class="config-papel"><%= cargo %></span>
+                    </aside>
+
+                    <!-- Dados pessoais -->
+                    <div class="config-coluna">
+                        <section class="config-dados">
+                            <h2>
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                                Dados Pessoais
+                            </h2>
+
+                            <div class="config-linha">
+                                <div class="config-campo">
+                                    <label for="nome">Nome Completo:</label>
+                                    <input type="text" id="nome" name="nome" value="<%= valor('nome') %>" autocomplete="name" required>
+                                </div>
+
+                                <div class="config-campo campo-data">
+                                    <label for="nascimento">Data de Nascimento:</label>
+                                    <input type="date" id="nascimento" name="nascimento" value="<%= valor('nascimento') %>" autocomplete="bday">
+                                </div>
+                            </div>
+
+                            <div class="config-campo">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" value="<%= valor('email') %>" autocomplete="email" required>
+                            </div>
+
+                            <div class="config-linha">
+                                <div class="config-campo">
+                                    <label for="telefone">Telefone:</label>
+                                    <input type="tel" id="telefone" name="telefone" value="<%= valor('telefone') %>" autocomplete="tel">
+                                </div>
+
+                                <div class="config-campo">
+                                    <label for="cpf">CPF:</label>
+                                    <input type="text" id="cpf" name="cpf" value="<%= valor('cpf') %>" inputmode="numeric" maxlength="14" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="config-linha">
+                                <div class="config-campo">
+                                    <label for="logradouro">Logradouro:</label>
+                                    <input type="text" id="logradouro" name="logradouro" value="<%= valor('logradouro') %>" autocomplete="address-line1">
+                                </div>
+
+                                <div class="config-duplo">
+                                    <div class="config-campo">
+                                        <label for="numero">Número:</label>
+                                        <input type="text" id="numero" name="numero" value="<%= valor('numero') %>" inputmode="numeric" autocomplete="off">
+                                    </div>
+
+                                    <div class="config-campo">
+                                        <label for="cep">CEP:</label>
+                                        <input type="text" id="cep" name="cep" value="<%= valor('cep') %>" inputmode="numeric" maxlength="9" autocomplete="postal-code">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="config-linha">
+                                <div class="config-campo">
+                                    <label for="cidade">Cidade:</label>
+                                    <input type="text" id="cidade" name="cidade" value="<%= valor('cidade') %>" autocomplete="address-level2">
+                                </div>
+
+                                <div class="config-campo">
+                                    <label for="bairro">Bairro:</label>
+                                    <input type="text" id="bairro" name="bairro" value="<%= valor('bairro') %>" autocomplete="off">
+                                </div>
+                            </div>
+                        </section>
+
+                        <button type="submit" class="btn-salvar">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/>
+                            </svg>
+                            Salvar alterações
+                        </button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
