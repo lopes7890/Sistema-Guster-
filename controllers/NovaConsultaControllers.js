@@ -14,7 +14,7 @@ router.get("/consulta/nova", autenticado, (req, res) => {
                 return res.status(404).send("Médico não encontrado");
             }
 
-            return res.render("conexaoBCI", {
+            return res.render("novaConsulta", {
                 medico: medico,
                 mostrarNovaConsulta: false
             });
