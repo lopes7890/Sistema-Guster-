@@ -14,7 +14,25 @@ router.get("/consulta/nova", autenticado, (req, res) => {
                 return res.status(404).send("Médico não encontrado");
             }
 
-            return res.render("novaConsulta", {
+            return res.render("conexaoBCI", {
+                medico: medico,
+                mostrarNovaConsulta: false
+            });
+        })
+        .catch((error) => {
+            console.error("Erro ao carregar nova consulta:", error);
+            return res.status(500).send("Erro interno do servidor");
+        });
+});
+
+router.get("/exameBCI", autenticado, (req, res) => {
+    Medico.findOne({ where: { id: req.medico.id } })
+        .then((medico) => {
+            if (!medico) {
+                return res.status(404).send("Médico não encontrado");
+            }
+
+            return res.render("exameBCI", {
                 medico: medico,
                 mostrarNovaConsulta: false
             });

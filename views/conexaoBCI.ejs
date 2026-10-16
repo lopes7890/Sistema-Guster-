@@ -11,14 +11,16 @@
 
                     <%- include ('partials/stepper.ejs', { etapaAtual: 3 }) %>
 
-                    <div class="area-sinal-bci">
-                        <p id="texto-espera">Aguardando conexão...</p>
-
-                        <video id="meu-video" class="meu-video" width="100%" height="100%" style="display: none;" loop muted playsinline>
-                            <source src="/videos/sinal-eeg.mp4" type="video/mp4">
-                        </video>
+                    <div class="area-bci-wrapper">
+                        <div class="area-sinal-bci">
+                            <p id="texto-espera">Aguardando conexão...</p>
+                                <video id="meu-video" class="meu-video" width="100%" height="100%" style="display: none;" loop muted playsinline>
+                                    <source src="/videos/sinal-eeg.mp4" type="video/mp4">
+                                </video>
+                        </div>
+                        <p id="texto-conectado" class="texto-conectado">Dispositivo conectado com Sucesso!</p>
                     </div>
-                    <p id="texto-conectado" class="texto-conectado">Dispositivo conectado com Sucesso!</p>
+                    
                     <div class="acoes-form">
                         <a href="/consulta/nova" class="btn-voltar">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -28,16 +30,14 @@
                             Voltar
                         </a>
 
-                        <button type="submit" class="btn-avancar">
-                            Avançar
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <path d="M5 12h14"/>
-                                <path d="M12 5l7 7-7 7"/>
-                            </svg>
-                        </button>
+                        <a href="/exameBCI" class="btn-avancar">
+                            Iniciar Consulta
+                        </a>
                     </div>
                 </section>
             </main>
         </div>
     </div>
 <script src="/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<%- include ('partials/header.ejs') %>
+    <div class="layout">
+        <%- include ('partials/sidebar.ejs', { paginaAtiva: 'home' }) %>
+
+        <div class="layout-conteudo">
+            <%- include ('partials/topbar.ejs') %>
+
+            <main class="paciente-novo">
+                <section class="paciente-novo-card">
+                    <h2>Exame com dispositivo BCI: Em andamento...</h2>
+
+                    <div class="area-bci-wrapper">
+                        <div class="area-sinal-bci">
+                                <video id="meu-video" class="meu-video" width="100%" height="100%" loop muted playsinline autoplay>
+                                    <source src="/videos/sinal-eeg.mp4" type="video/mp4">
+                                </video>
+                        </div>
+
+                        <div class="status-exame" id="status-exame">
+                            <div class="status-item">
+                                <div class="texto-exame">
+                                    <p><strong id="doce">Amostra de sabor doce: Aguardando Confirmação...</strong></p>
+                                    <p class="texto-orientacao" id="texto-orientacao">Após o usuário consumir a amostra de sabor doce, clique em confirmar</p>
+                                </div>
+                                <svg id="icone-check" style="display:none; margin-right: 350px;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 12.5L11 15.5L16 9.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#005F23"/>
+                                    <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke="#005F23"/>
+                                </svg>
+                                <button type="submit" id="btn-confirma" class="btn-avancar">Confirmar</button>
+                            </div>
+
+                            <div class="status-item">
+                                <div class="texto-exame">
+                                    <p class="texto-pendente"><strong id="amargo">Amostra de sabor amargo: Pendente...</strong></p>
+                                    <p class="texto-orientacao" id="texto-orientacao-2" style="display: none;">Após o usuário consumir a amostra de sabor amargo, clique em confirmar</p>
+                                </div>
+                                <svg id="icone-check-2" style="display:none; margin-right: 330px; " width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 12.5L11 15.5L16 9.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#005F23"/>
+                                    <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke="#005F23"/>
+                                </svg>
+                                <button type="submit" id="btn-confirma-2" style="display:none; margin-right: 80px;" class="btn-avancar">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="resultados" class="btn-resultado btn-avancar" style="display: none;" class="btn-avancar">Verificar Resultados</button>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script src="/js/exame.js"></script>
+</body>
+</html>

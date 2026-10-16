@@ -11,5 +11,4 @@ setTimeout(function() {
         video.play(); 
         document.getElementById('texto-conectado').style.display = 'block';
     }
-
 }, 5000); 
