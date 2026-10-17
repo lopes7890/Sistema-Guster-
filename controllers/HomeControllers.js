@@ -1,4 +1,4 @@
-import autenticado from "../utils/autenticado.js";
+import autenticado from "../middlewares/autenticado.js";
 import calcularIdade from "../utils/calcularIdade.js";
 import formatarData from "../utils/formatarData.js";
 import Exame from "../models/Exame.js";
