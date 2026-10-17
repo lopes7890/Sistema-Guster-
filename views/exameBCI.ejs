@@ -42,7 +42,11 @@
                             </div>
                         </div>
                     </div>
-                    <button id="resultados" class="btn-resultado btn-avancar" style="display: none;" class="btn-avancar">Verificar Resultados</button>
+                    <form class="btn-resultado" action="/resultados" method="post">
+                        <input type="hidden" name="id_paciente" value="<%= id_paciente %>">
+                        <input type="hidden" name="id_sintoma" value="<%= id_sintoma %>">
+                        <button id="resultados" type="submit" class="btn-resultado btn-avancar" style="display: none;" class="btn-avancar">Verificar Resultados</button>
+                    </form>
                 </section>
             </main>
         </div>
