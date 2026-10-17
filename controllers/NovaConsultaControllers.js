@@ -12,6 +12,9 @@ import Paciente from "../models/Paciente.js";
 import TelefonesPaciente from "../models/TelefonesPaciente.js";
 import Sintoma from "../models/Sintoma.js";
 import PacienteSintoma from "../models/PacienteSintoma.js";
+import Exame from "../models/Exame.js";
+import Aparelho from "../models/Aparelho.js";
+import Processamento from "../models/Processamento.js";
 
 const router = express.Router();
 
@@ -47,6 +50,47 @@ router.get("/consulta/exameBCI/:id_paciente/:id_sintoma", autenticado, carregarM
     });
 });
 
+// ROTAs DE SIMULAÇÃO DE RESULTADOS DO EXAME
+router.get("/resultados/:id_paciente", autenticado, carregarMedico, (req, res) => {
+    const id_paciente = req.params.id_paciente;
+
+    Aparelho.findByPk(1).then((aparelho) => {
+        if(aparelho){
+            Exame.create({
+                data_realizacao: new Date(),
+                id_aparelho: aparelho.id,
+                id_paciente: id_paciente,
+                id_medico: req.medico.id
+            }).then((exame) => {
+                Processamento.create({
+                    resultado: "Hipogeusia",
+                    descricao: `O paciente apresenta indícios de hipogeusia, condição caracterizada pela redução da capacidade 
+                                de perceber os sabores. Durante a avaliação, foram relatadas alterações na percepção gustativa, 
+                                possivelmente associadas às sequelas da infecção por COVID-19. Os resultados preliminares da análise dos sinais cerebrais 
+                                captados pela interface cérebro-computador (BCI), em conjunto com as informações clínicas e os sintomas relatados, sugerem uma possível diminuição da sensibilidade gustativa.
+                                Recomenda-se a realização de uma avaliação clínica especializada e de testes gustativos padronizados para confirmar a presença e determinar o grau da alteração. 
+                                Este resultado possui caráter preliminar e não constitui um diagnóstico médico definitivo.`,
+                    id_exame: exame.id         
+                }).then((processamento) => {
+                    return res.redirect(`/consulta/resultado?id_processamento=${processamento.id}`);
+                }).catch((error) => {
+                    console.log(`Falha ao buscar os resultados. Erro: ${error}`);
+                    return res.status(500).send("Falha ao buscar resultados");
+                });
+            });
+        } else {
+            return res.status(500).send("Dispositivo não identificado");
+        };
+    });
+});
+
+router.get("/consulta/resultado", autenticado, carregarMedico, (req, res) => {
+    const id_processamento = req.query;
+    res.send(id_processamento);
+});
+// ==================================================================
+
+
 router.post("/consulta/informacoes", autenticado, carregarMedico, (req, res) => {
     const {dataCovid, capacidadeSabor, diferencaPaladar, primeiraPercepcao, alteracaoCovid, id_paciente} = req.body;
     if(!dataCovid || !capacidadeSabor || !diferencaPaladar || !primeiraPercepcao || !alteracaoCovid || !id_paciente){
@@ -64,7 +108,7 @@ router.post("/consulta/informacoes", autenticado, carregarMedico, (req, res) => 
             id_paciente: id_paciente,
             id_sintoma: sintoma.id
         }).then(() => {
-            return res.redirect(`/consulta/conexaoBCI?id_paciente=${id_paciente}&id_sintoma=${sintoma.id}`);
+            return res.redirect(`/consulta/conexaoBCI?id_paciente=${id_paciente}`);
         }).catch((error) => {
             console.log(`Falha ao cadastrar os sintomas ${error}`);
             return res.status(500).send(`Falha ao cadastrar os sintomas ${error}`);
