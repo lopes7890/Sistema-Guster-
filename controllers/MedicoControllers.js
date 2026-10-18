@@ -3,6 +3,7 @@ import Medico from "../models/Medico.js";
 import validarCPF from "../utils/validarCPF.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import autenticado from "../middlewares/autenticado.js";
 
 
 const JWT_SECRET = "chave-secreta";
@@ -125,5 +126,11 @@ router.post("/login/medico", (req, res) => {
       );
     });
 });
+
+router.get("/logout", autenticado, (req, res) => {
+  res.clearCookie("token");
+
+  return res.redirect("/");
+})
 
 export default router;
