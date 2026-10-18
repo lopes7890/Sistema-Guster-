@@ -110,7 +110,7 @@ router.post("/consultas/:id/arquivar", autenticado, (req, res) => {
   Exame.findByPk(exameId)
     .then((exame) => {
       if (!exame) {
-        return res.status(404).json({ message: "Exame não encontrado." });
+        return res.status(404).send("Exame não encontrado.");
       } else {
         exame.update({ status_visualizacao: "Arquivado" }).then(() => {
           return res.redirect("/home");
@@ -119,7 +119,7 @@ router.post("/consultas/:id/arquivar", autenticado, (req, res) => {
     })
     .catch((error) => {
       console.error("Erro ao arquivar exame:", error);
-      return res.status(500).json({ message: "Erro interno do servidor." });
+      return res.status(500).send("Erro interno do servidor.");
     });
 });
 
@@ -128,7 +128,7 @@ router.post("/consultas/:id/desarquivar", autenticado, (req, res) => {
   Exame.findByPk(exameId)
     .then((exame) => {
       if (!exame) {
-        return res.status(404).json({ message: "Exame não encontrado." });
+        return res.status(404).send("Exame não encontrado." );
       } else {
         exame.update({ status_visualizacao: "Disponível" }).then(() => {
           return res.redirect("/home");
@@ -137,7 +137,7 @@ router.post("/consultas/:id/desarquivar", autenticado, (req, res) => {
     })
     .catch((error) => {
       console.error("Erro ao desarquivar exame:", error);
-      return res.status(500).json({ message: "Erro interno do servidor." });
+      return res.status(500).send("Erro interno do servidor.");
     });
 });
 

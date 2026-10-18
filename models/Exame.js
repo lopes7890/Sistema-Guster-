@@ -9,7 +9,7 @@ const Exame = connection.define('exames', {
     },
     status_exame: {
         type: Sequelize.ENUM('Concluído', 'Pendente', 'Cancelado'),
-        defaultValue: 'Pendente'
+        defaultValue: 'Concluído'
     },
     status_visualizacao: {
         type: Sequelize.ENUM('Disponível', 'Arquivado'),
