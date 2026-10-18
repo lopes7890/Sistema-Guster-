@@ -1,6 +1,6 @@
 <header class="topbar">
     <div class="topbar-titulo">
-        <h1>Olá Dr. <%= medico.nome %></h1>
+        <h1>Olá Dr. <%= medico.nome.split(" ")[0] %></h1>
         <p>Painel Central</p>
     </div>
 
@@ -8,7 +8,7 @@
         <div class="topbar-usuario">
             <div class="topbar-avatar"></div>
             <div class="topbar-dados">
-                <strong><%= medico.nome %></strong>
+                <strong><%= medico.nome.split(" ")[0] %></strong>
                 <small>CRM: <%= medico.crm %></small>
             </div>
         </div>
