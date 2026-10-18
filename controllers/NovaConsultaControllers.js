@@ -20,7 +20,8 @@ const router = express.Router();
 
 router.get("/consulta/nova", autenticado, carregarMedico, (req, res) => {
     return res.render("novaConsulta", {
-        mostrarNovaConsulta: false
+        mostrarNovaConsulta: false,
+        subtitulo: "Nova Consulta"
     });
 });
 
@@ -28,7 +29,8 @@ router.get("/consulta/informacoes", autenticado, carregarMedico, (req, res) => {
     const {id_paciente} = req.query
     return res.render("informacoesConsulta", {
         mostrarNovaConsulta: false,
-        id_paciente: id_paciente
+        id_paciente: id_paciente,
+        subtitulo: "Nova Consulta"
     });
 });
 
@@ -37,6 +39,7 @@ router.get("/consulta/conexaoBCI", autenticado, carregarMedico, (req, res) => {
     return res.render("conexaoBCI", {
         mostrarNovaConsulta: false,
         id_paciente: id_paciente,
+        subtitulo: "Nova Consulta"
     });
 });
 
@@ -44,6 +47,7 @@ router.get("/consulta/exameBCI/:id_paciente", autenticado, carregarMedico, (req,
     return res.render("exameBCI", {
         mostrarNovaConsulta: false,
         id_paciente: req.params.id_paciente,
+        subtitulo: "Nova Consulta"
     });
 });
 

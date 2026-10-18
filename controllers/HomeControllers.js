@@ -48,6 +48,7 @@ router.get("/home", autenticado, carregarMedico, (req, res) => {
             exames: dadosExames,
             arquivadas: false,
             mostrarNovaConsulta: true,
+            subtitulo: "Painel Central"
         });
     })
     .catch((error) => {
@@ -96,6 +97,7 @@ router.get("/consultas/arquivadas", autenticado, carregarMedico, (req, res) => {
             exames: dadosExames,
             arquivadas: true,
             mostrarNovaConsulta: true,
+            subtitulo: "Painel Central"
         });
     })
     .catch((error) => {
