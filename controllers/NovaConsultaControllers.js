@@ -33,20 +33,17 @@ router.get("/consulta/informacoes", autenticado, carregarMedico, (req, res) => {
 });
 
 router.get("/consulta/conexaoBCI", autenticado, carregarMedico, (req, res) => {
-    const {id_paciente, id_sintoma} = req.query;
-    console.log(id_paciente, id_sintoma)
+    const {id_paciente} = req.query;
     return res.render("conexaoBCI", {
         mostrarNovaConsulta: false,
         id_paciente: id_paciente,
-        id_sintoma: id_sintoma
     });
 });
 
-router.get("/consulta/exameBCI/:id_paciente/:id_sintoma", autenticado, carregarMedico, (req, res) => {
+router.get("/consulta/exameBCI/:id_paciente", autenticado, carregarMedico, (req, res) => {
     return res.render("exameBCI", {
         mostrarNovaConsulta: false,
         id_paciente: req.params.id_paciente,
-        id_sintoma: req.params.id_sintoma
     });
 });
 
@@ -70,6 +67,8 @@ router.get("/resultados/:id_paciente", autenticado, carregarMedico, (req, res) =
                                 captados pela interface cérebro-computador (BCI), em conjunto com as informações clínicas e os sintomas relatados, sugerem uma possível diminuição da sensibilidade gustativa.
                                 Recomenda-se a realização de uma avaliação clínica especializada e de testes gustativos padronizados para confirmar a presença e determinar o grau da alteração. 
                                 Este resultado possui caráter preliminar e não constitui um diagnóstico médico definitivo.`,
+                    percentual_doce: 0.25,
+                    percentual_amargo: 0.30,
                     id_exame: exame.id         
                 }).then((processamento) => {
                     return res.redirect(`/consulta/resultado?id_processamento=${processamento.id}`);
@@ -85,7 +84,7 @@ router.get("/resultados/:id_paciente", autenticado, carregarMedico, (req, res) =
 });
 
 router.get("/consulta/resultado", autenticado, carregarMedico, (req, res) => {
-    const id_processamento = req.query;
+    const {id_processamento} = req.query;
     res.send(id_processamento);
 });
 // ==================================================================

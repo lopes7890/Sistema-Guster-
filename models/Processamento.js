@@ -10,6 +10,22 @@ const Processamento = connection.define('processamentos', {
     descricao: {
         type: Sequelize.TEXT
     },
+    percentual_doce: {
+        type: Sequelize.DataTypes.DECIMAL(5, 2),
+        allowNull: false,
+        validate: {
+            min: 0,
+            max: 100
+        }
+    },
+    percentual_amargo: {
+        type: Sequelize.DataTypes.DECIMAL(5, 2),
+        allowNull: false,
+        validate: {
+            min: 0,
+            max: 100
+        }
+    },
     id_exame: {
         type: Sequelize.INTEGER,
         allowNull: false

@@ -24,7 +24,7 @@ const Sintoma = connection.define('sintomas', {
         allowNull: false
     },
     alteracao_durante_covid: {
-        type: Sequelize.ENUM('Sim', 'Não'),
+        type: Sequelize.ENUM('Durante', 'Depois'),
         allowNull: false
     }
 });
