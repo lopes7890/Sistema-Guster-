@@ -1,0 +1,287 @@
+main.resultados {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 88px 20px 40px;
+    justify-content: center;
+    align-items: flex-start;
+}
+ 
+.resultados-card {
+    width: 1181px;
+    max-width: 100%;
+    padding: 23px 50px 40px;
+}
+ 
+.resultados-card h2 {
+    margin-bottom: 25px;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 24px;
+    color: #090E18;
+}
+ 
+.resultados-detalhes {
+    padding: 26px 40px 32px;
+    border: 1px solid #090E18;
+    border-radius: 24px;
+}
+ 
+/* ---------- Cabeçalho do exame ---------- */
+.resultados-cabecalho {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 40px;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+    color: #090E18;
+}
+ 
+.resultados-cabecalho strong {
+    font-weight: bold;
+}
+ 
+.resultados-cabecalho span {
+    font-weight: 300;
+}
+ 
+/* ---------- Gráfico ---------- */
+.grafico {
+    width: 793px;
+    max-width: 100%;
+    min-height: 283px;
+    margin: 38px auto 0;
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 24px;
+    background-color: #1E2128;
+    color: white;
+    font-family: "Roboto", sans-serif;
+}
+ 
+.grafico figcaption {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 24px;
+    text-align: center;
+}
+ 
+.grafico-corpo {
+    margin-top: 11px;
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+}
+ 
+.grafico-eixo {
+    height: 178px;
+    display: flex;
+    align-items: center;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 14px;
+    font-weight: bold;
+}
+ 
+.grafico-area {
+    width: 331px;
+}
+ 
+.grafico-plot {
+    position: relative;
+    height: 178px;
+    padding-left: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: end;
+    border-bottom: 3px solid white;
+}
+ 
+.grafico-padrao {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 1px dotted #C9CED6;
+}
+ 
+.grafico-padrao span {
+    position: absolute;
+    right: 0;
+    bottom: 3px;
+    font-size: 9px;
+    font-weight: 300;
+    color: #C9CED6;
+}
+ 
+.grafico-coluna {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+ 
+.barra {
+    width: 52px;
+}
+ 
+.barra-doce { background-color: #FF3B3B; }
+.barra-amargo     { background-color: #0F5D8C; }
+ 
+.grafico-rotulos {
+    margin-top: 8px;
+    padding-left: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+ 
+.grafico-rotulos span {
+    width: min-content;
+    margin: 0 auto;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 16px;
+    text-align: center;
+}
+ 
+/* ---------- Análise e exportação ---------- */
+.resultados-rodape {
+    margin: 38px -29px 0 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+}
+ 
+.analise {
+    flex: 0 1 748px;
+    min-height: 148px;
+    padding: 14px 15px 10px;
+    border: 1px solid #EB0E6D;
+    border-radius: 20px;
+    font-family: "Roboto", sans-serif;
+    color: #090E18;
+}
+ 
+.analise h3 {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 24px;
+}
+ 
+.analise-diagnostico {
+    margin-top: 4px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 24px;
+}
+ 
+.nivel-hipogeusia    { color: #F23B3B; }
+.nivel-ageusia { color: #C2A800; }
+.nivel-sn     { color: #0A6B2E; }
+ 
+.analise-texto {
+    max-width: 640px;
+    margin-top: 18px;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+}
+ 
+.ver-mais {
+    padding: 0;
+    border: none;
+    background: none;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 18px;
+    color: #090E18;
+    cursor: pointer;
+}
+ 
+.ver-mais:hover {
+    text-decoration: underline;
+}
+ 
+.btn-exportar {
+    flex: none;
+    width: 227px;
+    height: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 27px;
+    background-color: #EB0E6D;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+ 
+.btn-exportar:hover {
+    background-color: #C70B5C;
+}
+ 
+.btn-exportar:focus-visible,
+.ver-mais:focus-visible {
+    outline: 2px solid #0F5D8C;
+    outline-offset: 3px;
+}
+ 
+/* ---------- Responsivo ---------- */
+@media (max-width: 1300px) {
+    main.resultados {
+        padding-top: 48px;
+    }
+ 
+    .resultados-rodape {
+        margin-right: 0;
+    }
+}
+ 
+@media (max-width: 900px) {
+    main.resultados {
+        overflow-y: visible;
+        padding: 20px;
+    }
+ 
+    .resultados-card {
+        padding: 20px;
+    }
+ 
+    .resultados-detalhes {
+        padding: 20px;
+    }
+ 
+    .resultados-card h2 {
+        font-size: 20px;
+        line-height: 26px;
+    }
+ 
+    .resultados-cabecalho {
+        flex-direction: column;
+    }
+ 
+    .resultados-rodape {
+        margin-left: 0;
+        flex-direction: column;
+        align-items: stretch;
+    }
+ 
+    .analise {
+        flex: none;
+    }
+ 
+    .btn-exportar {
+        width: 100%;
+    }
+}

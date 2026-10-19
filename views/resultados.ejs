@@ -1,0 +1,100 @@
+<%- include ('partials/header.ejs') %>
+<%
+    const LIMITE_RESUMO = 255;
+    const textoLongo = exame.descricao.length > LIMITE_RESUMO;
+    const textoResumo = textoLongo ? exame.descricao.slice(0, LIMITE_RESUMO).trim() : exame.descricao;
+%>
+    <div class="layout">
+        <%- include ('partials/sidebar.ejs', { paginaAtiva: 'home' }) %>
+
+        <div class="layout-conteudo">
+            <%- include ('partials/topbar.ejs')%>
+
+            <main class="resultados">
+                <section class="painel resultados-card">
+                    <h2>Exame com dispositivo BCI: Concluído!</h2>
+
+                    <div class="resultados-detalhes">
+                        <!-- Dados do exame -->
+                        <div class="resultados-cabecalho">
+                            <p><strong>Paciente:</strong> <span><%= exame.paciente %></span></p>
+                            <p><strong>Médico Responsável:</strong> <span><%= exame.medico %></span></p>
+                            <p><strong>Data do exame: <%= exame.data %></strong></p>
+                        </div>
+
+                        <!-- Gráfico -->
+                        <figure class="grafico">
+                            <figcaption>Percepção dos sabores &amp; Intensidade Neural</figcaption>
+
+                            <div class="grafico-corpo" role="img" aria-label="Gráfico de intensidade neural por sabor em relação ao padrão estabelecido de <%= exame.padrao %>%">
+                                <span class="grafico-eixo">Intensidade</span>
+
+                                <div class="grafico-area">
+                                    <div class="grafico-plot">
+                                        <div class="grafico-padrao" style="bottom: <%= exame.padrao %>%;">
+                                            <span>Padrão estabelecido (<%= exame.padrao %>%)</span>
+                                        </div>
+
+                                        <% exame.sabores.forEach(function (s) { %>
+                                        <div class="grafico-coluna">
+                                            <div class="barra barra-<%= s.cor %>" style="height: <%= s.intensidade %>%;"></div>
+                                        </div>
+                                        <% }); %>
+                                    </div>
+
+                                    <div class="grafico-rotulos">
+                                        <% exame.sabores.forEach(function (s) { %>
+                                        <span><%= s.nome %></span>
+                                        <% }); %>
+                                    </div>
+                                </div>
+                            </div>
+                        </figure>
+
+                        <!-- Análise e exportação -->
+                        <div class="resultados-rodape">
+                            <article class="analise">
+                                <h3>Resultados da análise</h3>
+                                <p class="analise-diagnostico nivel-<%= exame.nivel %>"><%= exame.diagnostico %></p>
+
+                                <p class="analise-texto">
+                                    <span class="texto-resumo"><%= textoResumo %></span>
+                                    <% if (textoLongo) { %>
+                                    <span class="texto-completo" hidden><%= exame.descricao %></span>
+                                    <button type="button" class="ver-mais" aria-expanded="false">...Ver mais</button>
+                                    <% } %>
+                                </p>
+                            </article>
+
+                            <a href="/resultados/<%= exame.id %>/relatorio" class="btn-exportar" download>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <path d="M14 2v6h6" fill="none" stroke="#EB0E6D" stroke-width="1.5" stroke-linejoin="round"/>
+                                    <path d="M8 13h8M8 17h8" stroke="#EB0E6D" stroke-width="1.8" stroke-linecap="round"/>
+                                </svg>
+                                Exportar relatório
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.ver-mais').forEach(function (botao) {
+            botao.addEventListener('click', function () {
+                var texto = botao.closest('.analise-texto');
+                var resumo = texto.querySelector('.texto-resumo');
+                var completo = texto.querySelector('.texto-completo');
+                var abrir = completo.hidden;
+
+                completo.hidden = !abrir;
+                resumo.hidden = abrir;
+                botao.textContent = abrir ? ' Ver menos' : '...Ver mais';
+                botao.setAttribute('aria-expanded', abrir);
+            });
+        });
+    </script>
+</body>
+</html>
