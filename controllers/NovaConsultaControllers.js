@@ -88,9 +88,89 @@ router.get("/resultados/:id_paciente", autenticado, carregarMedico, (req, res) =
 });
 
 router.get("/consulta/resultado", autenticado, carregarMedico, (req, res) => {
-    const {id_processamento} = req.query;
-    res.send(id_processamento);
+    const { id_processamento } = req.query;
+
+    if (!id_processamento || !Number.isInteger(Number(id_processamento))) {
+        return res.status(400).send("ID do processamento inválido!");
+    }
+
+    Processamento.findOne({
+        where: {
+            id: id_processamento
+        },
+        include: [
+            {
+                model: Exame,
+                as: "Exame",
+                required: true,
+                where: {
+                    id_medico: req.medico.id
+                },
+                attributes: ["id", "data_realizacao"],
+                include: [
+                    {
+                        model: Paciente,
+                        as: "Paciente",
+                        attributes: ["id", "nome"]
+                    },
+                    {
+                        model: Medico,
+                        as: "Medico",
+                        attributes: ["id", "nome"]
+                    }
+                ]
+            }
+        ]
+    })
+    .then((resultado) => {
+        if (!resultado) {
+            return res.status(404).send("Resultado não encontrado!");
+        }
+
+        const dados = resultado.toJSON();
+        const exameAssociado = dados.Exame;
+        const dataFormatada = formatarData(exameAssociado.data_realizacao)
+
+        const exameResultado = {
+            id: dados.id,
+            id_exame: exameAssociado.id,
+
+            paciente: exameAssociado.Paciente.nome,
+            medico: exameAssociado.Medico.nome,
+            data: dataFormatada,
+
+            diagnostico: dados.resultado,
+            descricao: dados.descricao,
+            sabores: [
+                {
+                    nome: "Doce",
+                    cor: "doce",
+                    intensidade: Number(dados.percentual_doce) * 100
+                },
+                {
+                    nome: "Amargo",
+                    cor: "amargo",
+                    intensidade: Number(dados.percentual_amargo) * 100
+                }
+            ],
+
+            padrao: 50,
+
+            nivel: dados.resultado.toLowerCase()
+        };
+
+        return res.render("resultados", {
+            exame: exameResultado,
+            mostrarNovaConsulta: false,
+            subtitulo: "Resultado do Exame"
+        });
+    })
+    .catch((error) => {
+        console.error("Erro ao consultar resultado:", error);
+        return res.status(500).send("Erro ao carregar o resultado!");
+    });
 });
+
 // ==================================================================
 
 
