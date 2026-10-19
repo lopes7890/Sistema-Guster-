@@ -7,6 +7,7 @@ import autenticado from "../middlewares/autenticado.js";
 import carregarMedico from "../middlewares/carregarMedico.js";
 
 import validarCPF from "../utils/validarCPF.js";
+import formatarData from "../utils/formatarData.js";
 
 import Paciente from "../models/Paciente.js";
 import TelefonesPaciente from "../models/TelefonesPaciente.js";
@@ -15,6 +16,7 @@ import PacienteSintoma from "../models/PacienteSintoma.js";
 import Exame from "../models/Exame.js";
 import Aparelho from "../models/Aparelho.js";
 import Processamento from "../models/Processamento.js";
+import Medico from "../models/Medico.js";
 
 const router = express.Router();
 
