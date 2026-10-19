@@ -119,53 +119,71 @@ router.post("/consulta/informacoes", autenticado, carregarMedico, (req, res) => 
     });
 });
 
+
 router.post("/pacientes/novo", autenticado, carregarMedico, (req, res) => {
-    const {nome, nascimento, telefone, cpf, endereco, cep, email} = req.body;
-    if (!nome || !nascimento || !telefone || !cpf || !endereco|| !cep || !email){
+    const { nome, nascimento, telefone, cpf, endereco, cep, email } = req.body;
+
+    if (!nome || !nascimento || !telefone || !cpf || !endereco || !cep || !email) {
         return res.status(400).send("Preencha todos os campos!");
     }
 
-    if(!validarCPF(cpf)){
+    if (!validarCPF(cpf)) {
         return res.status(400).send("Forneça um CPF válido!");
     }
 
     const emailNormalizado = email.trim().toLowerCase();
+    const cpfNormalizado = cpf.trim();
 
     Paciente.findOne({
         where: {
             [Sequelize.Op.or]: [
-                { cpf: cpf },
-                { email: email }
+                { cpf: cpfNormalizado },
+                { email: emailNormalizado }
             ]
         }
     })
     .then((pacienteExistente) => {
-        if(pacienteExistente == undefined){
-            Paciente.create({
-                nome: nome,
-                email: emailNormalizado,
-                cpf: cpf,
-                data_nasc: nascimento,
-                endereco: endereco,
-                cep: cep
+
+        if (pacienteExistente) {
+            return PacienteSintoma.findOne({
+                where: {
+                    id_paciente: pacienteExistente.id
+                }
             })
-            .then(paciente => {
-                return TelefonesPaciente.create({
-                    id_paciente: paciente.id,
-                    telefone: telefone
-                }).then(() => {
-                    return res.redirect(`/consulta/informacoes?id_paciente=${paciente.id}`);
-                }).catch((error) => {
-                    console.log(`Erro ao cadastrar o paciente: ${error}`);
-                    return res.status(500).send("Falha ao cadastrar paciente, tente novamente!");
-                })
-            })
-        } else {
-            console.log("Paciente já cadastrado");
-            return res.status(400).send("Paciente já cadastrado no sistema!");
+            .then((pacienteComSintoma) => {
+
+                if (pacienteComSintoma) {
+                    return res.redirect(`/consulta/conexaoBCI?id_paciente=${pacienteExistente.id}`);
+                }
+
+                return res.redirect(`/consulta/informacoes?id_paciente=${pacienteExistente.id}`);
+            });
         }
+
+        return Paciente.create({
+            nome: nome,
+            email: emailNormalizado,
+            cpf: cpfNormalizado,
+            data_nasc: nascimento,
+            endereco: endereco,
+            cep: cep
+        })
+        .then((paciente) => {
+            return TelefonesPaciente.create({
+                id_paciente: paciente.id,
+                telefone: telefone
+            })
+            .then(() => {
+                return res.redirect(`/consulta/informacoes?id_paciente=${paciente.id}`);
+            });
+        });
+    })
+    .catch((error) => {
+        console.error("Erro ao cadastrar ou consultar paciente:", error);
+        return res.status(500).send("Falha ao processar o paciente. Tente novamente!");
     });
 });
+
 
 
 
