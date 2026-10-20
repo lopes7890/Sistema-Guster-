@@ -23,12 +23,12 @@
                             <option value="todos">Todos</option>
                         </select>
 
-                        <button type="button" class="btn-filtros">
+                        <!-- <button type="button" class="btn-filtros">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
                             </svg>
                             Filtros
-                        </button>
+                        </button> -->
                     </div>
                 </section>
 
@@ -58,42 +58,8 @@
                                     <th class="centro">Ações</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <% exames.forEach(function (c) { %>
-                                <tr>
-                                    <td>
-                                        <div class="paciente">
-                                            <div class="paciente-avatar"></div>
-                                            <div>
-                                                <strong><%= c.Paciente.nome %></strong>
-                                                <span><%= c.Paciente.idade %> anos - Prontuário #<%= c.Paciente.id %></span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="consulta-data">
-                                            <strong><%= c.data_realizacao %></strong>
-                                            <span>Sessão n° <%= c.id %></span>
-                                        </div>
-                                    </td>
-                                    <td class="centro"><span class="tag tag-verde"><%= c.status_exame %></span></td>
-                                    <td class="centro"><span class="tag tag-<%= c.cor %>"><%= c.Processamentos[0]?.resultado %></span></td>
-                                    <td class="centro">
-                                        <div class="acoes">
-                                            <a href="/consulta/resultado?id_processamento=<%= c.Processamentos[0]?.id %>" class="btn-acao">Abrir Laudo</a>
-                                            <% if (arquivadas) { %>
-                                                <form action="/consultas/<%= c.id %>/desarquivar" method="post">
-                                                    <button type="submit" class="btn-acao" style="color: #FF3F3F;">Desarquivar</button>
-                                                </form>
-                                            <% } else { %>       
-                                                <form action="/consultas/<%= c.id %>/arquivar" method="post">
-                                                    <button type="submit" class="btn-acao">Arquivar</button>
-                                                </form>
-                                            <% } %>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <% }); %>
+                            <tbody id="tabela-consultas" data-arquivadas="<%= arquivadas ? 'true' : 'false' %>">
+                                <%- include('partials/linhas-consultas', { exames, arquivadas }) %>
                             </tbody>
                         </table>
                     </div>
@@ -101,5 +67,6 @@
             </main>
         </div>
     </div>
+<script src="/js/home.js"></script>
 </body>
 </html>
