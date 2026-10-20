@@ -31,6 +31,10 @@ const Paciente = connection.define('pacientes', {
     cep: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    foto: {
+        type: Sequelize.STRING,
+        allowNull: true
     }
 });
 
