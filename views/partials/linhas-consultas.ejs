@@ -2,7 +2,9 @@
 <tr>
     <td>
         <div class="paciente">
-            <div class="paciente-avatar"></div>
+            <div class="paciente-avatar">
+                <img src="<%= c.Paciente.foto %>" alt="Foto do paciente">
+            </div>
             <div>
                 <strong><%= c.Paciente.nome %></strong>
                 <span><%= c.Paciente.idade %> anos - Prontuário #<%= c.Paciente.id %></span>
