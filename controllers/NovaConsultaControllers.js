@@ -1,5 +1,5 @@
 import express from "express";
-import Sequelize from "sequelize";
+import Sequelize, { where } from "sequelize";
 import fs from "fs";
 
 import connection from "../config/config.js";
@@ -239,9 +239,30 @@ router.post("/pacientes/novo", autenticado, carregarMedico, upload.single("foto"
             .then((pacienteComSintoma) => {
 
                 if (pacienteComSintoma) {
-                    return res.redirect(`/consulta/conexaoBCI?id_paciente=${pacienteExistente.id}`);
-                }
+                    return Exame.findOne({
+                        where: {
+                            id_paciente: pacienteComSintoma.id_paciente
+                        }
+                    })
+                    .then((pacienteExame) => {
 
+                        if (pacienteExame){
+                            return Processamento.findOne({
+                                where: {
+                                    id_exame: pacienteExame.id
+                                }
+                            })
+                            .then((exameConcluido) => {
+
+                                if(exameConcluido){
+                                    return res.redirect(`/resultados/${pacienteExame.id_paciente}`);
+                                }
+
+                            })
+                        }
+                        return res.redirect(`/consulta/conexaoBCI?id_paciente=${pacienteComSintoma.id_paciente}`);
+                    })
+                }
                 return res.redirect(`/consulta/informacoes?id_paciente=${pacienteExistente.id}`);
             });
         }
