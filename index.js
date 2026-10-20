@@ -1,9 +1,12 @@
 import express from "express";
 import connection from "./config/config.js";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 const app = express();
 app.use(cookieParser());
+
+app.use("/uploads", express.static(path.resolve("uploads")));
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());

@@ -1,13 +1,16 @@
 import express from "express";
 import Sequelize from "sequelize";
+import fs from "fs";
 
 import connection from "../config/config.js";
+import upload from "../config/multer.js";
 
 import autenticado from "../middlewares/autenticado.js";
 import carregarMedico from "../middlewares/carregarMedico.js";
 
 import validarCPF from "../utils/validarCPF.js";
 import formatarData from "../utils/formatarData.js";
+import uploadFoto from "../utils/uploadFoto.js";
 
 import Paciente from "../models/Paciente.js";
 import TelefonesPaciente from "../models/TelefonesPaciente.js";
@@ -17,6 +20,7 @@ import Exame from "../models/Exame.js";
 import Aparelho from "../models/Aparelho.js";
 import Processamento from "../models/Processamento.js";
 import Medico from "../models/Medico.js";
+import excluirFoto from "../utils/excluirFoto.js";
 
 const router = express.Router();
 
@@ -202,7 +206,7 @@ router.post("/consulta/informacoes", autenticado, carregarMedico, (req, res) => 
 });
 
 
-router.post("/pacientes/novo", autenticado, carregarMedico, (req, res) => {
+router.post("/pacientes/novo", autenticado, carregarMedico, upload.single("foto"),(req, res) => {
     const { nome, nascimento, telefone, cpf, endereco, cep, email } = req.body;
 
     if (!nome || !nascimento || !telefone || !cpf || !endereco || !cep || !email) {
@@ -242,26 +246,40 @@ router.post("/pacientes/novo", autenticado, carregarMedico, (req, res) => {
             });
         }
 
-        return Paciente.create({
-            nome: nome,
-            email: emailNormalizado,
-            cpf: cpfNormalizado,
-            data_nasc: nascimento,
-            endereco: endereco,
-            cep: cep
-        })
-        .then((paciente) => {
-            return TelefonesPaciente.create({
-                id_paciente: paciente.id,
-                telefone: telefone
+        const promessaFoto = req.file
+            ? uploadFoto(req.file)
+            : Promise.resolve(null);
+
+        return promessaFoto.then((foto) => {
+
+            return Paciente.create({
+                nome: nome,
+                email: emailNormalizado,
+                cpf: cpfNormalizado,
+                data_nasc: nascimento,
+                endereco: endereco,
+                cep: cep,
+                foto: foto ? foto.url : null
             })
-            .then(() => {
-                return res.redirect(`/consulta/informacoes?id_paciente=${paciente.id}`);
+            .then((paciente) => {
+
+                return TelefonesPaciente.create({
+                    id_paciente: paciente.id,
+                    telefone
+                })
+                .then(() => {
+                    return res.redirect(`/consulta/informacoes?id_paciente=${paciente.id}`);
+                });
             });
         });
     })
     .catch((error) => {
-        console.error("Erro ao cadastrar ou consultar paciente:", error);
+        console.error("Erro ao cadastrar paciente:", error);
+
+        if (res.headersSent) {
+            return;
+        }
+
         return res.status(500).send("Falha ao processar o paciente. Tente novamente!");
     });
 });
