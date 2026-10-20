@@ -359,6 +359,87 @@ main.paciente-novo {
     align-self: center;    
 }
 
+.anexo-foto {
+    position: relative; 
+    margin-top: 11px;
+    width: fit-content;
+}
+ 
+.anexo-foto input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+ 
+.anexo-foto label {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 0;
+    color: #EB0E6D;
+    cursor: pointer;
+}
+ 
+.anexo-foto span {
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #090E18;
+    text-decoration: underline;
+}
+ 
+.anexo-foto label:hover span {
+    color: #EB0E6D;
+}
+ 
+.anexo-foto input:focus-visible + label {
+    outline: 2px solid #0F5D8C;
+    outline-offset: 4px;
+    border-radius: 6px;
+}
+
+.foto-remover {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 50%;
+    background-color: #E3E3E3;
+    color: #090E18;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+ 
+.foto-remover[hidden] {
+    display: none;
+}
+ 
+.foto-remover:hover {
+    background-color: #F23B3B;
+    color: white;
+}
+ 
+.foto-remover:focus-visible {
+    outline: 2px solid #0F5D8C;
+    outline-offset: 2px;
+}
+ 
+.acoes-form {
+    padding-top: 14px;
+}
+
 @media (max-width: 700px) {
     .form-paciente .linha-info {
         grid-template-columns: 1fr;
