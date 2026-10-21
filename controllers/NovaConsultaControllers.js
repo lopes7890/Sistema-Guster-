@@ -1,5 +1,6 @@
 import express from "express";
 import Sequelize, { where } from "sequelize";
+import PDFDocument from "pdfkit";
 import fs from "fs";
 
 import connection from "../config/config.js";
@@ -178,6 +179,237 @@ router.get("/consulta/resultado", autenticado, carregarMedico, (req, res) => {
 });
 
 // ==================================================================
+
+router.get("/resultados/:id_processamento/relatorio", autenticado, carregarMedico, (req, res) => {
+        const { id_processamento } = req.params;
+
+        if (!/^[1-9]\d*$/.test(id_processamento) || !Number.isSafeInteger(Number(id_processamento))) {
+            return res.status(400).send("ID do processamento inválido!");
+        }
+
+        Processamento.findOne({
+            where: {
+                id: Number(id_processamento)
+            },
+            include: [
+                {
+                    model: Exame,
+                    as: "Exame",
+                    required: true,
+                    where: {
+                        id_medico: req.medico.id
+                    },
+                    attributes: ["id", "data_realizacao"],
+                    include: [
+                        {
+                            model: Paciente,
+                            as: "Paciente",
+                            attributes: ["id", "nome"]
+                        },
+                        {
+                            model: Medico,
+                            as: "Medico",
+                            attributes: ["id", "nome"]
+                        }
+                    ]
+                }
+            ]
+        })
+        .then((resultado) => {
+            if (!resultado) {
+                return res.status(404).send("Resultado não encontrado!");
+            }
+
+            const dados = resultado.toJSON();
+            const exameAssociado = dados.Exame;
+
+            if (!exameAssociado.Paciente || !exameAssociado.Medico) {
+                return res.status(500).send("Dados do exame incompletos.");
+            }
+
+            const exameResultado = {
+                id: dados.id,
+                id_exame: exameAssociado.id,
+                paciente: exameAssociado.Paciente.nome,
+                medico: exameAssociado.Medico.nome,
+                data: formatarData(exameAssociado.data_realizacao),
+                diagnostico: dados.resultado,
+                descricao: dados.descricao,
+                sabores: [
+                    {
+                        nome: "Doce",
+                        intensidade: Number(dados.percentual_doce) * 100
+                    },
+                    {
+                        nome: "Amargo",
+                        intensidade: Number(dados.percentual_amargo) * 100
+                    }
+                ]
+            };
+
+            const doc = new PDFDocument({
+                size: "A4",
+                margins: {
+                    top: 50,
+                    bottom: 50,
+                    left: 50,
+                    right: 50
+                },
+                info: {
+                    Title: `Relatório do processamento ${exameResultado.id}`,
+                    Author: exameResultado.medico
+                }
+            });
+
+            const nomeArquivo = `relatorio-exame-${exameResultado.id}.pdf`;
+
+            res.setHeader("Content-Type", "application/pdf");
+
+            res.setHeader("Content-Disposition", `attachment; filename="${nomeArquivo}"`);
+
+            doc.pipe(res);
+
+            // Cabeçalho
+            doc
+                .fontSize(20)
+                .fillColor("#0F5D8C")
+                .text("RELATÓRIO DE RESULTADO DO EXAME", {
+                    align: "center"
+                });
+
+            doc.moveDown(0.5);
+
+            doc
+                .fontSize(10)
+                .fillColor("#666666")
+                .text("Sistema Guster | Relatório de processamento", {
+                    align: "center"
+                });
+
+            doc.moveDown(2);
+
+            // Identificação
+            doc
+                .fontSize(14)
+                .fillColor("#0F5D8C")
+                .text("1. Identificação");
+
+            doc.moveDown(0.5);
+
+            doc
+                .fontSize(11)
+                .fillColor("#222222");
+
+            doc.text(`Paciente: ${exameResultado.paciente}`);
+            doc.text(`Médico responsável: ${exameResultado.medico}`);
+            doc.text(`Data de realização: ${exameResultado.data}`);
+
+            doc.moveDown(1.5);
+
+            // Resultado do processamento
+            doc
+                .fontSize(14)
+                .fillColor("#0F5D8C")
+                .text("2. Resultado");
+
+            doc.moveDown(0.5);
+
+            doc
+                .fontSize(12)
+                .fillColor("#222222")
+                .text(
+                    `Diagnóstico: ${exameResultado.diagnostico ?? "Não informado"}`
+                );
+
+            doc.moveDown(0.5);
+
+            doc
+                .fontSize(11)
+                .text("Descrição:", {
+                    continued: false
+                });
+
+            doc
+                .fontSize(10)
+                .text(
+                    exameResultado.descricao ?? "Sem descrição disponível.",
+                    {
+                        align: "justify"
+                    }
+                );
+
+            doc.moveDown(1.5);
+
+            // Intensidade dos sabores
+            doc
+                .fontSize(14)
+                .fillColor("#0F5D8C")
+                .text("3. Intensidade dos sabores");
+
+            doc.moveDown(0.5);
+
+            exameResultado.sabores.forEach((sabor) => {
+                const intensidade = Number.isFinite(sabor.intensidade)
+                    ? sabor.intensidade
+                    : 0;
+
+                doc
+                    .fontSize(11)
+                    .fillColor("#222222")
+                    .text(`${sabor.nome}: ${intensidade.toFixed(2)}%`);
+
+                // Barra visual
+                const larguraMaxima = 400;
+                const valorVisual = Math.max(
+                    0,
+                    Math.min(intensidade, 100)
+                );
+
+                const y = doc.y + 5;
+
+                doc
+                    .rect(50, y, larguraMaxima, 10)
+                    .fillColor("#E5E7EB")
+                    .fill();
+
+                doc
+                    .rect(
+                        50,
+                        y,
+                        larguraMaxima * valorVisual / 100,
+                        10
+                    )
+                    .fillColor("#0F5D8C")
+                    .fill();
+
+                doc.y = y + 25;
+            });
+
+            doc.moveDown(1);
+
+            // Observação
+            doc
+                .fontSize(9)
+                .fillColor("#666666")
+                .text(
+                    "Documento gerado pelo sistema a partir dos dados " +
+                    "registrados no processamento do exame. " +
+                    "Specius Tech"
+                );
+
+            doc.end();
+        })
+        .catch((error) => {
+            console.error("Erro ao gerar relatório PDF:", error);
+
+            if (!res.headersSent) {
+                return res
+                    .status(500)
+                    .send("Erro ao gerar o relatório PDF.");
+            }
+        });
+    }
+);
 
 
 router.post("/consulta/informacoes", autenticado, carregarMedico, (req, res) => {
