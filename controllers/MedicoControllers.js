@@ -41,6 +41,7 @@ router.post("/cadastro/medico", (req, res) => {
           cpf: cpf,
           nome: nome,
           email: emailNormalizado,
+          endereco: endereco,
           crm: crm,
           data_nasc: nascimento || null,
           cep: cep || null,
