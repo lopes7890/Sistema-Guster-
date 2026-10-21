@@ -93,10 +93,10 @@ main.cadastro {
     color: #7F8A99;
 }
  
-.cadastro-form input:focus {
+/* .cadastro-form input:focus {
     outline: 2px solid #EB0E6D;
     outline-offset: 2px;
-}
+} */
  
 /* ---------- Botão ---------- */
 .cadastro-form button {

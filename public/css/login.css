@@ -81,10 +81,10 @@
     color: #8A8A8A;
 }
  
-.body-card input:focus {
-    outline: 2px solid #EB0E6D;
+/* .body-card input:focus {
+    outline: 2px solid #090E18;
     outline-offset: 2px;
-}
+} */
  
 .body-card button {
     margin-top: 25px;

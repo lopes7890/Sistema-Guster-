@@ -272,12 +272,12 @@ main.home {
   gap: 10px;
 }
 
-.busca input:focus,
+/* .busca input:focus,
 .filtros select:focus,
 .btn-filtros:focus-visible {
   outline: 2px solid #eb0e6d;
   outline-offset: 2px;
-}
+} */
 
 /* Histórico */
 .painel-historico {

@@ -136,10 +136,10 @@ main.paciente-novo {
     color: #6B6B6B;
 }
  
-.form-paciente input:focus {
+/* .form-paciente input:focus {
     outline: 2px solid #EB0E6D;
     outline-offset: 2px;
-}
+} */
  
 /* ---------- Botões ---------- */
 .acoes-form {
@@ -248,10 +248,10 @@ main.paciente-novo {
     color: #090E18;
 }
  
-.form-paciente select:focus {
+/* .form-paciente select:focus {
     outline: 2px solid #EB0E6D;
     outline-offset: 2px;
-}
+} */
  
 /* Remove as setas do input numérico */
 .form-paciente input[type="number"] {
