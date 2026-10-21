@@ -26,12 +26,12 @@
 
                                 <div class="field">
                                     <label for="telefone">Telefone</label>
-                                    <input type="tel" id="telefone" name="telefone" placeholder="(12)99999-4567" autocomplete="off" required>
+                                    <input type="tel" id="telefone" name="telefone" data-mascara="telefone" placeholder="(12)99999-4567" autocomplete="off" required>
                                 </div>
 
                                 <div class="field">
                                     <label for="cpf">CPF</label>
-                                    <input type="text" id="cpf" name="cpf" placeholder="123.456.789-10" inputmode="numeric" maxlength="14" autocomplete="off" required>
+                                    <input type="text" id="cpf" name="cpf" data-mascara="cpf" placeholder="XXX.XXX.XXX-XX" inputmode="numeric" maxlength="14" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Formato: 000.000.000-00" autocomplete="off" required>
                                 </div>
                             </div>
 
@@ -43,7 +43,7 @@
 
                                 <div class="field">
                                     <label for="cep">CEP</label>
-                                    <input type="text" id="cep" name="cep" placeholder="11990-123" inputmode="numeric" maxlength="9" autocomplete="off" required>
+                                    <input type="text" id="cep" name="cep" data-mascara="cep" placeholder="XXXXX-XXX" inputmode="numeric" maxlength="9" pattern="\d{5}-\d{3}" title="Formato: 00000-000" autocomplete="postal-code" required>
                                 </div>
                             </div>
 
@@ -97,5 +97,6 @@
     </div>
 
 <script src="/js/novaConsulta.js"></script>
+<script src="/js/cadastro.js"></script>
 </body>
 </html>

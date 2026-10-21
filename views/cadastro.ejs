@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="field">
                         <label for="cpf">CPF</label>
-                        <input type="text" id="cpf" name="cpf" placeholder="XXX.XXX.XXX-XX" inputmode="numeric" maxlength="14" autocomplete="off" required>
+                        <input type="text" id="cpf" name="cpf" data-mascara="cpf" placeholder="XXX.XXX.XXX-XX" inputmode="numeric" maxlength="14" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Formato: 000.000.000-00" autocomplete="off" required>
                     </div>
 
                     <div class="field">
@@ -26,12 +26,12 @@
                 <div class="row">
                     <div class="field">
                         <label for="crm">CRM</label>
-                        <input type="text" id="crm" name="crm" placeholder="XXXXXXX/XX" autocomplete="off" required>
+                        <input type="text" id="crm" name="crm" data-mascara="crm" placeholder="XXXXXX/XX" maxlength="10" pattern="\d{4,7}/[A-Z]{2}" title="Formato: 123456/SP" autocomplete="off" required>
                     </div>
 
                     <div class="field">
                         <label for="cep">CEP</label>
-                        <input type="text" id="cep" name="cep" placeholder="XX XXX-XXX" inputmode="numeric" maxlength="10" autocomplete="postal-code" required>
+                        <input type="text" id="cep" name="cep" data-mascara="cep" placeholder="XXXXX-XXX" inputmode="numeric" maxlength="9" pattern="\d{5}-\d{3}" title="Formato: 00000-000" autocomplete="postal-code" required>
                     </div>
                 </div>
 
@@ -68,5 +68,7 @@
             
         </section>
     </main>
+
+<script src="/js/cadastro.js"></script>
 </body>
 </html>
