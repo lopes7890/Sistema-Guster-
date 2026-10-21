@@ -86,7 +86,7 @@
     outline-offset: 2px;
 } */
  
-.body-card button {
+.body-card button[type="submit"] {
     margin-top: 25px;
     width: 320px;
     max-width: 100%;
@@ -107,11 +107,11 @@
     transition: background-color 0.2s;
 }
  
-.body-card button:hover {
+.body-card button[type="submit"]:hover {
     background-color: #C70B5C;
 }
  
-.body-card button:focus-visible {
+.body-card button[type="submit"]:focus-visible {
     outline: 2px solid #0F5D8C;
     outline-offset: 3px;
 }
@@ -131,6 +131,66 @@
  
 .signup a:hover {
     text-decoration: underline;
+}
+
+.campo-senha {
+    position: relative;
+}
+ 
+/* espaço à direita para o texto não ficar embaixo do olho */
+.campo-senha input {
+    padding-right: 64px;
+}
+ 
+.btn-olho {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    color: #EB0E6D;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+ 
+.btn-olho:hover {
+    background-color: rgba(235, 14, 109, 0.1);
+}
+ 
+.btn-olho:focus-visible {
+    outline: 2px solid #0F5D8C;
+    outline-offset: 2px;
+}
+ 
+.btn-olho svg {
+    display: block;
+}
+ 
+/* olho aberto = senha escondida | olho riscado = senha visível */
+.btn-olho .icone-escondido {
+    display: none;
+}
+ 
+.btn-olho[aria-pressed="true"] .icone-visivel {
+    display: none;
+}
+ 
+.btn-olho[aria-pressed="true"] .icone-escondido {
+    display: block;
+}
+ 
+/* remove o olho nativo do Edge para não duplicar o ícone */
+.campo-senha input::-ms-reveal,
+.campo-senha input::-ms-clear {
+    display: none;
 }
 
 @media (max-width: 700px) {
