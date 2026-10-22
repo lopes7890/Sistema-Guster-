@@ -21,523 +21,498 @@ import Exame from "../models/Exame.js";
 import Aparelho from "../models/Aparelho.js";
 import Processamento from "../models/Processamento.js";
 import Medico from "../models/Medico.js";
-import excluirFoto from "../utils/excluirFoto.js";
+import Relatorio from "../models/Relatorio.js";
 
 const router = express.Router();
 
 router.get("/consulta/nova", autenticado, carregarMedico, (req, res) => {
-    return res.render("novaConsulta", {
-        mostrarNovaConsulta: false,
-        subtitulo: "Nova Consulta"
-    });
+  return res.render("novaConsulta", {
+    mostrarNovaConsulta: false,
+    subtitulo: "Nova Consulta",
+  });
 });
 
 router.get("/consulta/informacoes", autenticado, carregarMedico, (req, res) => {
-    const {id_paciente} = req.query
-    return res.render("informacoesConsulta", {
-        mostrarNovaConsulta: false,
-        id_paciente: id_paciente,
-        subtitulo: "Nova Consulta"
-    });
+  const { id_paciente } = req.query;
+  return res.render("informacoesConsulta", {
+    mostrarNovaConsulta: false,
+    id_paciente: id_paciente,
+    subtitulo: "Nova Consulta",
+  });
 });
 
 router.get("/consulta/conexaoBCI", autenticado, carregarMedico, (req, res) => {
-    const {id_paciente} = req.query;
-    return res.render("conexaoBCI", {
-        mostrarNovaConsulta: false,
-        id_paciente: id_paciente,
-        subtitulo: "Nova Consulta"
-    });
+  const { id_paciente } = req.query;
+  return res.render("conexaoBCI", {
+    mostrarNovaConsulta: false,
+    id_paciente: id_paciente,
+    subtitulo: "Nova Consulta",
+  });
 });
 
 router.get("/consulta/exameBCI/:id_paciente", autenticado, carregarMedico, (req, res) => {
     return res.render("exameBCI", {
-        mostrarNovaConsulta: false,
-        id_paciente: req.params.id_paciente,
-        subtitulo: "Nova Consulta"
+      mostrarNovaConsulta: false,
+      id_paciente: req.params.id_paciente,
+      subtitulo: "Nova Consulta",
     });
-});
+  },
+);
 
 // ROTAs DE SIMULAÇÃO DE RESULTADOS DO EXAME
 router.get("/resultados/:id_paciente", autenticado, carregarMedico, (req, res) => {
     const id_paciente = req.params.id_paciente;
 
     Aparelho.findByPk(1).then((aparelho) => {
-        if(aparelho){
-            Exame.create({
-                data_realizacao: new Date(),
-                id_aparelho: aparelho.id,
-                id_paciente: id_paciente,
-                id_medico: req.medico.id
-            }).then((exame) => {
-                Processamento.create({
-                    resultado: "Hipogeusia",
-                    descricao: `O paciente apresenta indícios de hipogeusia, condição caracterizada pela redução da capacidade 
+      if (aparelho) {
+        Exame.create({
+          data_realizacao: new Date(),
+          id_aparelho: aparelho.id,
+          id_paciente: id_paciente,
+          id_medico: req.medico.id,
+        }).then((exame) => {
+          Processamento.create({
+            resultado: "Hipogeusia",
+            descricao: `O paciente apresenta indícios de hipogeusia, condição caracterizada pela redução da capacidade 
                                 de perceber os sabores. Durante a avaliação, foram relatadas alterações na percepção gustativa, 
                                 possivelmente associadas às sequelas da infecção por COVID-19. Os resultados preliminares da análise dos sinais cerebrais 
                                 captados pela interface cérebro-computador (BCI), em conjunto com as informações clínicas e os sintomas relatados, sugerem uma possível diminuição da sensibilidade gustativa.
                                 Recomenda-se a realização de uma avaliação clínica especializada e de testes gustativos padronizados para confirmar a presença e determinar o grau da alteração. 
                                 Este resultado possui caráter preliminar e não constitui um diagnóstico médico definitivo.`,
-                    percentual_doce: 0.25,
-                    percentual_amargo: 0.30,
-                    id_exame: exame.id         
-                }).then((processamento) => {
-                    return res.redirect(`/consulta/resultado?id_processamento=${processamento.id}`);
-                }).catch((error) => {
-                    console.log(`Falha ao buscar os resultados. Erro: ${error}`);
-                    return res.status(500).send("Falha ao buscar resultados");
-                });
+            percentual_doce: 0.25,
+            percentual_amargo: 0.3,
+            id_exame: exame.id,
+          })
+            .then((processamento) => {
+              return res.redirect(`/consulta/resultado?id_processamento=${processamento.id}`);
+            })
+            .catch((error) => {
+              console.log(`Falha ao buscar os resultados. Erro: ${error}`);
+              return res.status(500).send("Falha ao buscar resultados");
             });
-        } else {
-            return res.status(500).send("Dispositivo não identificado");
-        };
+        });
+      } else {
+        return res.status(500).send("Dispositivo não identificado");
+      }
     });
-});
+  },
+);
 
 router.get("/consulta/resultado", autenticado, carregarMedico, (req, res) => {
-    const { id_processamento } = req.query;
+  const { id_processamento } = req.query;
 
-    if (!id_processamento || !Number.isInteger(Number(id_processamento))) {
-        return res.status(400).send("ID do processamento inválido!");
-    }
+  if (!id_processamento || !Number.isInteger(Number(id_processamento))) {
+    return res.status(400).send("ID do processamento inválido!");
+  }
 
-    Processamento.findOne({
+  Processamento.findOne({
+    where: {
+      id: id_processamento,
+    },
+    include: [
+      {
+        model: Exame,
+        as: "Exame",
+        required: true,
         where: {
-            id: id_processamento
+          id_medico: req.medico.id,
         },
+        attributes: ["id", "data_realizacao"],
         include: [
-            {
-                model: Exame,
-                as: "Exame",
-                required: true,
-                where: {
-                    id_medico: req.medico.id
-                },
-                attributes: ["id", "data_realizacao"],
-                include: [
-                    {
-                        model: Paciente,
-                        as: "Paciente",
-                        attributes: ["id", "nome"]
-                    },
-                    {
-                        model: Medico,
-                        as: "Medico",
-                        attributes: ["id", "nome"]
-                    }
-                ]
-            }
-        ]
-    })
+          {
+            model: Paciente,
+            as: "Paciente",
+            attributes: ["id", "nome"],
+          },
+          {
+            model: Medico,
+            as: "Medico",
+            attributes: ["id", "nome"],
+          },
+        ],
+      },
+    ],
+  })
     .then((resultado) => {
-        if (!resultado) {
-            return res.status(404).send("Resultado não encontrado!");
-        }
+      if (!resultado) {
+        return res.status(404).send("Resultado não encontrado!");
+      }
 
-        const dados = resultado.toJSON();
-        const exameAssociado = dados.Exame;
-        const dataFormatada = formatarData(exameAssociado.data_realizacao)
+      const dados = resultado.toJSON();
+      const exameAssociado = dados.Exame;
+      const dataFormatada = formatarData(exameAssociado.data_realizacao);
 
-        const exameResultado = {
-            id: dados.id,
-            id_exame: exameAssociado.id,
+      const exameResultado = {
+        id: dados.id,
+        id_exame: exameAssociado.id,
 
-            paciente: exameAssociado.Paciente.nome,
-            medico: exameAssociado.Medico.nome,
-            data: dataFormatada,
+        paciente: exameAssociado.Paciente.nome,
+        medico: exameAssociado.Medico.nome,
+        data: dataFormatada,
 
-            diagnostico: dados.resultado,
-            descricao: dados.descricao,
-            sabores: [
-                {
-                    nome: "Doce",
-                    cor: "doce",
-                    intensidade: Number(dados.percentual_doce) * 100
-                },
-                {
-                    nome: "Amargo",
-                    cor: "amargo",
-                    intensidade: Number(dados.percentual_amargo) * 100
-                }
-            ],
+        diagnostico: dados.resultado,
+        descricao: dados.descricao,
+        sabores: [
+          {
+            nome: "Doce",
+            cor: "doce",
+            intensidade: Number(dados.percentual_doce) * 100,
+          },
+          {
+            nome: "Amargo",
+            cor: "amargo",
+            intensidade: Number(dados.percentual_amargo) * 100,
+          },
+        ],
 
-            padrao: 50,
+        padrao: 50,
 
-            nivel: dados.resultado.toLowerCase()
-        };
+        nivel: dados.resultado.toLowerCase(),
+      };
 
-        return res.render("resultados", {
-            exame: exameResultado,
-            mostrarNovaConsulta: false,
-            subtitulo: "Resultado do Exame"
-        });
+      return res.render("resultados", {
+        exame: exameResultado,
+        mostrarNovaConsulta: false,
+        subtitulo: "Resultado do Exame",
+      });
     })
     .catch((error) => {
-        console.error("Erro ao consultar resultado:", error);
-        return res.status(500).send("Erro ao carregar o resultado!");
+      console.error("Erro ao consultar resultado:", error);
+      return res.status(500).send("Erro ao carregar o resultado!");
     });
 });
 
 // ==================================================================
 
 router.get("/resultados/:id_processamento/relatorio", autenticado, carregarMedico, (req, res) => {
-        const { id_processamento } = req.params;
+    const { id_processamento } = req.params;
 
-        if (!/^[1-9]\d*$/.test(id_processamento) || !Number.isSafeInteger(Number(id_processamento))) {
-            return res.status(400).send("ID do processamento inválido!");
+    if (!/^[1-9]\d*$/.test(id_processamento) || !Number.isSafeInteger(Number(id_processamento))) {
+      return res.status(400).send("ID do processamento inválido!");
+    }  
+
+    return Processamento.findOne({
+      where: {
+        id: Number(id_processamento),
+      },
+      include: [
+        {
+          model: Exame,
+          as: "Exame",
+          required: true,
+          where: {
+            id_medico: req.medico.id,
+          },
+          attributes: ["id", "data_realizacao"],
+          include: [
+            {
+              model: Paciente,
+              as: "Paciente",
+              attributes: ["id", "nome"],
+            },
+            {
+              model: Medico,
+              as: "Medico",
+              attributes: ["id", "nome"],
+            },
+          ],
+        },
+      ],
+    })
+      .then((resultado) => {
+        if (!resultado) {
+          return res.status(404).send("Resultado não encontrado!");
         }
 
-        Processamento.findOne({
-            where: {
-                id: Number(id_processamento)
+        const dados = resultado.toJSON();
+        const exameAssociado = dados.Exame;
+
+        if (!exameAssociado.Paciente || !exameAssociado.Medico) {
+          return res.status(500).send("Dados do exame incompletos.");
+        }
+
+        const exameResultado = {
+          id: dados.id,
+          id_exame: exameAssociado.id,
+          paciente: exameAssociado.Paciente.nome,
+          medico: exameAssociado.Medico.nome,
+          data: formatarData(exameAssociado.data_realizacao),
+          diagnostico: dados.resultado,
+          descricao: dados.descricao,
+          sabores: [
+            {
+              nome: "Doce",
+              intensidade: Number(dados.percentual_doce) * 100,
             },
-            include: [
-                {
-                    model: Exame,
-                    as: "Exame",
-                    required: true,
-                    where: {
-                        id_medico: req.medico.id
-                    },
-                    attributes: ["id", "data_realizacao"],
-                    include: [
-                        {
-                            model: Paciente,
-                            as: "Paciente",
-                            attributes: ["id", "nome"]
-                        },
-                        {
-                            model: Medico,
-                            as: "Medico",
-                            attributes: ["id", "nome"]
-                        }
-                    ]
-                }
-            ]
-        })
-        .then((resultado) => {
-            if (!resultado) {
-                return res.status(404).send("Resultado não encontrado!");
-            }
+            {
+              nome: "Amargo",
+              intensidade: Number(dados.percentual_amargo) * 100,
+            },
+          ],
+        };
 
-            const dados = resultado.toJSON();
-            const exameAssociado = dados.Exame;
+        return Relatorio.create({
+          data_realizado: new Date(),
+          id_processamento: dados.id,
+        }).then(() => {
+          const doc = new PDFDocument({
+            size: "A4",
+            margins: {
+              top: 50,
+              bottom: 50,
+              left: 50,
+              right: 50,
+            },
+            info: {
+              Title: `Relatório do processamento ${exameResultado.id}`,
+              Author: exameResultado.medico,
+            },
+          });
 
-            if (!exameAssociado.Paciente || !exameAssociado.Medico) {
-                return res.status(500).send("Dados do exame incompletos.");
-            }
+          const nomeArquivo = `relatorio-exame-${exameResultado.id}.pdf`;
 
-            const exameResultado = {
-                id: dados.id,
-                id_exame: exameAssociado.id,
-                paciente: exameAssociado.Paciente.nome,
-                medico: exameAssociado.Medico.nome,
-                data: formatarData(exameAssociado.data_realizacao),
-                diagnostico: dados.resultado,
-                descricao: dados.descricao,
-                sabores: [
-                    {
-                        nome: "Doce",
-                        intensidade: Number(dados.percentual_doce) * 100
-                    },
-                    {
-                        nome: "Amargo",
-                        intensidade: Number(dados.percentual_amargo) * 100
-                    }
-                ]
-            };
+          res.setHeader("Content-Type", "application/pdf");
+          res.setHeader(
+            "Content-Disposition",
+            `attachment; filename="${nomeArquivo}"`,
+          );
 
-            const doc = new PDFDocument({
-                size: "A4",
-                margins: {
-                    top: 50,
-                    bottom: 50,
-                    left: 50,
-                    right: 50
-                },
-                info: {
-                    Title: `Relatório do processamento ${exameResultado.id}`,
-                    Author: exameResultado.medico
-                }
+          doc.pipe(res);
+
+          // Cabeçalho
+          doc
+            .fontSize(20)
+            .fillColor("#0F5D8C")
+            .text("RELATÓRIO DE RESULTADO DO EXAME", {
+              align: "center",
             });
 
-            const nomeArquivo = `relatorio-exame-${exameResultado.id}.pdf`;
+          doc.moveDown(0.5);
 
-            res.setHeader("Content-Type", "application/pdf");
-
-            res.setHeader("Content-Disposition", `attachment; filename="${nomeArquivo}"`);
-
-            doc.pipe(res);
-
-            // Cabeçalho
-            doc
-                .fontSize(20)
-                .fillColor("#0F5D8C")
-                .text("RELATÓRIO DE RESULTADO DO EXAME", {
-                    align: "center"
-                });
-
-            doc.moveDown(0.5);
-
-            doc
-                .fontSize(10)
-                .fillColor("#666666")
-                .text("Sistema Guster | Relatório de processamento", {
-                    align: "center"
-                });
-
-            doc.moveDown(2);
-
-            // Identificação
-            doc
-                .fontSize(14)
-                .fillColor("#0F5D8C")
-                .text("1. Identificação");
-
-            doc.moveDown(0.5);
-
-            doc
-                .fontSize(11)
-                .fillColor("#222222");
-
-            doc.text(`Paciente: ${exameResultado.paciente}`);
-            doc.text(`Médico responsável: ${exameResultado.medico}`);
-            doc.text(`Data de realização: ${exameResultado.data}`);
-
-            doc.moveDown(1.5);
-
-            // Resultado do processamento
-            doc
-                .fontSize(14)
-                .fillColor("#0F5D8C")
-                .text("2. Resultado");
-
-            doc.moveDown(0.5);
-
-            doc
-                .fontSize(12)
-                .fillColor("#222222")
-                .text(
-                    `Diagnóstico: ${exameResultado.diagnostico ?? "Não informado"}`
-                );
-
-            doc.moveDown(0.5);
-
-            doc
-                .fontSize(11)
-                .text("Descrição:", {
-                    continued: false
-                });
-
-            doc
-                .fontSize(10)
-                .text(
-                    exameResultado.descricao ?? "Sem descrição disponível.",
-                    {
-                        align: "justify"
-                    }
-                );
-
-            doc.moveDown(1.5);
-
-            // Intensidade dos sabores
-            doc
-                .fontSize(14)
-                .fillColor("#0F5D8C")
-                .text("3. Intensidade dos sabores");
-
-            doc.moveDown(0.5);
-
-            exameResultado.sabores.forEach((sabor) => {
-                const intensidade = Number.isFinite(sabor.intensidade)
-                    ? sabor.intensidade
-                    : 0;
-
-                doc
-                    .fontSize(11)
-                    .fillColor("#222222")
-                    .text(`${sabor.nome}: ${intensidade.toFixed(2)}%`);
-
-                // Barra visual
-                const larguraMaxima = 400;
-                const valorVisual = Math.max(
-                    0,
-                    Math.min(intensidade, 100)
-                );
-
-                const y = doc.y + 5;
-
-                doc
-                    .rect(50, y, larguraMaxima, 10)
-                    .fillColor("#E5E7EB")
-                    .fill();
-
-                doc
-                    .rect(
-                        50,
-                        y,
-                        larguraMaxima * valorVisual / 100,
-                        10
-                    )
-                    .fillColor("#0F5D8C")
-                    .fill();
-
-                doc.y = y + 25;
+          doc
+            .fontSize(10)
+            .fillColor("#666666")
+            .text("Sistema Guster | Relatório de processamento", {
+              align: "center",
             });
 
-            doc.moveDown(1);
+          doc.moveDown(2);
 
-            // Observação
+          // Identificação
+          doc.fontSize(14).fillColor("#0F5D8C").text("1. Identificação");
+
+          doc.moveDown(0.5);
+
+          doc.fontSize(11).fillColor("#222222");
+
+          doc.text(`Paciente: ${exameResultado.paciente}`);
+          doc.text(`Médico responsável: ${exameResultado.medico}`);
+          doc.text(`Data de realização: ${exameResultado.data}`);
+
+          doc.moveDown(1.5);
+
+          // Resultado
+          doc.fontSize(14).fillColor("#0F5D8C").text("2. Resultado");
+
+          doc.moveDown(0.5);
+
+          doc
+            .fontSize(12)
+            .fillColor("#222222")
+            .text(
+              `Diagnóstico: ${exameResultado.diagnostico ?? "Não informado"}`,
+            );
+
+          doc.moveDown(0.5);
+
+          doc.fontSize(11).text("Descrição:");
+
+          doc
+            .fontSize(10)
+            .text(exameResultado.descricao ?? "Sem descrição disponível.", {
+              align: "justify",
+            });
+
+          doc.moveDown(1.5);
+
+          // Intensidade dos sabores
+          doc
+            .fontSize(14)
+            .fillColor("#0F5D8C")
+            .text("3. Intensidade dos sabores");
+
+          doc.moveDown(0.5);
+
+          exameResultado.sabores.forEach((sabor) => {
+            const intensidade = Number.isFinite(sabor.intensidade)
+              ? sabor.intensidade
+              : 0;
+
             doc
-                .fontSize(9)
-                .fillColor("#666666")
-                .text(
-                    "Documento gerado pelo sistema a partir dos dados " +
-                    "registrados no processamento do exame. " +
-                    "Specius Tech"
-                );
+              .fontSize(11)
+              .fillColor("#222222")
+              .text(`${sabor.nome}: ${intensidade.toFixed(2)}%`);
 
-            doc.end();
-        })
-        .catch((error) => {
-            console.error("Erro ao gerar relatório PDF:", error);
+            const larguraMaxima = 400;
+            const valorVisual = Math.max(0, Math.min(intensidade, 100));
 
-            if (!res.headersSent) {
-                return res
-                    .status(500)
-                    .send("Erro ao gerar o relatório PDF.");
-            }
+            const y = doc.y + 5;
+
+            doc.rect(50, y, larguraMaxima, 10).fillColor("#E5E7EB").fill();
+
+            doc
+              .rect(50, y, (larguraMaxima * valorVisual) / 100, 10)
+              .fillColor("#0F5D8C")
+              .fill();
+
+            doc.y = y + 25;
+          });
+
+          doc.moveDown(1);
+
+          // Rodapé
+          doc
+            .fontSize(9)
+            .fillColor("#666666")
+            .text(
+              "Documento gerado pelo sistema a partir dos dados " +
+                "registrados no processamento do exame. Specius Tech",
+            );
+
+          // Finalizar o PDF
+          doc.end();
         });
-    }
+      })
+      .catch((error) => {
+        console.error("Erro ao gerar relatório PDF:", error);
+
+        if (res.headersSent) {
+          if (!res.writableEnded) {
+            res.destroy(error);
+          }
+
+          return;
+        }
+
+        return res.status(500).send("Erro ao gerar o relatório PDF.");
+      });
+  },
 );
 
-
 router.post("/consulta/informacoes", autenticado, carregarMedico, (req, res) => {
-    const {dataCovid, capacidadeSabor, diferencaPaladar, primeiraPercepcao, alteracaoCovid, id_paciente} = req.body;
-    if(!dataCovid || !capacidadeSabor || !diferencaPaladar || !primeiraPercepcao || !alteracaoCovid || !id_paciente){
-        return res.status(400).send("Preencha todos os campos!");
+    const {dataCovid, capacidadeSabor, diferencaPaladar, primeiraPercepcao, alteracaoCovid, id_paciente,} = req.body;
+    if (!dataCovid || !capacidadeSabor || !diferencaPaladar || !primeiraPercepcao || !alteracaoCovid || !id_paciente) {
+      return res.status(400).send("Preencha todos os campos!");
     }
 
     Sintoma.create({
-        data_cov: dataCovid,
-        escala_0_10: Number(capacidadeSabor),
-        diferenca_no_paladar: diferencaPaladar,
-        alteracao_primeira_vez: primeiraPercepcao,
-        alteracao_durante_covid: alteracaoCovid
+      data_cov: dataCovid,
+      escala_0_10: Number(capacidadeSabor),
+      diferenca_no_paladar: diferencaPaladar,
+      alteracao_primeira_vez: primeiraPercepcao,
+      alteracao_durante_covid: alteracaoCovid,
     }).then((sintoma) => {
-        PacienteSintoma.create({
-            id_paciente: id_paciente,
-            id_sintoma: sintoma.id
-        }).then(() => {
-            return res.redirect(`/consulta/conexaoBCI?id_paciente=${id_paciente}`);
-        }).catch((error) => {
-            console.log(`Falha ao cadastrar os sintomas ${error}`);
-            return res.status(500).send(`Falha ao cadastrar os sintomas ${error}`);
+      PacienteSintoma.create({
+        id_paciente: id_paciente,
+        id_sintoma: sintoma.id,
+      })
+        .then(() => {
+          return res.redirect(`/consulta/conexaoBCI?id_paciente=${id_paciente}`,);
+        })
+        .catch((error) => {
+          console.log(`Falha ao cadastrar os sintomas ${error}`);
+          return res.status(500).send(`Falha ao cadastrar os sintomas ${error}`);
         });
     });
-});
+  },
+);
 
-
-router.post("/pacientes/novo", autenticado, carregarMedico, upload.single("foto"),(req, res) => {
+router.post("/pacientes/novo", autenticado, carregarMedico, upload.single("foto"), (req, res) => {
     const { nome, nascimento, telefone, cpf, endereco, cep, email } = req.body;
 
     if (!nome || !nascimento || !telefone || !cpf || !endereco || !cep || !email) {
-        return res.status(400).send("Preencha todos os campos!");
+      return res.status(400).send("Preencha todos os campos!");
     }
 
     if (!validarCPF(cpf)) {
-        return res.status(400).send("Forneça um CPF válido!");
+      return res.status(400).send("Forneça um CPF válido!");
     }
 
     const emailNormalizado = email.trim().toLowerCase();
     const cpfNormalizado = cpf.trim();
 
     Paciente.findOne({
-        where: {
-            [Sequelize.Op.or]: [
-                { cpf: cpfNormalizado },
-                { email: emailNormalizado }
-            ]
-        }
+      where: {
+        [Sequelize.Op.or]: [
+          { cpf: cpfNormalizado },
+          { email: emailNormalizado },
+        ],
+      },
     })
-    .then((pacienteExistente) => {
-
+      .then((pacienteExistente) => {
         if (pacienteExistente) {
-            return PacienteSintoma.findOne({
+          return PacienteSintoma.findOne({
+            where: {
+              id_paciente: pacienteExistente.id,
+            },
+          }).then((pacienteComSintoma) => {
+            if (pacienteComSintoma) {
+              return Exame.findOne({
                 where: {
-                    id_paciente: pacienteExistente.id
+                  id_paciente: pacienteComSintoma.id_paciente,
+                },
+              }).then((pacienteExame) => {
+                if (pacienteExame) {
+                  return Processamento.findOne({
+                    where: {
+                      id_exame: pacienteExame.id,
+                    },
+                  }).then((exameConcluido) => {
+                    if (exameConcluido) {
+                      return res.redirect(`/resultados/${pacienteExame.id_paciente}`);
+                    }
+                  });
                 }
-            })
-            .then((pacienteComSintoma) => {
-
-                if (pacienteComSintoma) {
-                    return Exame.findOne({
-                        where: {
-                            id_paciente: pacienteComSintoma.id_paciente
-                        }
-                    })
-                    .then((pacienteExame) => {
-
-                        if (pacienteExame){
-                            return Processamento.findOne({
-                                where: {
-                                    id_exame: pacienteExame.id
-                                }
-                            })
-                            .then((exameConcluido) => {
-
-                                if(exameConcluido){
-                                    return res.redirect(`/resultados/${pacienteExame.id_paciente}`);
-                                }
-
-                            })
-                        }
-                        return res.redirect(`/consulta/conexaoBCI?id_paciente=${pacienteComSintoma.id_paciente}`);
-                    })
-                }
-                return res.redirect(`/consulta/informacoes?id_paciente=${pacienteExistente.id}`);
-            });
+                return res.redirect(`/consulta/conexaoBCI?id_paciente=${pacienteComSintoma.id_paciente}`);
+              });
+            }
+            return res.redirect(`/consulta/informacoes?id_paciente=${pacienteExistente.id}`);
+          });
         }
 
         const promessaFoto = req.file
-            ? uploadFoto(req.file)
-            : Promise.resolve(null);
+          ? uploadFoto(req.file)
+          : Promise.resolve(null);
 
         return promessaFoto.then((foto) => {
-
-            return Paciente.create({
-                nome: nome,
-                email: emailNormalizado,
-                cpf: cpfNormalizado,
-                data_nasc: nascimento,
-                endereco: endereco,
-                cep: cep,
-                foto: foto ? foto.url : null
-            })
-            .then((paciente) => {
-
-                return TelefonesPaciente.create({
-                    id_paciente: paciente.id,
-                    telefone
-                })
-                .then(() => {
-                    return res.redirect(`/consulta/informacoes?id_paciente=${paciente.id}`);
-                });
+          return Paciente.create({
+            nome: nome,
+            email: emailNormalizado,
+            cpf: cpfNormalizado,
+            data_nasc: nascimento,
+            endereco: endereco,
+            cep: cep,
+            foto: foto ? foto.url : null,
+          }).then((paciente) => {
+            return TelefonesPaciente.create({
+              id_paciente: paciente.id,
+              telefone,
+            }).then(() => {
+              return res.redirect(`/consulta/informacoes?id_paciente=${paciente.id}`);
             });
+          });
         });
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.error("Erro ao cadastrar paciente:", error);
 
         if (res.headersSent) {
-            return;
+          return;
         }
 
         return res.status(500).send("Falha ao processar o paciente. Tente novamente!");
-    });
-});
-
-
-
+      });
+  },
+);
 
 export default router;
