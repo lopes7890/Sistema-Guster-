@@ -1,6 +1,24 @@
-<% const atual = Number(typeof etapaAtual !== 'undefined' ? etapaAtual : 1); %>
+
+<%
+    const atual = Number(typeof etapaAtual !== 'undefined' ? etapaAtual : 1);
+
+    const etapas = [
+        "Cadastro do Paciente",
+        "Cadastro dos sintomas",
+        "Conexão com dispositivo BCI"
+    ];
+%>
+
 <ol class="stepper" aria-label="Etapas do cadastro">
-    <% [1, 2, 3].forEach(function (n) { %>
-    <li class="passo<%= n <= atual ? ' ativo' : '' %>"<%- n === atual ? ' aria-current="step"' : '' %>><%= n %></li>
+    <% etapas.forEach(function (descricao, index) {
+        const n = index + 1;
+    %>
+        <li
+            class="passo<%= n <= atual ? ' ativo' : '' %>"
+            title="<%= descricao %>"
+            <%- n === atual ? 'aria-current="step"' : '' %>
+        >
+            <%= n %>
+        </li>
     <% }); %>
 </ol>
