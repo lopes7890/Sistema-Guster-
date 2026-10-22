@@ -434,6 +434,10 @@ router.post("/pacientes/novo", autenticado, carregarMedico, upload.single("foto"
       return res.status(400).send("Preencha todos os campos!");
     }
 
+    if(Number(nascimento.split("-")[0]) > new Date().getFullYear()){
+        return res.status(400).send("Data incorreta!");
+    }
+
     if (!validarCPF(cpf)) {
       return res.status(400).send("Forneça um CPF válido!");
     }
