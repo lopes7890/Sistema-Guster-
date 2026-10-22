@@ -7,9 +7,9 @@
 
             <main class="paciente-novo">
                 <section class="paciente-novo-card">
-                    <h2>Informações para consultas</h2>
-
                     <%- include ('partials/stepper.ejs', { etapaAtual: 2 }) %>
+
+                    <h2 style="padding: 30px;">Informações para consultas</h2>
 
                     <form class="form-paciente" action="/consulta/informacoes" method="post">
                         <div class="campos campos-info">
