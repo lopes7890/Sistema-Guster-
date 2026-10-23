@@ -213,6 +213,16 @@ router.get("/resultados/:id_processamento/relatorio", autenticado, carregarMedic
               model: Paciente,
               as: "Paciente",
               attributes: ["id", "nome"],
+              include: [
+                {
+                  model: Sintoma,
+                  as: "Sintomas",
+                  attributes: ["id", "data_cov", "escala_0_10", "diferenca_no_paladar", "alteracao_comecou", "situacao_alteracao_atual", "alteracao_olfato", "observacao_paladar"],
+                  through: {
+                    attributes: ["id_sintoma"]
+                  }
+                }
+              ]
             },
             {
               model: Medico,
@@ -230,6 +240,7 @@ router.get("/resultados/:id_processamento/relatorio", autenticado, carregarMedic
 
         const dados = resultado.toJSON();
         const exameAssociado = dados.Exame;
+        console.log(exameAssociado.Paciente.Sintomas[0])
 
         if (!exameAssociado.Paciente || !exameAssociado.Medico) {
           return res.status(500).send("Dados do exame incompletos.");
@@ -253,6 +264,13 @@ router.get("/resultados/:id_processamento/relatorio", autenticado, carregarMedic
               intensidade: Number(dados.percentual_amargo) * 100,
             },
           ],
+          data_covid: exameAssociado.Paciente.Sintomas[0].data_cov,
+          escala_0_a_10: exameAssociado.Paciente.Sintomas[0].escala_0_10,
+          diferenca_no_paladar: exameAssociado.Paciente.Sintomas[0].diferenca_no_paladar,
+          alteracao_comecou: exameAssociado.Paciente.Sintomas[0].alteracao_comecou,
+          situacao_alteracao_atual: exameAssociado.Paciente.Sintomas[0].situacao_alteracao_atual,
+          alteracao_olfato: exameAssociado.Paciente.Sintomas[0].alteracao_olfato,
+          observacao_paladar: exameAssociado.Paciente.Sintomas[0].observacao_paladar
         };
 
         return Relatorio.create({
@@ -315,8 +333,31 @@ router.get("/resultados/:id_processamento/relatorio", autenticado, carregarMedic
 
           doc.moveDown(1.5);
 
+
+          // Relato do paciente
+          doc.fontSize(14).fillColor("#0F5D8C").text("2. Sintomas do paciente");
+          doc.moveDown(0.5);
+
+          doc.fontSize(11).fillColor("#222222");
+
+          doc.text(`1. Data da infecção por COVID-19: ${formatarData(exameResultado.data_covid) ?? "Não informado"}`);
+          doc.moveDown(0.5);
+          doc.text(`2. Como você percebe os gostos atualmente? (escala do 0 a 10): ${exameResultado.escala_0_a_10}`);
+          doc.moveDown(0.5);
+          doc.text(`3. Você percebeu alguma alteração no paladar durante ou após a COVID-19? ${exameResultado.diferenca_no_paladar}`);
+          doc.moveDown(0.5);
+          doc.text(`4. Quando a alteração começou? ${exameResultado.alteracao_comecou}`);
+          doc.moveDown(0.5);
+          doc.text(`5. Como está a alteração atualmente? ${exameResultado.situacao_alteracao_atual}`);
+          doc.moveDown(0.5);
+          doc.text(`6. Você também percebeu alterações no olfato? ${exameResultado.alteracao_olfato}`);
+          doc.moveDown(0.5);
+          doc.text(`7. Descreva outras alterações percebidas (opcional) ${exameResultado.observacao_paladar ?? "Não informado"}`);
+
+          doc.moveDown(1.5);
+
           // Resultado
-          doc.fontSize(14).fillColor("#0F5D8C").text("2. Resultado");
+          doc.fontSize(14).fillColor("#0F5D8C").text("3. Resultado");
 
           doc.moveDown(0.5);
 
