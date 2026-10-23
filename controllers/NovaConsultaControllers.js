@@ -428,17 +428,23 @@ router.get("/resultados/:id_processamento/relatorio", autenticado, carregarMedic
 );
 
 router.post("/consulta/informacoes", autenticado, carregarMedico, (req, res) => {
-    const {dataCovid, capacidadeSabor, diferencaPaladar, primeiraPercepcao, alteracaoCovid, id_paciente,} = req.body;
-    if (!dataCovid || !capacidadeSabor || !diferencaPaladar || !primeiraPercepcao || !alteracaoCovid || !id_paciente) {
+    const {dataCovid, capacidadeSabor, diferencaPaladar, inicioAlteracao, persistenciaAlteracao, alteracaoOlfato, observacoesPaladar, id_paciente,} = req.body;
+    if (!dataCovid || !capacidadeSabor || !diferencaPaladar || !inicioAlteracao || !persistenciaAlteracao || !alteracaoOlfato || !id_paciente) {
       return res.status(400).send("Preencha todos os campos!");
+    }
+
+    if(dataCovid.split('-')[0] < 2019){
+      return res.status(400).send("Data inválida!");
     }
 
     Sintoma.create({
       data_cov: dataCovid,
       escala_0_10: Number(capacidadeSabor),
       diferenca_no_paladar: diferencaPaladar,
-      alteracao_primeira_vez: primeiraPercepcao,
-      alteracao_durante_covid: alteracaoCovid,
+      alteracao_comecou: inicioAlteracao,
+      situacao_alteracao_atual: persistenciaAlteracao,
+      alteracao_olfato: alteracaoOlfato,
+      observacao_paladar: observacoesPaladar ? observacoesPaladar : null
     }).then((sintoma) => {
       PacienteSintoma.create({
         id_paciente: id_paciente,
