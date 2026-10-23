@@ -7,6 +7,14 @@ const Processamento = connection.define('processamentos', {
         type: Sequelize.STRING,
         allowNull: false
     },
+    probabilidade: {
+        type: Sequelize.DataTypes.DECIMAL(5, 2),
+        allowNull: false,
+        validate: {
+            min: 0,
+            max: 100
+        }
+    },
     descricao: {
         type: Sequelize.TEXT
     },
