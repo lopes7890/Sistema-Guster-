@@ -97,6 +97,10 @@ function gerarPDFBuffer(exameResultado, caminhoLogo_p) {
 
           doc.moveDown(0.5);
 
+          doc.text(`Probabilidade: ${exameResultado.probabilidade}`);
+
+          doc.moveDown(0.5);
+
           doc.fontSize(11).text("Descrição:");
 
           doc
