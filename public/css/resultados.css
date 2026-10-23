@@ -255,14 +255,14 @@ main.resultados {
 .analise-probabilidade strong {
     font-size: 24px;
     font-weight: bold;
-    color: #F23B3B;
+    color: #090E18;
 }
 
 .analise-probabilidade span {
     margin-top: 2px;
     font-size: 9px;
     font-weight: 300;
-    color: #F23B3B;
+    color: #090E18;
 }
  
 /* ---------- Responsivo ---------- */
