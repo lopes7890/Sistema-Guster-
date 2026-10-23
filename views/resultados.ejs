@@ -55,6 +55,10 @@
                         <div class="resultados-rodape">
                             <article class="analise">
                                 <h3>Resultados da análise</h3>
+                                    <div class="analise-probabilidade">
+                                        <strong><%= Number(exame.probabilidade) * 100 %>%</strong>
+                                        <span>Probabilidade</span>
+                                    </div>
                                 <p class="analise-diagnostico nivel-<%= exame.nivel %>"><%= exame.diagnostico %></p>
 
                                 <p class="analise-texto">

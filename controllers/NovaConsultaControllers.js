@@ -245,7 +245,6 @@ router.get("/resultados/:id_processamento/relatorio", autenticado, carregarMedic
 
         const dados = resultado.toJSON();
         const exameAssociado = dados.Exame;
-        console.log(exameAssociado.Paciente.Sintomas[0])
 
         if (!exameAssociado.Paciente || !exameAssociado.Medico) {
           return res.status(500).send("Dados do exame incompletos.");

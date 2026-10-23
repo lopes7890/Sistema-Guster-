@@ -97,7 +97,7 @@ function gerarPDFBuffer(exameResultado, caminhoLogo_p) {
 
           doc.moveDown(0.5);
 
-          doc.text(`Probabilidade: ${exameResultado.probabilidade}`);
+          doc.text(`Probabilidade: ${Number(exameResultado.probabilidade) * 100}%`);
 
           doc.moveDown(0.5);
 
