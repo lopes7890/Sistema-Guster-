@@ -7,9 +7,17 @@ const Relatorio = connection.define('relatorios', {
         type: Sequelize.DataTypes.DATE,
         allowNull: false
     },
+    pdf_url: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    pdf_public_id: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
     id_processamento: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
     }
 });
 
