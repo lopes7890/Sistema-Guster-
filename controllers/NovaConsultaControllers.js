@@ -88,6 +88,7 @@ router.get("/resultados/:id_paciente", autenticado, carregarMedico, (req, res) =
                                 Este resultado possui caráter preliminar e não constitui um diagnóstico médico definitivo.`,
             percentual_doce: 0.25,
             percentual_amargo: 0.3,
+            probabilidade: 0.99,
             id_exame: exame.id,
           })
             .then((processamento) => {
@@ -159,6 +160,7 @@ router.get("/consulta/resultado", autenticado, carregarMedico, (req, res) => {
 
         diagnostico: dados.resultado,
         descricao: dados.descricao,
+        probabilidade: dados.probabilidade,
         sabores: [
           {
             nome: "Doce",
@@ -243,7 +245,6 @@ router.get("/resultados/:id_processamento/relatorio", autenticado, carregarMedic
 
         const dados = resultado.toJSON();
         const exameAssociado = dados.Exame;
-        console.log(exameAssociado.Paciente.Sintomas[0])
 
         if (!exameAssociado.Paciente || !exameAssociado.Medico) {
           return res.status(500).send("Dados do exame incompletos.");
@@ -257,6 +258,7 @@ router.get("/resultados/:id_processamento/relatorio", autenticado, carregarMedic
           data: formatarData(exameAssociado.data_realizacao),
           diagnostico: dados.resultado,
           descricao: dados.descricao,
+          probabilidade: dados.probabilidade,
           sabores: [
             {
               nome: "Doce",

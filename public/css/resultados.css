@@ -236,6 +236,34 @@ main.resultados {
     outline: 2px solid #0F5D8C;
     outline-offset: 3px;
 }
+
+.analise {
+    position: relative; /* adicione esta linha ao bloco existente */
+    /* ...resto igual... */
+}
+
+.analise-probabilidade {
+    position: absolute;
+    top: 10px;
+    right: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.analise-probabilidade strong {
+    font-size: 24px;
+    font-weight: bold;
+    color: #090E18;
+}
+
+.analise-probabilidade span {
+    margin-top: 2px;
+    font-size: 9px;
+    font-weight: 300;
+    color: #090E18;
+}
  
 /* ---------- Responsivo ---------- */
 @media (max-width: 1300px) {
@@ -283,5 +311,9 @@ main.resultados {
  
     .btn-exportar {
         width: 100%;
+    }
+    .analise-probabilidade {
+        top: 8px;
+        right: 12px;
     }
 }
