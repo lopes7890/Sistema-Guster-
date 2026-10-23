@@ -16,17 +16,26 @@ const Sintoma = connection.define('sintomas', {
         allowNull: false
     },
     diferenca_no_paladar: {
-        type: Sequelize.ENUM('Sim', 'Não'),
+        type: Sequelize.ENUM('Sim', 'Não', 'Não_sei'),
         allowNull: false
     },
-    alteracao_primeira_vez: {
+    alteracao_comecou: {
+        type: Sequelize.ENUM('Durante', 'Depois', 'Antes', 'Não_sei'),
+        allowNull: false
+    },
+    situacao_alteracao_atual: {
+        type: Sequelize.ENUM('Persistente', 'Melhora_parcial', 'Recuperado', 'Não_sei'),
+        allowNull: false
+    },
+    alteracao_olfato: {
+        type: Sequelize.ENUM('Sim', 'Não', 'Não_sei'),
+        allowNull: false
+    },
+    observacao_paladar: {
         type: Sequelize.TEXT,
-        allowNull: false
-    },
-    alteracao_durante_covid: {
-        type: Sequelize.ENUM('Durante', 'Depois'),
-        allowNull: false
+        allowNull: true
     }
+
 });
 
 

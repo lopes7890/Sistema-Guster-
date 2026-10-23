@@ -1,76 +1,201 @@
-<%- include ('partials/header.ejs') %>
-    <div class="layout">
-        <%- include ('partials/sidebar.ejs', { paginaAtiva: 'home' }) %>
+<%- include('partials/header.ejs') %>
 
-        <div class="layout-conteudo">
-            <%- include ('partials/topbar.ejs') %>
+<div class="layout">
+    <%- include('partials/sidebar.ejs', { paginaAtiva: 'home' }) %>
 
-            <main class="paciente-novo">
-                <section class="paciente-novo-card">
-                    <%- include ('partials/stepper.ejs', { etapaAtual: 2 }) %>
+    <div class="layout-conteudo">
+        <%- include('partials/topbar.ejs') %>
 
-                    <h2 style="padding: 30px;">Informações para consultas</h2>
+        <main class="paciente-novo">
+            <section class="paciente-novo-card">
+                <%- include('partials/stepper.ejs', { etapaAtual: 2 }) %>
 
-                    <form class="form-paciente" action="/consulta/informacoes" method="post">
-                        <div class="campos campos-info">
-                            <div class="linha linha-info">
-                                <div class="field">
-                                    <label for="data-covid">Data em que teve COVID-19</label>
-                                    <input type="date" id="data-covid" name="dataCovid" required>
-                                </div>
+                <h2 style="padding: 30px;">Informações para consultas</h2>
 
-                                <div class="field">
-                                    <label for="capacidade-sabor">De 0 a 10, qual sua capacidade de perceber sabores?</label>
-                                    <input type="number" id="capacidade-sabor" name="capacidadeSabor" placeholder="0 - Não sinto / 10 - Sinto claramente" min="0" max="10" step="1" required>
-                                </div>
+                <form
+                    class="form-paciente"
+                    action="/consulta/informacoes"
+                    method="post"
+                >
+                    <div class="campos campos-info">
+
+                        <div class="linha linha-info">
+                            <div class="field">
+                                <label for="data-covid">
+                                    Data da infecção por COVID-19
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="data-covid"
+                                    name="dataCovid"
+                                >
                             </div>
 
-                            <div class="field field-medio">
-                                <label for="diferenca-paladar">O paciente sentiu diferenças no paladar no período da infecção?</label>
-                                <select id="diferenca-paladar" name="diferencaPaladar" required>
-                                    <option value="" disabled selected hidden>Sim / Não</option>
-                                    <option value="sim">Sim</option>
-                                    <option value="nao">Não</option>
-                                </select>
-                            </div>
+                            <div class="field">
+                                <label for="capacidade-sabor">
+                                    Como você percebe os gostos atualmente?
+                                </label>
 
-                            <div class="field field-medio">
-                                <label for="primeira-percepcao">Quando percebeu essa alteração pela primeira vez?</label>
-                                <input type="text" id="primeira-percepcao" name="primeiraPercepcao" placeholder="Em dia tal, quando fui comer tal coisa..." autocomplete="off" required>
+                                <input
+                                    type="number"
+                                    id="capacidade-sabor"
+                                    name="capacidadeSabor"
+                                    placeholder="De 0 a 10"
+                                    min="0"
+                                    max="10"
+                                    step="1"
+                                    required
+                                >
                             </div>
-
-                            <div class="field field-medio">
-                                <label for="alteracao-covid">A alteração começou durante a COVID-19 ou depois?</label>
-                                <select id="alteracao-covid" name="alteracaoCovid" required>
-                                    <option value="" disabled selected hidden>Durante / Depois</option>
-                                    <option value="Durante">Durante</option>
-                                    <option value="Depois">Depois</option>
-                                </select>
-                            </div>
-                            <input type="hidden" name="id_paciente" value="<%= id_paciente %>">
                         </div>
 
-                        <div class="acoes-form">
-                            <a href="/consulta/nova" class="btn-voltar">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M19 12H5"/>
-                                    <path d="M12 19l-7-7 7-7"/>
-                                </svg>
-                                Voltar
-                            </a>
+                        <div class="field field-medio">
+                            <label for="diferenca-paladar">
+                                Você percebeu alguma alteração no paladar
+                                durante ou após a COVID-19?
+                            </label>
 
-                            <button type="submit" class="btn-avancar">
-                                Avançar
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M5 12h14"/>
-                                    <path d="M12 5l7 7-7 7"/>
-                                </svg>
-                            </button>
+                            <select
+                                id="diferenca-paladar"
+                                name="diferencaPaladar"
+                                required
+                            >
+                                <option value="" disabled selected hidden>
+                                    Selecione uma opção
+                                </option>
+
+                                <option value="Sim">Sim</option>
+                                <option value="Não">Não</option>
+                                <option value="Não_sei">
+                                    Não tenho certeza
+                                </option>
+                            </select>
                         </div>
-                    </form>
-                </section>
-            </main>
-        </div>
+
+                        <div class="field field-medio">
+                            <label for="inicio-alteracao">
+                                Quando a alteração começou?
+                            </label>
+
+                            <select
+                                id="inicio-alteracao"
+                                name="inicioAlteracao"
+                                required
+                            >
+                                <option value="" disabled selected hidden>
+                                    Selecione uma opção
+                                </option>
+
+                                <option value="Durante">
+                                    Durante a infecção
+                                </option>
+
+                                <option value="Depois">
+                                    Após a infecção
+                                </option>
+
+                                <option value="Antes">
+                                    Já existia antes da COVID-19
+                                </option>
+
+                                <option value="Não_sei">
+                                    Não sei precisar
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="field field-medio">
+                            <label for="persistencia-alteracao">
+                                Como está a alteração atualmente?
+                            </label>
+
+                            <select
+                                id="persistencia-alteracao"
+                                name="persistenciaAlteracao"
+                                required
+                            >
+                                <option value="" disabled selected hidden>
+                                    Selecione uma opção
+                                </option>
+
+                                <option value="Persistente">
+                                    Continua sem melhora
+                                </option>
+
+                                <option value="Melhora_parcial">
+                                    Melhorou, mas não voltou ao normal
+                                </option>
+
+                                <option value="Recuperado">
+                                    Já me recuperei
+                                </option>
+
+                                <option value="Não_sei">
+                                    Não tenho certeza
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="field field-medio">
+                            <label for="alteracao-olfato">
+                                Você também percebeu alterações no olfato?
+                            </label>
+
+                            <select
+                                id="alteracao-olfato"
+                                name="alteracaoOlfato"
+                                required
+                            >
+                                <option value="" disabled selected hidden>
+                                    Selecione uma opção
+                                </option>
+
+                                <option value="Sim">Sim</option>
+                                <option value="Não">Não</option>
+                                <option value="Não_sei">
+                                    Não tenho certeza
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="field field-medio">
+                            <label for="observacoes-paladar">
+                                Descreva outras alterações percebidas (opcional)
+                            </label>
+
+                            <textarea
+                                id="observacoes-paladar"
+                                name="observacoesPaladar"
+                                rows="3"
+                                maxlength="1000"
+                                placeholder="Ex.: percebo menos o gosto amargo..."
+                            ></textarea>
+                        </div>
+
+                        <input
+                            type="hidden"
+                            name="id_paciente"
+                            value="<%= id_paciente %>"
+                        >
+
+                    </div>
+
+                    <div class="acoes-form">
+                        <a href="/consulta/nova" class="btn-voltar">
+                            Voltar
+                        </a>
+
+                        <button type="submit" class="btn-avancar">
+                            Avançar
+                        </button>
+                    </div>
+                </form>
+
+            </section>
+        </main>
     </div>
+</div>
+
 </body>
 </html>
