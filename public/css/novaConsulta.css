@@ -127,7 +127,17 @@ main.paciente-novo {
     font-size: 20px;
     color: #090E18;
 }
- 
+
+.form-paciente .linha-info {
+    grid-template-columns: 264fr 515fr;
+    gap: 69px;
+    align-items: stretch; 
+}
+
+.form-paciente .linha-info .field input {
+    margin-top: auto; 
+}
+
 .form-paciente .campos > .field input {
     padding: 0 36px;
 }
@@ -438,6 +448,36 @@ main.paciente-novo {
  
 .acoes-form {
     padding-top: 14px;
+}
+
+/* ---------- Observações sobre alterações no paladar ---------- */
+.form-paciente .field-medio textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 18px 24px;
+    border: solid 1px #090E18;
+    border-radius: 20px;
+    background-color: white;
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #090E18;
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-paciente .field-medio textarea::placeholder {
+    color: #6B6B6B;
+    opacity: 1;
+}
+
+@media (max-width: 700px) {
+    .form-paciente .field-medio textarea {
+        padding: 16px 20px;
+        font-size: 16px;
+        min-height: 110px;
+    }
 }
 
 @media (max-width: 700px) {
