@@ -1,7 +1,8 @@
 import express from "express";
 import Sequelize, { where } from "sequelize";
 import PDFDocument from "pdfkit";
-import fs from "fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import connection from "../config/config.js";
 import upload from "../config/multer.js";
@@ -22,6 +23,9 @@ import Aparelho from "../models/Aparelho.js";
 import Processamento from "../models/Processamento.js";
 import Medico from "../models/Medico.js";
 import Relatorio from "../models/Relatorio.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const router = express.Router();
 
@@ -375,9 +379,33 @@ router.get("/resultados/:id_processamento/relatorio", autenticado, carregarMedic
             .fontSize(9)
             .fillColor("#666666")
             .text(
-              "Documento gerado pelo sistema a partir dos dados " +
-                "registrados no processamento do exame. Specius Tech",
+                "Documento gerado pelo sistema a partir dos dados " +
+                "registrados no processamento do exame.",
+                50,
+                doc.y,
+                {
+                  width: 495,
+                  align: "center"
+                }
             );
+
+          // Logo centralizada na parte inferior da página
+          const caminhoLogo = path.resolve(__dirname,"../assets/logo-specius.png");
+
+          const larguraLogo = 180;
+          const alturaLogo = 90;
+
+          const larguraPagina = doc.page.width;
+          const alturaPagina = doc.page.height;
+
+          const x = (larguraPagina - larguraLogo) / 2;
+          const y = alturaPagina - alturaLogo - 35;
+
+          doc.image(caminhoLogo, x, y, {
+            fit: [larguraLogo, alturaLogo],
+            align: "center",
+            valign: "center"
+          });
 
           // Finalizar o PDF
           doc.end();
