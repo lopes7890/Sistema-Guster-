@@ -5,7 +5,7 @@ import Sequelize from "sequelize";
 const Sintoma = connection.define('sintomas', {
     data_cov: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: true
     },
     escala_0_10: {
         type: Sequelize.TINYINT,
