@@ -90,6 +90,29 @@
   font-size: 22px;
 }
 
+.img-logo {
+    width: 83px;
+    height: 83px;
+    animation: flutuar 3.5s ease-in-out infinite;
+}
+
+.img-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+@keyframes flutuar {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
 /* ---------- Cabeçalho superior ---------- */
 .topbar {
   height: 128px;
@@ -428,13 +451,13 @@ main.home {
   font-weight: bold;
 }
 
-.tag-sn {
+.tag-sn, .tag-verde {
   color: #0a6b2e;
 }
-.tag-hipogeusia {
+.tag-hipogeusia, .tag-vermelho {
   color: #eb0e6d;
 }
-.tag-ageusia {
+.tag-ageusia, .tag-amarelo {
   color: #c2a800;
 }
 
@@ -605,5 +628,11 @@ main.home {
         padding: 20px;
         flex-direction: column;
         align-items: flex-start;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .img-logo {
+        animation: none;
     }
 }
