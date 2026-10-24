@@ -17,7 +17,7 @@ router.get("/home", autenticado, carregarMedico, (req, res) => {
             return res.render("home", {
                 exames: prepararExames(exames),
                 arquivadas: false,
-                mostrarNovaConsulta: true,
+                mostrarNovaConsulta: true,  
                 subtitulo: "Painel Central"
             });
         })
