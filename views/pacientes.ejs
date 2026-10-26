@@ -20,7 +20,7 @@
         <div class="layout-conteudo">
             <%- include ('partials/topbar.ejs') %>
 
-            <main class="pacientes-lista">
+            <main class="pacientes-lista" data-arquivados="<%= arquivados %>">
                 <!-- Busca e filtros -->
                 <section class="painel painel-busca">
                     <div class="busca">
@@ -38,35 +38,34 @@
                             <option value="semana">Últimos 7 dias</option>
                             <option value="todos">Todos</option>
                         </select>
-
-                        <!-- <button type="button" class="btn-filtros">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
-                            </svg>
-                            Filtros
-                        </button> -->
                     </div>
                 </section>
 
-                <!-- Título da seção -->
+                <!-- Título da seção + alternância -->
                 <div class="pacientes-header">
                     <div>
-                        <h2>Pacientes cadastrados</h2>
-                        <p>Visualizar pacientes cadastrados no sistema</p>
+                        <% if (arquivados) { %>
+                            <h2>Pacientes Arquivados</h2>
+                            <p>Visualizar pacientes arquivados no sistema</p>
+                        <% } else { %>
+                            <h2>Pacientes cadastrados</h2>
+                            <p>Visualizar pacientes cadastrados no sistema</p>
+                        <% } %>
                     </div>
 
-                    <a href="/pacientes/arquivados" class="link-arquivadas">
-                        Visualizar Arquivados
+                    <a href="<%= arquivados ? '/pacientes' : '/pacientes/arquivados' %>" class="link-arquivadas">
+                        <%= arquivados ? 'Pacientes cadastrados' : 'Visualizar Arquivados' %>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M9 18l6-6-6-6"/>
                         </svg>
                     </a>
                 </div>
 
-                <!-- Filtro por diagnóstico -->
+                <!-- Filtro por diagnóstico (mantém o modo atual) -->
                 <nav class="chips-diagnostico" aria-label="Filtrar por diagnóstico">
                     <% filtrosDiagnostico.forEach(function (f) { %>
-                        <a href="/pacientes/filtrar/diagnostico?diagnostico=<%= f.chave %>" class="chip <%= filtroAtual === f.chave ? 'ativo' : '' %>">
+                        <a href="/pacientes/filtrar/diagnostico?diagnostico=<%= f.chave %>&arquivados=<%= arquivados %>"
+                           class="chip <%= filtroAtual === f.chave ? 'ativo' : '' %>">
                             <%= f.rotulo %> (<%= f.total %>)
                         </a>
                     <% }); %>
@@ -74,7 +73,7 @@
 
                 <!-- Lista de pacientes -->
                 <section class="grid-pacientes">
-                    <%- include('partials/cards-pacientes', { lista }) %>
+                    <%- include('partials/cards-pacientes', { lista, arquivados }) %>
                 </section>
             </main>
         </div>

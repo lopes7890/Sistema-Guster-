@@ -17,6 +17,7 @@ import Processamento from "../models/Processamento.js";
 const router = express.Router();
 
 router.get("/pacientes/filtrar", autenticado, carregarMedico, contagemDiagnostico, async (req, res) => {
+        const arquivados = req.query.arquivados === "true";
         try {
             const { busca = "", periodo = "todos" } = req.query;
 
@@ -101,7 +102,8 @@ router.get("/pacientes/filtrar", autenticado, carregarMedico, contagemDiagnostic
 
             return res.render(
                 "partials/cards-pacientes",
-                { lista: pacientesFormatados }
+                { lista: pacientesFormatados },
+                arquivados
             );
         } catch (erro) {
             console.error("Erro ao filtrar pacientes:", erro);
@@ -116,6 +118,7 @@ router.get("/pacientes/filtrar", autenticado, carregarMedico, contagemDiagnostic
 
 router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, contagemDiagnostico, (req, res) => {
     const { diagnostico } = req.query;
+    const arquivados = req.query.arquivados === "true";
 
     if (!diagnostico || !diagnostico.trim() || diagnostico == "todos") {
         return res.redirect("/pacientes");
@@ -161,7 +164,8 @@ router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, contag
                 pacientes: pacientesFormatados,
                 subtitulo: "Pacientes cadastrados",
                 mostrarNovaConsulta: true,
-                filtro: diagnostico
+                filtro: diagnostico,
+                arquivados
             });
         })
         .catch((error) => {

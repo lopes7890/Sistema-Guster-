@@ -55,7 +55,8 @@ router.get("/pacientes", autenticado, carregarMedico, contagemDiagnostico, (req,
                     médico: req.medico,
                     filtro: "todos",
                     contagem: res.locals.contagem,
-                    mostrarNovaConsulta: true
+                    mostrarNovaConsulta: true,
+                    arquivados: false
                 });
             })
             .catch((error) => {
@@ -67,15 +68,17 @@ router.get("/pacientes", autenticado, carregarMedico, contagemDiagnostico, (req,
 );
 
 // Rota para listar pacientes arquivados
-router.get("/pacientes/arquivados", autenticado, carregarMedico, (req, res) => {
+router.get("/pacientes/arquivados", autenticado, carregarMedico, contagemDiagnostico, (req, res) => {
     Paciente.findAll({
         where: { status_visualizacao: "Arquivado" }
     })
     .then((pacientesArquivados) => {
-        return res.render("pacientesArquivados", { 
+        return res.render("pacientes", { 
             pacientes: pacientesArquivados,
             subtitulo: "Pacientes Arquivados",
-            médico: req.medico
+            médico: req.medico,
+            mostrarNovaConsulta: true,
+            arquivados: true
         });
     })
     .catch((error) => {
