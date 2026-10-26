@@ -161,6 +161,7 @@ router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, contag
                 pacientes: pacientesFormatados,
                 subtitulo: "Pacientes cadastrados",
                 mostrarNovaConsulta: true,
+                filtro: diagnostico
             });
         })
         .catch((error) => {
