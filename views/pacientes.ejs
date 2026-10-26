@@ -1,13 +1,17 @@
 <%- include ('partials/header.ejs') %>
 <%
-    /* Dados de exemplo*/
     const filtroAtual = typeof filtro !== 'undefined' ? filtro : 'todos';
-    const totaisFiltro = typeof totais !== 'undefined' ? totais : { todos: 23, ageusia: 23, hipogeusia: 23 };
+
+    const totaisFiltro = typeof contagem !== 'undefined'
+        ? contagem
+        : { total: 0, ageusia: 0, hipogeusia: 0 };
+
     const lista = pacientes;
+
     const filtrosDiagnostico = [
-        { chave: 'todos',      rotulo: 'Todos' },
-        { chave: 'ageusia',    rotulo: 'Ageusia' },
-        { chave: 'hipogeusia', rotulo: 'Hipogeusia' }
+        { chave: 'todos', rotulo: 'Todos', total: totaisFiltro.total },
+        { chave: 'ageusia', rotulo: 'Ageusia', total: totaisFiltro.ageusia },
+        { chave: 'hipogeusia', rotulo: 'Hipogeusia', total: totaisFiltro.hipogeusia }
     ];
 %>
     <div class="layout">
@@ -62,9 +66,9 @@
                 <!-- Filtro por diagnóstico -->
                 <nav class="chips-diagnostico" aria-label="Filtrar por diagnóstico">
                     <% filtrosDiagnostico.forEach(function (f) { %>
-                    <a href="/pacientes/filtrar/diagnostico/?diagnostico=<%= f.chave %>" class="chip <%= filtroAtual === f.chave ? 'ativo' : '' %>">
-                        <%= f.rotulo %> (<%= totaisFiltro[f.chave] %>)
-                    </a>
+                        <a href="/pacientes/filtrar/diagnostico?diagnostico=<%= f.chave %>" class="chip <%= filtroAtual === f.chave ? 'ativo' : '' %>">
+                            <%= f.rotulo %> (<%= f.total %>)
+                        </a>
                     <% }); %>
                 </nav>
 

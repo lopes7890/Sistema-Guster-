@@ -7,14 +7,16 @@ import formatarData from "../utils/formatarData.js";
 
 import autenticado from "../middlewares/autenticado.js";
 import carregarMedico from "../middlewares/carregarMedico.js";
+import contagemDiagnostico from "../middlewares/contagemDiagostico.js";
 
 import Paciente from "../models/Paciente.js";
 import Exame from "../models/Exame.js";
 import Processamento from "../models/Processamento.js";
 
+
 const router = express.Router();
 
-router.get("/pacientes/filtrar", autenticado, carregarMedico, async (req, res) => {
+router.get("/pacientes/filtrar", autenticado, carregarMedico, contagemDiagnostico, async (req, res) => {
         try {
             const { busca = "", periodo = "todos" } = req.query;
 
@@ -83,7 +85,6 @@ router.get("/pacientes/filtrar", autenticado, carregarMedico, async (req, res) =
                         ]
                     }
                 ],
-                order: [["createdAt", "DESC"]]
             });
             const pacientesFormatados = lista.map((paciente) => {
             const dadosPaciente = paciente.toJSON();
@@ -113,7 +114,7 @@ router.get("/pacientes/filtrar", autenticado, carregarMedico, async (req, res) =
 );
 
 
-router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, (req, res) => {
+router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, contagemDiagnostico, (req, res) => {
     const { diagnostico } = req.query;
 
     if (!diagnostico || !diagnostico.trim() || diagnostico == "todos") {
@@ -126,6 +127,7 @@ router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, (req, 
                 model: Exame,
                 as: "Exames",
                 attributes: ["id", "data_realizacao"],
+                order: [["data_realizacao", "DESC"]],
                 required: true,
                 include: [
                     {
@@ -140,13 +142,25 @@ router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, (req, 
                 ]
             }
         ],
-        order: [["createdAt", "DESC"]]
     })
         .then((pacientes) => {
+            const lista = pacientes;
+            const pacientesFormatados = lista.map((paciente) => {
+            const dadosPaciente = paciente.toJSON();
+
+                dadosPaciente.Exames = dadosPaciente.Exames.map((exame) => {
+                    return {
+                        ...exame,
+                        data_realizacao_formatada: formatarData(exame.data_realizacao)
+                    };
+                });
+
+                return dadosPaciente;
+            });
             return res.render("pacientes", {
-                pacientes: pacientes,
+                pacientes: pacientesFormatados,
                 subtitulo: "Pacientes cadastrados",
-                mostrarNovaConsulta: false,
+                mostrarNovaConsulta: true,
             });
         })
         .catch((error) => {

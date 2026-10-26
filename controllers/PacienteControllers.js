@@ -1,5 +1,6 @@
 import autenticado from "../middlewares/autenticado.js";
 import carregarMedico from "../middlewares/carregarMedico.js";
+import contagemDiagnostico from "../middlewares/contagemDiagostico.js";
 
 import Paciente from "../models/Paciente.js";
 import Processamento from "../models/Processamento.js";
@@ -12,56 +13,58 @@ import express from "express";
 const router = express.Router();
 
 // Rota para listar pacientes disponíveis
-router.get("/pacientes", autenticado, carregarMedico, (req, res) => {
-    Paciente.findAll({
-        where: {
-            status_visualizacao: "Disponível"
-        },
-        include: [
-            {
-                model: Exame,
-                as: "Exames",
-                attributes: ["id", "data_realizacao"],
-                separate: true,
-                order: [["data_realizacao", "DESC"]],
-                include: [
-                    {
-                        model: Processamento,
-                        as: "Processamentos",
-                        attributes: ["id"]
-                    }
-                ]
-            }
-        ]
-    })
-    .then((pacientes) => {
-        const pacientesFormatados = pacientes.map((paciente) => {
-        const dadosPaciente = paciente.toJSON();
+router.get("/pacientes", autenticado, carregarMedico, contagemDiagnostico, (req, res) => {
+        Paciente.findAll({
+            where: {
+                status_visualizacao: "Disponível"
+            },
+            include: [
+                {
+                    model: Exame,
+                    as: "Exames",
+                    attributes: ["id", "data_realizacao"],
+                    separate: true,
+                    order: [["data_realizacao", "DESC"]],
+                    include: [
+                        {
+                            model: Processamento,
+                            as: "Processamentos",
+                            attributes: ["id"]
+                        }
+                    ]
+                }
+            ]
+        })
+            .then((pacientes) => {
+                const pacientesFormatados = pacientes.map((paciente) => {
+                    const dadosPaciente = paciente.toJSON();
 
-        dadosPaciente.Exames = dadosPaciente.Exames.map((exame) => {
-            return {
-                ...exame,
-                data_realizacao_formatada: formatarData(exame.data_realizacao)
-            };
-        });
+                    dadosPaciente.Exames = dadosPaciente.Exames.map((exame) => ({
+                        ...exame,
+                        data_realizacao_formatada: formatarData(
+                            exame.data_realizacao
+                        )
+                    }));
 
-        return dadosPaciente;
-    });
+                    return dadosPaciente;
+                });
 
-    return res.render("pacientes", {
-        pacientes: pacientesFormatados,
-        subtitulo: "Pacientes Cadastrados",
-        médico: req.medico
-    });
-    })
-    .catch((error) => {
-        console.log(
-            `Ocorreu um erro ao listar os pacientes. ERRO: ${error}`
-        );
+                return res.render("pacientes", {
+                    pacientes: pacientesFormatados,
+                    subtitulo: "Pacientes Cadastrados",
+                    médico: req.medico,
+                    filtro: "todos",
+                    contagem: res.locals.contagem,
+                    mostrarNovaConsulta: true
+                });
+            })
+            .catch((error) => {
+                console.error("Erro ao listar pacientes:", error);
 
-        return res.status(500).send("Erro interno do servidor");
-    });
-});
+                return res.status(500).send("Erro interno do servidor");
+            });
+    }
+);
 
 // Rota para listar pacientes arquivados
 router.get("/pacientes/arquivados", autenticado, carregarMedico, (req, res) => {
