@@ -9,6 +9,7 @@ import Exame from "../models/Exame.js";
 import formatarData from "../utils/formatarData.js";
 
 import express from "express";
+import { where } from "sequelize";
 
 const router = express.Router();
 
@@ -173,6 +174,23 @@ router.get("/pacientes/:id", autenticado, carregarMedico, async (req, res) => {
         console.error(`Erro ao visualizar prontuário. ERRO: ${error}`);
         return res.status(500).send("Erro interno do servidor");
     }
+});
+
+router.get("/paciente/:id/deletar", autenticado, carregarMedico, contagemDiagnostico, (req, res) => {
+    const id = req.params.id;
+    if (!id){
+        return res.status(500).send("Id do paciente não encontrado");
+    }
+    
+    Paciente.destroy({
+        where: {
+            id: id
+        }
+    }).then(() => {
+        return res.redirect("/pacientes/arquivados");
+    }).catch((error) => {
+        return res.status(500).send("Falha ao excluir o paciente");
+    });
 });
 
 export default router;
