@@ -58,11 +58,13 @@ import MedicoControllers from "./controllers/MedicoControllers.js";
 import HomeControllers from "./controllers/HomeControllers.js";
 import PacienteControllers from "./controllers/PacienteControllers.js";
 import NovaConsultaControllers from "./controllers/NovaConsultaControllers.js";
+import FiltrosControllers from "./controllers/FiltrosControllers.js";
 // import ConfiguracaoController from "./controllers/ConfiguracaoController.js";
 
 
 defineAssociations();
 
+app.use("/", FiltrosControllers);
 app.use("/", MedicoControllers);
 app.use("/", HomeControllers);
 app.use("/", PacienteControllers);
