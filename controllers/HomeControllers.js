@@ -27,25 +27,6 @@ router.get("/home", autenticado, carregarMedico, (req, res) => {
         });
 });
 
-router.get("/consultas/filtrar", autenticado, carregarMedico, (req, res) => {
-    const arquivadas = req.query.arquivadas === "true";
-    const status = arquivadas ? "Arquivado" : "Disponível";  
-
-    buscarExame(status, req.query, req.medico.id)
-        .then((exames) => {
-            return res.render("partials/linhas-consultas", {
-                exames: prepararExames(exames),
-                arquivadas
-            });
-        })
-        .catch((error) => {
-            console.error("Erro ao filtrar consultas:", error);
-            return res
-                .status(500)
-                .send('<tr><td colspan="5" class="centro">Erro ao filtrar.</td></tr>');
-        });
-});
-
 router.get("/consultas/arquivadas", autenticado, carregarMedico, async (req, res) => {
     try {
         const exames = await buscarExame("Arquivado", {}, req.medico.id);
