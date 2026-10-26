@@ -179,6 +179,10 @@ main.pacientes-lista > * {
 .btn-visualizar:hover {
     background-color: #0B4A70;
 }
+
+.btn-desarquivar { 
+    background-color: #28a745; 
+    color: #fff; }
  
 .btn-arquivar {
     background-color: #F23B3B;

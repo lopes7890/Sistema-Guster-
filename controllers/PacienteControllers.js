@@ -25,9 +25,6 @@ router.get("/pacientes", autenticado, carregarMedico, contagemDiagnostico, (req,
                     attributes: ["id", "data_realizacao"],
                     separate: true,
                     order: [["data_realizacao", "DESC"]],
-                    where: {
-                        status_visualizacao: "Disponível"
-                    },
                     include: [
                         {
                             model: Processamento,
@@ -72,22 +69,56 @@ router.get("/pacientes", autenticado, carregarMedico, contagemDiagnostico, (req,
 
 // Rota para listar pacientes arquivados
 router.get("/pacientes/arquivados", autenticado, carregarMedico, contagemDiagnostico, (req, res) => {
-    Paciente.findAll({
-        where: { status_visualizacao: "Arquivado" }
-    })
-    .then((pacientesArquivados) => {
-        return res.render("pacientes", { 
-            pacientes: pacientesArquivados,
-            subtitulo: "Pacientes Arquivados",
-            médico: req.medico,
-            mostrarNovaConsulta: true,
-            arquivados: true
-        });
-    })
-    .catch((error) => {
-        console.log(`Ocorreu um erro ao listar pacientes arquivados. ERRO: ${error}`);
-        return res.status(500).send("Erro interno do servidor");
-    });
+        Paciente.findAll({
+            where: {
+                status_visualizacao: "Arquivado"
+            },
+            include: [
+                {
+                    model: Exame,
+                    as: "Exames",
+                    attributes: ["id", "data_realizacao"],
+                    separate: true,
+                    order: [["data_realizacao", "DESC"]],
+                    include: [
+                        {
+                            model: Processamento,
+                            as: "Processamentos",
+                            attributes: ["id"]
+                        }
+                    ]
+                }
+            ]
+        })
+            .then((pacientes) => {
+                const pacientesFormatados = pacientes.map((paciente) => {
+                    const dadosPaciente = paciente.toJSON();
+
+                    dadosPaciente.Exames = dadosPaciente.Exames.map((exame) => ({
+                        ...exame,
+                        data_realizacao_formatada: formatarData(
+                            exame.data_realizacao
+                        )
+                    }));
+
+                    return dadosPaciente;
+                });
+
+                return res.render("pacientes", {
+                    pacientes: pacientesFormatados,
+                    subtitulo: "Pacientes Cadastrados",
+                    médico: req.medico,
+                    filtro: "todos",
+                    contagem: res.locals.contagem,
+                    mostrarNovaConsulta: true,
+                    arquivados: true
+                });
+            })
+            .catch((error) => {
+                console.error("Erro ao listar pacientes:", error);
+
+                return res.status(500).send("Erro interno do servidor");
+            });
 });
 
 // Rota para arquivar o paciente

@@ -86,9 +86,6 @@ router.get("/pacientes/filtrar", autenticado, carregarMedico, contagemDiagnostic
                     order: [
                         ["data_realizacao", "DESC"]
                     ],
-                    where: {
-                        status_visualizacao: "Disponível"
-                    },
                     include: [
                         {
                             model: Processamento,
@@ -164,9 +161,6 @@ router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, contag
                         "data_realizacao"
                     ],
                     required: true,
-                    where: {
-                        status_visualizacao: "Disponível"
-                    },
                     include: [
                         {
                             model: Processamento,
