@@ -151,29 +151,28 @@ router.post("/pacientes/:id/desarquivar", autenticado, carregarMedico, (req, res
 });
 
 
-//Rota para visualizar prontuário
-router.get("/pacientes/:id", autenticado, carregarMedico, async (req, res) => {
-    try {
-        const idPaciente = req.params.id;
+// Rota para visualizar prontuário
+router.get("/pacientes/:id", autenticado, carregarMedico, (req, res) => {
+    const idPaciente = req.params.id;
 
-        const exameDb = await Exame.findOne({
-            where: { id_paciente: idPaciente },
-            order: [['data_realizacao', 'DESC']]
+    Exame.findOne({
+        where: { id_paciente: idPaciente },
+        order: [['data_realizacao', 'DESC']]
+    })
+        .then((exameDb) => {
+            if (!exameDb) {
+                return res.status(404).send("Nenhum exame encontrado para este paciente.");
+            }
+
+            return res.render("resultados", {
+                exame: exameDb,
+                subtitulo: "Prontuário e Resultados"
+            });
+        })
+        .catch((error) => {
+            console.error(`Erro ao visualizar prontuário. ERRO: ${error}`);
+            return res.status(500).send("Erro interno do servidor");
         });
-
-        if (!exameDb) {
-            return res.status(404).send("Nenhum exame encontrado para este paciente.");
-        }
-
-        return res.render("resultados", {
-            exame: exameDb,
-            subtitulo: "Prontuário e Resultados"
-        });
-
-    } catch (error) {
-        console.error(`Erro ao visualizar prontuário. ERRO: ${error}`);
-        return res.status(500).send("Erro interno do servidor");
-    }
 });
 
 router.get("/paciente/:id/deletar", autenticado, carregarMedico, contagemDiagnostico, (req, res) => {

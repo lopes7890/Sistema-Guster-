@@ -6,7 +6,9 @@
 
     <div class="topbar-direita">
         <div class="topbar-usuario">
-            <div class="topbar-avatar"></div>
+            <div class="topbar-avatar">
+                <img src="<%= medico.foto %>">
+            </div>
             <div class="topbar-dados">
                 <strong><%= medico.nome.split(" ")[0] %></strong>
                 <small>CRM: <%= medico.crm %></small>

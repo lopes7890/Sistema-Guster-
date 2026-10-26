@@ -64,9 +64,9 @@ main.configuracoes {
     transition: background-color 0.2s;
 }
  
-.config-badge:hover {
+/* .config-badge:hover {
     background-color: #C70B5C;
-}
+} */
  
 .config-avatar input:focus-visible + .config-badge,
 .config-badge:focus-within {
@@ -183,10 +183,10 @@ main.configuracoes {
     color: #090E18;
 }
  
-.config-campo input:focus {
+/* .config-campo input:focus {
     outline: 2px solid #EB0E6D;
     outline-offset: 2px;
-}
+} */
  
 /* ---------- Botão salvar ---------- */
 .btn-salvar {
@@ -208,9 +208,9 @@ main.configuracoes {
     transition: background-color 0.2s;
 }
  
-.btn-salvar:hover {
+/* .btn-salvar:hover {
     background-color: #C70B5C;
-}
+} */
  
 .btn-salvar:focus-visible {
     outline: 2px solid #0F5D8C;
