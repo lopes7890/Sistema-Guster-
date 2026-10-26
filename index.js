@@ -58,7 +58,7 @@ import MedicoControllers from "./controllers/MedicoControllers.js";
 import HomeControllers from "./controllers/HomeControllers.js";
 import PacienteControllers from "./controllers/PacienteControllers.js";
 import NovaConsultaControllers from "./controllers/NovaConsultaControllers.js";
-// import ConfiguracaoController from "./controllers/ConfiguracaoController.js";
+import ConfiguracaoControllers from "./controllers/ConfiguracaoControllers.js";
 
 
 defineAssociations();
@@ -67,7 +67,7 @@ app.use("/", MedicoControllers);
 app.use("/", HomeControllers);
 app.use("/", PacienteControllers);
 app.use("/", NovaConsultaControllers);
-// app.use("/", ConfiguracaoController);
+app.use("/", ConfiguracaoControllers);
 
 app.get("/cadastro", (req, res) => {
     res.render("cadastro");
