@@ -2,15 +2,17 @@
 const gridPacientes = document.querySelector(".grid-pacientes");
 const inBusca = document.querySelector('input[name="busca"]');
 const selPeriodo = document.querySelector('select[name="periodo"]');
+const containerPacientes = document.querySelector(".pacientes-lista");
 
-if (gridPacientes && inBusca && selPeriodo) {
+if (gridPacientes && inBusca && selPeriodo && containerPacientes) {
     async function filtrarPacientes() {
         const params = new URLSearchParams({
             busca: inBusca.value.trim(),
             periodo: selPeriodo.value,
-            diagnostico: new URLSearchParams(
-                window.location.search
-            ).get("diagnostico") || "todos"
+            arquivados: containerPacientes.dataset.arquivados,
+            diagnostico:
+                new URLSearchParams(window.location.search)
+                    .get("diagnostico") || "todos"
         });
 
         try {
@@ -24,9 +26,12 @@ if (gridPacientes && inBusca && selPeriodo) {
                 throw new Error("Erro ao filtrar pacientes.");
             }
 
-            gridPacientes.innerHTML = await resp.text();
+            const html = await resp.text();
+
+            // Atualiza os cards e a mensagem de lista vazia
+            gridPacientes.innerHTML = html;
         } catch (erro) {
-            console.error(erro);
+            console.error("Erro ao filtrar pacientes:", erro);
         } finally {
             gridPacientes.removeAttribute("aria-busy");
         }

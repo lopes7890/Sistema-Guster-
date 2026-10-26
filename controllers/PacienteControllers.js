@@ -25,6 +25,9 @@ router.get("/pacientes", autenticado, carregarMedico, contagemDiagnostico, (req,
                     attributes: ["id", "data_realizacao"],
                     separate: true,
                     order: [["data_realizacao", "DESC"]],
+                    where: {
+                        status_visualizacao: "Disponível"
+                    },
                     include: [
                         {
                             model: Processamento,

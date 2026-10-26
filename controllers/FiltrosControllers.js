@@ -1,5 +1,5 @@
 import express from "express";
-import { Op } from "sequelize";
+import { Op, where } from "sequelize";
 
 import buscarExame from "../utils/buscarExame.js";
 import prepararExames from "../utils/prepararExames.js";
@@ -16,166 +16,212 @@ import Processamento from "../models/Processamento.js";
 
 const router = express.Router();
 
-router.get("/pacientes/filtrar", autenticado, carregarMedico, contagemDiagnostico, async (req, res) => {
+
+router.get("/pacientes/filtrar", autenticado, carregarMedico, contagemDiagnostico, (req, res) => {
         const arquivados = req.query.arquivados === "true";
-        try {
-            const { busca = "", periodo = "todos" } = req.query;
 
-            const where = {};
+        const { busca = "", periodo = "todos" } = req.query;
 
-            // Busca por nome ou CPF
-            if (busca.trim()) {
-                where[Op.or] = [
-                    {
-                        nome: {
-                            [Op.like]: `%${busca.trim()}%`
-                        }
-                    },
-                    {
-                        cpf: {
-                            [Op.like]: `%${busca.trim()}%`
-                        }
+        const where = {
+            status_visualizacao: arquivados
+                ? "Arquivado"
+                : "Disponível"
+        };
+
+        // Busca por nome ou CPF
+        if (busca.trim()) {
+            where[Op.or] = [
+                {
+                    nome: {
+                        [Op.like]: `%${busca.trim()}%`
                     }
-                ];
-            }
-
-            // Filtro pela data de cadastro
-            const agora = new Date();
-            const inicio = new Date(agora);
-            const fim = new Date(agora);
-
-            inicio.setHours(0, 0, 0, 0);
-            fim.setHours(23, 59, 59, 999);
-
-            if (periodo === "hoje") {
-                where.createdAt = {
-                    [Op.between]: [inicio, fim]
-                };
-            } else if (periodo === "ontem") {
-                inicio.setDate(inicio.getDate() - 1);
-                fim.setDate(fim.getDate() - 1);
-
-                where.createdAt = {
-                    [Op.between]: [inicio, fim]
-                };
-            } else if (periodo === "semana") {
-                inicio.setDate(inicio.getDate() - 6);
-
-                where.createdAt = {
-                    [Op.between]: [inicio, fim]
-                };
-            }
-
-            
-            const lista = await Paciente.findAll({
-                where,
-                include: [
-                    {
-                        model: Exame,
-                        as: "Exames",
-                        attributes: ["id", "data_realizacao"],
-                        separate: true,
-                        order: [["data_realizacao", "DESC"]],
-                        
-                        include: [
-                            {
-                                model: Processamento,
-                                as: "Processamentos",
-                                attributes: ["id"]
-                            }   
-                        ]
+                },
+                {
+                    cpf: {
+                        [Op.like]: `%${busca.trim()}%`
                     }
-                ],
-            });
-            const pacientesFormatados = lista.map((paciente) => {
-            const dadosPaciente = paciente.toJSON();
-
-                dadosPaciente.Exames = dadosPaciente.Exames.map((exame) => {
-                    return {
-                        ...exame,
-                        data_realizacao_formatada: formatarData(exame.data_realizacao)
-                    };
-                });
-
-                return dadosPaciente;
-            });
-
-            return res.render(
-                "partials/cards-pacientes",
-                { lista: pacientesFormatados },
-                arquivados
-            );
-        } catch (erro) {
-            console.error("Erro ao filtrar pacientes:", erro);
-
-            return res.status(500).send(
-                "Não foi possível filtrar os pacientes."
-            );
+                }
+            ];
         }
+
+        // Filtro pela data de cadastro
+        const agora = new Date();
+        const inicio = new Date(agora);
+        const fim = new Date(agora);
+
+        inicio.setHours(0, 0, 0, 0);
+        fim.setHours(23, 59, 59, 999);
+
+        if (periodo === "hoje") {
+            where.createdAt = {
+                [Op.between]: [inicio, fim]
+            };
+        } else if (periodo === "ontem") {
+            inicio.setDate(inicio.getDate() - 1);
+            fim.setDate(fim.getDate() - 1);
+
+            where.createdAt = {
+                [Op.between]: [inicio, fim]
+            };
+        } else if (periodo === "semana") {
+            inicio.setDate(inicio.getDate() - 6);
+
+            where.createdAt = {
+                [Op.between]: [inicio, fim]
+            };
+        }
+
+        Paciente.findAll({
+            where,
+            include: [
+                {
+                    model: Exame,
+                    as: "Exames",
+                    attributes: [
+                        "id",
+                        "data_realizacao",
+                        "status_visualizacao"
+                    ],
+                    separate: true,
+                    order: [
+                        ["data_realizacao", "DESC"]
+                    ],
+                    where: {
+                        status_visualizacao: "Disponível"
+                    },
+                    include: [
+                        {
+                            model: Processamento,
+                            as: "Processamentos",
+                            attributes: ["id"]
+                        }
+                    ]
+                }
+            ],
+            order: [["createdAt", "DESC"]]
+        })
+            .then((lista) => {
+                const pacientesFormatados = lista.map(
+                    (paciente) => {
+                        const dadosPaciente = paciente.toJSON();
+
+                        dadosPaciente.Exames =
+                            dadosPaciente.Exames.map((exame) => ({
+                                ...exame,
+                                data_realizacao_formatada:
+                                    formatarData(
+                                        exame.data_realizacao
+                                    )
+                            }));
+
+                        return dadosPaciente;
+                    }
+                );
+
+                return res.render(
+                    "partials/cards-pacientes",
+                    {
+                        lista: pacientesFormatados,
+                        arquivados
+                    }
+                );
+            })
+            .catch((erro) => {
+                console.error(
+                    "Erro ao filtrar pacientes:",
+                    erro
+                );
+
+                return res.status(500).send(
+                    "Não foi possível filtrar os pacientes."
+                );
+            });
     }
 );
 
 
 router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, contagemDiagnostico, (req, res) => {
-    const { diagnostico } = req.query;
-    const arquivados = req.query.arquivados === "true";
+        const { diagnostico } = req.query;
 
-    if (!diagnostico || !diagnostico.trim() || diagnostico == "todos") {
-        return res.redirect("/pacientes");
-    }
+        if (
+            !diagnostico ||
+            !diagnostico.trim() ||
+            diagnostico === "todos"
+        ) {
+            return res.redirect("/pacientes");
+        }
 
-    Paciente.findAll({
-        include: [
-            {
-                model: Exame,
-                as: "Exames",
-                attributes: ["id", "data_realizacao"],
-                order: [["data_realizacao", "DESC"]],
-                required: true,
-                include: [
-                    {
-                        model: Processamento,
-                        as: "Processamentos",
-                        attributes: ["id", "resultado"],
-                        where: {
-                            resultado: diagnostico
-                        },
-                        required: true
-                    }
-                ]
-            }
-        ],
-    })
-        .then((pacientes) => {
-            const lista = pacientes;
-            const pacientesFormatados = lista.map((paciente) => {
-            const dadosPaciente = paciente.toJSON();
-
-                dadosPaciente.Exames = dadosPaciente.Exames.map((exame) => {
-                    return {
-                        ...exame,
-                        data_realizacao_formatada: formatarData(exame.data_realizacao)
-                    };
-                });
-
-                return dadosPaciente;
-            });
-            return res.render("pacientes", {
-                pacientes: pacientesFormatados,
-                subtitulo: "Pacientes cadastrados",
-                mostrarNovaConsulta: true,
-                filtro: diagnostico,
-                arquivados
-            });
+        Paciente.findAll({
+            where: {
+                status_visualizacao: "Disponível"
+            },
+            include: [
+                {
+                    model: Exame,
+                    as: "Exames",
+                    attributes: [
+                        "id",
+                        "data_realizacao"
+                    ],
+                    required: true,
+                    where: {
+                        status_visualizacao: "Disponível"
+                    },
+                    include: [
+                        {
+                            model: Processamento,
+                            as: "Processamentos",
+                            attributes: [
+                                "id",
+                                "resultado"
+                            ],
+                            where: {
+                                resultado: diagnostico
+                            },
+                            required: true
+                        }
+                    ]
+                }
+            ]
         })
-        .catch((error) => {
-            console.error("Falha ao filtrar os pacientes:", error);
+            .then((pacientes) => {
+                const pacientesFormatados = pacientes.map(
+                    (paciente) => {
+                        const dadosPaciente = paciente.toJSON();
 
-            return res.status(500).send(
-                "Falha ao filtrar os pacientes."
-            );
-        });
-});
+                        dadosPaciente.Exames =
+                            dadosPaciente.Exames.map((exame) => ({
+                                ...exame,
+                                data_realizacao_formatada:
+                                    formatarData(
+                                        exame.data_realizacao
+                                    )
+                            }));
+
+                        return dadosPaciente;
+                    }
+                );
+
+                return res.render("pacientes", {
+                    pacientes: pacientesFormatados,
+                    subtitulo: "Pacientes cadastrados",
+                    mostrarNovaConsulta: true,
+                    filtro: diagnostico,
+                    arquivados: false
+                });
+            })
+            .catch((error) => {
+                console.error(
+                    "Falha ao filtrar os pacientes:",
+                    error
+                );
+
+                return res.status(500).send(
+                    "Falha ao filtrar os pacientes."
+                );
+            });
+    }
+);
 
 
 router.get("/consultas/filtrar", autenticado, carregarMedico, (req, res) => {

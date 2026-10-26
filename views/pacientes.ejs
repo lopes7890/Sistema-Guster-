@@ -61,7 +61,8 @@
                     </a>
                 </div>
 
-                <!-- Filtro por diagnóstico (mantém o modo atual) -->
+                <!-- Filtro por diagnóstico -->
+                 <% if (!arquivados) { %>
                 <nav class="chips-diagnostico" aria-label="Filtrar por diagnóstico">
                     <% filtrosDiagnostico.forEach(function (f) { %>
                         <a href="/pacientes/filtrar/diagnostico?diagnostico=<%= f.chave %>&arquivados=<%= arquivados %>"
@@ -70,6 +71,7 @@
                         </a>
                     <% }); %>
                 </nav>
+                <% } %>
 
                 <!-- Lista de pacientes -->
                 <section class="grid-pacientes">
