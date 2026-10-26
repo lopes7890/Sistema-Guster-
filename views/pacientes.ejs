@@ -3,13 +3,7 @@
     /* Dados de exemplo*/
     const filtroAtual = typeof filtro !== 'undefined' ? filtro : 'todos';
     const totaisFiltro = typeof totais !== 'undefined' ? totais : { todos: 23, ageusia: 23, hipogeusia: 23 };
-    const lista = typeof pacientes !== 'undefined' ? pacientes : [
-        { id: 1, nome: 'José da Silva', ultimoExame: '17/08/2025' },
-        { id: 2, nome: 'José da Silva', ultimoExame: '17/08/2025' },
-        { id: 3, nome: 'José da Silva', ultimoExame: '17/08/2025' },
-        { id: 4, nome: 'José da Silva', ultimoExame: '17/08/2025' },
-        { id: 5, nome: 'José da Silva', ultimoExame: '17/08/2025' }
-    ];
+    const lista = pacientes;
     const filtrosDiagnostico = [
         { chave: 'todos',      rotulo: 'Todos' },
         { chave: 'ageusia',    rotulo: 'Ageusia' },
@@ -92,12 +86,12 @@
                                 <span><%= p.nome %></span>
 
                                 <strong class="espaco">Data do último exame:</strong>
-                                <span><%= p.ultimoExame || '—' %></span>
+                                <span><%= p.Exames[0].data_realizacao_formatada || '—' %></span>
                             </div>
                         </div>
 
                         <div class="card-paciente-acoes">
-                            <a href="/pacientes/<%= p.id %>" class="btn-card btn-visualizar">
+                            <a href="consulta/resultado?id_processamento=<%= p.Exames[0].Processamentos[0].id %>" class="btn-card btn-visualizar">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/>
                                     <circle cx="12" cy="12" r="3"/>
