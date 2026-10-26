@@ -29,6 +29,10 @@ const Medico = connection.define('medicos', {
         unique: true,
         allowNull: false
     },
+    foto: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
     senha: {
         type: Sequelize.STRING,
         allowNull: false
