@@ -113,6 +113,52 @@ router.get("/pacientes/filtrar", autenticado, carregarMedico, async (req, res) =
 );
 
 
+router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, (req, res) => {
+    const { diagnostico } = req.query;
+
+    if (!diagnostico || !diagnostico.trim() || diagnostico == "todos") {
+        return res.redirect("/pacientes");
+    }
+
+    Paciente.findAll({
+        include: [
+            {
+                model: Exame,
+                as: "Exames",
+                attributes: ["id", "data_realizacao"],
+                required: true,
+                include: [
+                    {
+                        model: Processamento,
+                        as: "Processamentos",
+                        attributes: ["id", "resultado"],
+                        where: {
+                            resultado: diagnostico
+                        },
+                        required: true
+                    }
+                ]
+            }
+        ],
+        order: [["createdAt", "DESC"]]
+    })
+        .then((pacientes) => {
+            return res.render("pacientes", {
+                pacientes: pacientes,
+                subtitulo: "Pacientes cadastrados",
+                mostrarNovaConsulta: false,
+            });
+        })
+        .catch((error) => {
+            console.error("Falha ao filtrar os pacientes:", error);
+
+            return res.status(500).send(
+                "Falha ao filtrar os pacientes."
+            );
+        });
+});
+
+
 router.get("/consultas/filtrar", autenticado, carregarMedico, (req, res) => {
     const arquivadas = req.query.arquivadas === "true";
     const status = arquivadas ? "Arquivado" : "Disponível";  

@@ -62,7 +62,7 @@
                 <!-- Filtro por diagnóstico -->
                 <nav class="chips-diagnostico" aria-label="Filtrar por diagnóstico">
                     <% filtrosDiagnostico.forEach(function (f) { %>
-                    <a href="/pacientes?diagnostico=<%= f.chave %>" class="chip <%= filtroAtual === f.chave ? 'ativo' : '' %>">
+                    <a href="/pacientes/filtrar/diagnostico/?diagnostico=<%= f.chave %>" class="chip <%= filtroAtual === f.chave ? 'ativo' : '' %>">
                         <%= f.rotulo %> (<%= totaisFiltro[f.chave] %>)
                     </a>
                     <% }); %>
