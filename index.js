@@ -34,7 +34,7 @@ Promise.all([
     Medico.sync({force: false}),
     Paciente.sync({force: false}),
     Sintoma.sync({force: false}),
-    Aparelho.sync({force: false}),
+    Dispositivo.sync({force: false}),
     TelefonesPaciente.sync({force: false}),
     Exame.sync({force: false}),
     PacienteSintoma.sync({force: false}),
@@ -44,7 +44,7 @@ Promise.all([
 
 
 import Medico from "./models/Medico.js";
-import Aparelho from "./models/Aparelho.js";
+import Dispositivo from "./models/Dispositivo.js";
 import Paciente from "./models/Paciente.js";
 import Sintoma from "./models/Sintoma.js";
 import TelefonesPaciente from "./models/TelefonesPaciente.js";
