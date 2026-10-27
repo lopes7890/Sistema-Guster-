@@ -25,6 +25,8 @@
             <div class="card-paciente-avatar">
                 <% if (p.foto) { %>
                     <img src="<%= p.foto %>" alt="Foto de <%= p.nome %>">
+                <% } else { %>
+                    <img src="/imgs/avatar.png" alt="Foto de <%= p.nome %>">
                 <% } %>
             </div>
 

@@ -3,7 +3,11 @@
     <td>
         <div class="paciente">
             <div class="paciente-avatar">
-                <img src="<%= c.Paciente.foto %>" alt="Foto do paciente">
+                <% if (c.Paciente.foto) { %>
+                    <img src="<%= c.Paciente.foto %>" alt="Foto do paciente">     
+                <% } else { %>
+                    <img src="/imgs/avatar.png" alt="Foto do paciente">
+                <% } %>
             </div>
             <div>
                 <strong><%= c.Paciente.nome %></strong>
