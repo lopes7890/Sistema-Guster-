@@ -66,45 +66,58 @@ router.get("/consulta/exameBCI/:id_paciente", autenticado, carregarMedico, (req,
   },
 );
 
-// ROTAs DE SIMULAÇÃO DE RESULTADOS DO EXAME
+// ROTAS DE SIMULAÇÃO DE RESULTADOS DO EXAME
 router.get("/resultados/:id_paciente", autenticado, carregarMedico, (req, res) => {
     const id_paciente = req.params.id_paciente;
 
-    Aparelho.findByPk(1).then((aparelho) => {
-      if (aparelho) {
-        Exame.create({
-          data_realizacao: new Date(),
-          id_aparelho: aparelho.id,
-          id_paciente: id_paciente,
-          id_medico: req.medico.id,
-        }).then((exame) => {
-          Processamento.create({
+    // Buscar/Criar um aparelho fictício
+    Aparelho.findOne({
+        where: {
+            nome: "teste"
+        }
+    })
+    .then((aparelho) => {
+
+        if (!aparelho) {
+            return Aparelho.create({
+                nome: "teste",
+                status_aparelho: "Disponível"
+            });
+        }
+
+        return aparelho;
+    })
+    .then((aparelho) => {
+
+        return Exame.create({
+            data_realizacao: new Date(),
+            id_aparelho: aparelho.id,
+            id_paciente: id_paciente,
+            id_medico: req.medico.id
+        });
+    })
+    .then((exame) => {
+
+        return Processamento.create({
             resultado: "Hipogeusia",
-            descricao: `O paciente apresenta indícios de hipogeusia, condição caracterizada pela redução da capacidade 
-                                de perceber os sabores. Durante a avaliação, foram relatadas alterações na percepção gustativa, 
-                                possivelmente associadas às sequelas da infecção por COVID-19. Os resultados preliminares da análise dos sinais cerebrais 
-                                captados pela interface cérebro-computador (BCI), em conjunto com as informações clínicas e os sintomas relatados, sugerem uma possível diminuição da sensibilidade gustativa.
-                                Recomenda-se a realização de uma avaliação clínica especializada e de testes gustativos padronizados para confirmar a presença e determinar o grau da alteração. 
-                                Este resultado possui caráter preliminar e não constitui um diagnóstico médico definitivo.`,
+            descricao: `O paciente apresenta indícios de hipogeusia, condição caracterizada pela redução da capacidade de perceber os sabores. Durante a avaliação, foram relatadas alterações na percepção gustativa, possivelmente associadas às sequelas da infecção por COVID-19.
+                  Os resultados preliminares da análise dos sinais cerebrais captados pela interface cérebro-computador (BCI), em conjunto com as informações clínicas e os sintomas relatados, sugerem uma possível diminuição da sensibilidade gustativa.
+                  Recomenda-se a realização de uma avaliação clínica especializada e de testes gustativos padronizados para confirmar a presença e determinar o grau da alteração.
+                  Este resultado possui caráter preliminar e não constitui um diagnóstico médico definitivo.`,
             percentual_doce: 0.25,
             percentual_amargo: 0.3,
             probabilidade: 0.99,
-            id_exame: exame.id,
-          })
-            .then((processamento) => {
-              return res.redirect(`/consulta/resultado?id_processamento=${processamento.id}`);
-            })
-            .catch((error) => {
-              console.log(`Falha ao buscar os resultados. Erro: ${error}`);
-              return res.status(500).send("Falha ao buscar resultados");
-            });
+            id_exame: exame.id
         });
-      } else {
-        return res.status(500).send("Dispositivo não identificado");
-      }
+    })
+    .then((processamento) => {
+        return res.redirect(`/consulta/resultado?id_processamento=${processamento.id}`);
+    })
+    .catch((error) => {
+        console.error("Falha ao simular os resultados do exame:", error);
+        return res.status(500).send("Falha ao simular os resultados do exame.");
     });
-  },
-);
+});
 
 router.get("/consulta/resultado", autenticado, carregarMedico, (req, res) => {
   const { id_processamento } = req.query;
