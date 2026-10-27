@@ -15,7 +15,7 @@ const Exame = connection.define('exames', {
         type: Sequelize.ENUM('Disponível', 'Arquivado'),
         defaultValue: 'Disponível'
     },
-    id_aparelho: {
+    id_dispositivo: {
         type: Sequelize.INTEGER,
         allowNull: false
     },

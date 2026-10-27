@@ -2,16 +2,16 @@ import connection from "../config/config.js";
 
 import Sequelize from "sequelize";
 
-const Aparelho = connection.define('aparelhos', {
+const Dispositivo = connection.define('dispositivos', {
     nome: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    status_aparelho: {
+    status_dispositivo: {
         type: Sequelize.ENUM("Disponível", "Indisponível"),
         defaultValue: 'Disponível'
     }
 });
 
 
-export default Aparelho;
+export default Dispositivo;

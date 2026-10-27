@@ -22,7 +22,7 @@ import TelefonesPaciente from "../models/TelefonesPaciente.js";
 import Sintoma from "../models/Sintoma.js";
 import PacienteSintoma from "../models/PacienteSintoma.js";
 import Exame from "../models/Exame.js";
-import Aparelho from "../models/Aparelho.js";
+import Dispositivo from "../models/Dispositivo.js";
 import Processamento from "../models/Processamento.js";
 import Medico from "../models/Medico.js";
 import Relatorio from "../models/Relatorio.js";
@@ -70,28 +70,28 @@ router.get("/consulta/exameBCI/:id_paciente", autenticado, carregarMedico, (req,
 router.get("/resultados/:id_paciente", autenticado, carregarMedico, (req, res) => {
     const id_paciente = req.params.id_paciente;
 
-    // Buscar/Criar um aparelho fictício
-    Aparelho.findOne({
+    // Buscar/Criar um dispositivo fictício
+    Dispositivo.findOne({
         where: {
             nome: "teste"
         }
     })
-    .then((aparelho) => {
+    .then((dispositivo) => {
 
-        if (!aparelho) {
-            return Aparelho.create({
+        if (!dispositivo) {
+            return Dispositivo.create({
                 nome: "teste",
-                status_aparelho: "Disponível"
+                status_dispositivo: "Disponível"
             });
         }
 
-        return aparelho;
+        return dispositivo;
     })
-    .then((aparelho) => {
+    .then((dispositivo) => {
 
         return Exame.create({
             data_realizacao: new Date(),
-            id_aparelho: aparelho.id,
+            id_dispositivo: dispositivo.id,
             id_paciente: id_paciente,
             id_medico: req.medico.id
         });

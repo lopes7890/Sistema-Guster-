@@ -2,7 +2,7 @@ import Paciente from "../models/Paciente.js";
 import TelefonesPaciente from "../models/TelefonesPaciente.js";
 import Medico from "../models/Medico.js";
 import Exame from "../models/Exame.js";
-import Aparelho from "../models/Aparelho.js";
+import Dispositivo from "../models/Dispositivo.js";
 import Sintoma from "../models/Sintoma.js";
 import PacienteSintoma from "../models/PacienteSintoma.js";
 import Processamento from "../models/Processamento.js";
@@ -19,14 +19,14 @@ const defineAssociations = () => {
     as: "Medico",
   });
 
-  Aparelho.hasMany(Exame, {
-    foreignKey: "id_aparelho",
+  Dispositivo.hasMany(Exame, {
+    foreignKey: "id_dispositivo",
     as: "Exames",
   });
 
-  Exame.belongsTo(Aparelho, {
-    foreignKey: "id_aparelho",
-    as: "Aparelho",
+  Exame.belongsTo(Dispositivo, {
+    foreignKey: "id_dispositivo",
+    as: "Dispositivo",
   });
 
   Paciente.hasMany(Exame, {
