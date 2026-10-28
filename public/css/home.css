@@ -44,7 +44,7 @@
   font-family: "Exo 2", sans-serif;
   font-size: 20px;
   font-weight: bold;
-  color: #000000;
+  color: #1D7F8C;
 }
 
 .sidebar-nav {
@@ -64,7 +64,7 @@
   font-family: "Exo 2", sans-serif;
   font-size: 24px;
   font-weight: 300;
-  color: #000000;
+  color: #21343A;
   text-decoration: none;
   transition: background-color 0.2s;
 }
@@ -121,7 +121,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  background-color: #0b1220;
+  background-color: #EAF8FB;
 }
 
 .topbar-titulo h1 {
@@ -129,7 +129,7 @@
   font-size: 26px;
   font-weight: 600;
   line-height: 1.1;
-  color: white;
+  color: #000000;
 }
 
 .topbar-titulo p {
@@ -137,7 +137,7 @@
   font-family: "Roboto", sans-serif;
   font-size: 16px;
   font-weight: 300;
-  color: #c9d1db;
+  color: #000000;
 }
 
 .topbar-direita {
@@ -172,7 +172,7 @@
   flex-direction: column;
   gap: 3px;
   font-family: "Roboto", sans-serif;
-  color: white;
+  color: #000000;
 }
 
 .topbar-dados strong {
@@ -182,7 +182,7 @@
 
 .topbar-dados small {
   font-size: 9px;
-  color: #c9d1db;
+  color: #464A4B;
 }
 
 .topbar-divisor {
@@ -199,7 +199,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 20px;
-  background-color: #eb0e6d;
+  background-color: #1D7F8C;
   font-family: "Roboto", sans-serif;
   font-size: 20px;
   font-weight: bold;
@@ -209,7 +209,7 @@
 }
 
 .btn-nova-consulta:hover {
-  background-color: #c70b5c;
+  background-color: #1f2937;
 }
 
 /* ---------- Conteúdo da Home ---------- */
@@ -243,7 +243,7 @@ main.home {
 .busca {
   position: relative;
   flex: 0 1 676px;
-  color: #0f5d8c;
+  color: #1D7F8C;
 }
 
 .busca svg {
@@ -258,7 +258,7 @@ main.home {
   width: 100%;
   height: 56px;
   padding: 0 20px 0 71px;
-  border: 1px solid #0b3f73;
+  border: 1px solid #1D7F8C;
   border-radius: 10px;
   font-family: "Roboto", sans-serif;
   font-size: 16px;
@@ -266,7 +266,7 @@ main.home {
 }
 
 .busca input::placeholder {
-  color: #0f5d8c;
+  color: #1D7F8C;
 }
 
 .filtros {
@@ -277,7 +277,7 @@ main.home {
 .filtros select,
 .btn-filtros {
   height: 56px;
-  border: 1px solid #0b3f73;
+  border: 1px solid #1D7F8C;
   border-radius: 10px;
   background-color: white;
   font-family: "Roboto", sans-serif;
