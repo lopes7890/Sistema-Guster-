@@ -21,7 +21,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #0b1220;
+  background-color: #EAF8FB;
 }
 
 .sidebar-marca {
@@ -44,7 +44,7 @@
   font-family: "Exo 2", sans-serif;
   font-size: 20px;
   font-weight: bold;
-  color: white;
+  color: #000000;
 }
 
 .sidebar-nav {
@@ -64,19 +64,19 @@
   font-family: "Exo 2", sans-serif;
   font-size: 24px;
   font-weight: 300;
-  color: #d5dbe3;
+  color: #000000;
   text-decoration: none;
   transition: background-color 0.2s;
 }
 
 .sidebar-item:hover {
-  background-color: #0f1829;
+  background-color: #BBD1E5;
 }
 
 .sidebar-item.ativo {
-  background-color: #0f1829;
-  border-color: #1c2434;
-  box-shadow: inset -10px 0 0 #eb0e6d;
+  background-color: #BBD1E5;
+  /* border-color: #1c2434; */
+  box-shadow: inset -10px 0 0 #1D7F8C;
 }
 
 .sidebar-rodape {
