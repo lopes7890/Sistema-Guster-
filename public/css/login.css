@@ -93,7 +93,7 @@
     height: 55px;
     border: none;
     border-radius: 20px;
-    background-color: #EB0E6D;
+    background-color: #1D7F8C;
     color: white;
     font-family: "Roboto", sans-serif;
     font-size: 16px;
@@ -108,7 +108,7 @@
 }
  
 .body-card button[type="submit"]:hover {
-    background-color: #C70B5C;
+    background-color: #21343A;
 }
  
 .body-card button[type="submit"]:focus-visible {
@@ -156,13 +156,13 @@
     border: none;
     border-radius: 50%;
     background-color: transparent;
-    color: #EB0E6D;
+    color: #1D7F8C;
     cursor: pointer;
     transition: background-color 0.2s;
 }
  
 .btn-olho:hover {
-    background-color: rgba(235, 14, 109, 0.1);
+    background-color: rgb(29,127,140, 0.1);
 }
  
 .btn-olho:focus-visible {

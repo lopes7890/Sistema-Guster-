@@ -58,7 +58,7 @@ main.configuracoes {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background-color: #EB0E6D;
+    background-color: #1D7F8C;
     color: white;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -137,7 +137,7 @@ main.configuracoes {
 }
  
 .config-dados h2 svg {
-    color: #EB0E6D;
+    color: #1D7F8C;
 }
  
 .config-linha {
@@ -199,7 +199,7 @@ main.configuracoes {
     gap: 8px;
     border: none;
     border-radius: 27px;
-    background-color: #EB0E6D;
+    background-color: #1D7F8C;
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: bold;
@@ -208,9 +208,9 @@ main.configuracoes {
     transition: background-color 0.2s;
 }
  
-/* .btn-salvar:hover {
-    background-color: #C70B5C;
-} */
+.btn-salvar:hover {
+    background-color: #21343A;
+}
  
 .btn-salvar:focus-visible {
     outline: 2px solid #0F5D8C;
