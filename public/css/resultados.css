@@ -162,7 +162,7 @@ main.resultados {
     flex: 0 1 748px;
     min-height: 148px;
     padding: 14px 15px 10px;
-    border: 1px solid #EB0E6D;
+    border: 1px solid #1D7F8C;
     border-radius: 20px;
     font-family: "Roboto", sans-serif;
     color: #090E18;
@@ -218,7 +218,7 @@ main.resultados {
     align-items: center;
     gap: 8px;
     border-radius: 27px;
-    background-color: #EB0E6D;
+    background-color: #1D7F8C;
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: bold;
@@ -228,7 +228,7 @@ main.resultados {
 }
  
 .btn-exportar:hover {
-    background-color: #C70B5C;
+    background-color: #21343A;
 }
  
 .btn-exportar:focus-visible,

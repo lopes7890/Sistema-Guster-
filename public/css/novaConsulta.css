@@ -195,12 +195,12 @@ main.paciente-novo {
     height: 54px;
     gap: 14px;
     border-radius: 27px;
-    background-color: #EB0E6D;
+    background-color: #1D7F8C;
     font-size: 20px;
 }
  
 .btn-avancar:hover {
-    background-color: #C70B5C;
+    background-color: #21343A;
 }
  
 .btn-voltar:focus-visible,
@@ -391,7 +391,7 @@ main.paciente-novo {
     align-items: center;
     gap: 11px;
     padding: 0;
-    color: #EB0E6D;
+    color: #1D7F8C;
     cursor: pointer;
 }
  
