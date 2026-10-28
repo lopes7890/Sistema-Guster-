@@ -17,8 +17,7 @@ main.cadastro {
     content: "";
     position: absolute;
     inset: 0;
-    background-color: rgba(11, 18, 32, 0.72);
-}
+} 
  
 .cadastro-logo {
     position: absolute;
@@ -36,7 +35,7 @@ main.cadastro {
     justify-content: center;
     align-items: center;
     padding: 40px 20px;
-    background-color: #0B1220;
+    background-color: #EAF8FB;
 }
  
 .cadastro-form {
@@ -65,7 +64,7 @@ main.cadastro {
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 300;
-    color: #E8EEF5;
+    color: #000000;
 }
  
 .cadastro-form .row label {
@@ -77,16 +76,21 @@ main.cadastro {
     height: 59px;
     padding: 0 30px;
     border-radius: 20px;
-    border: solid 1px #0F5D8C;
+    border: solid 1px #090E18;
     background-color: transparent;
     font-family: "Roboto", sans-serif;
     font-size: 20px;
-    color: #E8EEF5;
+    color: #000000;
     color-scheme: dark; 
 }
  
 .cadastro-form .row input {
     padding: 0 20px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: brightness(0%);
 }
  
 .cadastro-form input::placeholder {
@@ -105,7 +109,7 @@ main.cadastro {
     height: 65px;
     border: none;
     border-radius: 20px;
-    background-color: #EB0E6D;
+    background-color: #1D7F8C;
     color: white;
     font-family: "Roboto", sans-serif;
     font-size: 16px;
@@ -119,11 +123,11 @@ main.cadastro {
 }
  
 .cadastro-form button[type="submit"]:hover {
-    background-color: #C70B5C;
+    background-color: #21343A;
 }
  
 .cadastro-form button[type="submit"]:focus-visible {
-    outline: 2px solid #E8EEF5;
+    outline: 2px solid #21343A;
     outline-offset: 3px;
 }
 
@@ -131,7 +135,7 @@ main.cadastro {
     margin-top: 22px;
     font-family: "Roboto", sans-serif;
     font-size: 20px;
-    color: white;
+    color: #000000;
 }
  
 .singnin a {
