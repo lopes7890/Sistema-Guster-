@@ -35,7 +35,8 @@ router.get("/configuracoes/:id", autenticado, carregarMedico, (req, res) => {
 
             return res.render("configuracoes", {
                 perfil: medico,
-                subtitulo: "Editar Dados"
+                subtitulo: "Editar Dados",
+                messages: req.flash()
             });
         })
         .catch((error) => {
@@ -49,6 +50,7 @@ router.post("/configuracoes/editar/:id", autenticado, upload.single("foto"), (re
         const id = req.params.id;
 
         if (String(id) !== String(req.medico.id)) {
+            req.flash('danger', 'Usuário não identificado! Faça o login novamente.')
             return res.redirect("/configuracoes");
         }
 
@@ -96,10 +98,12 @@ router.post("/configuracoes/editar/:id", autenticado, upload.single("foto"), (re
                 });
             })
             .then(() => {
+                req.flash('success', 'Dados alterados com sucesso!');
                 return res.redirect(`/configuracoes/${id}`);
             })
             .catch((error) => {
                 console.error("Erro ao atualizar configurações:", error);
+                req.flash('danger', 'Erro ao atualizar os dados');
                 return res.redirect(`/configuracoes/${id}`);
             });
     }

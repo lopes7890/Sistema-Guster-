@@ -14,15 +14,13 @@ router.post("/cadastro/medico", (req, res) => {
   const { cpf, nascimento, nome, crm, cep, endereco, email, senha } = req.body;
 
   if (!cpf || !crm || !nome || !senha || !email) {
-    return res.status(400).send(
-      "Preencha todos os dados obrigatórios!"
-    );
+    req.flash('danger', 'Preencha todos os dados obrigatórios!');
+    return res.redirect("/cadastro");
   }
 
   if (!validarCPF(cpf)) {
-    return res.status(400).send(
-      "Forneça um CPF válido!"
-    );
+    req.flash('danger', 'Forneça um CPF válido!');
+    return res.redirect("/cadastro");
   }
 
   const emailNormalizado = email.trim().toLowerCase();
@@ -47,14 +45,18 @@ router.post("/cadastro/medico", (req, res) => {
           cep: cep || null,
           senha: hash
         }).then(() => {
-          res.redirect("/");
+          req.flash('success', 'Cadastro realizado com sucesso!');
+          return res.redirect("/");
         }).catch((error) => {
           console.log(`Erro ao cadastrar o médico: ${error}`);
-          res.status(500).send("Erro ao cadastrar o médico.");
+          req.flash('danger', 'Erro ao cadastrar usuário! Tente novamente.');
+          return res.redirect("/cadastro");
         });
       } else {
         console.log(`Erro ao cadastrar o médico: E-mail já em uso.`);
-        res.status(400).send("O e-mail fornecido já está em uso!");
+        
+        req.flash('danger', 'O e-mail fornecido já está em uso!');
+        return res.redirect("/cadastro");
       }
     })
 });
@@ -63,9 +65,8 @@ router.post("/login/medico", (req, res) => {
   const { email, senha } = req.body;
 
   if (!email || !senha) {
-    return res.status(400).send(
-      "Preencha todos os dados obrigatórios!"
-    );
+        req.flash('danger', 'Preencha todos os campos!');
+        return res.redirect("/");
   }
 
   const emailNormalizado = email.trim().toLowerCase();
@@ -88,17 +89,15 @@ router.post("/login/medico", (req, res) => {
     })
     .then((resultado) => {
       if (!resultado) {
-        return res.status(401).send(
-          "Credenciais inválidas!"
-        );
+        req.flash('danger', 'Usuário não cadastrado! Realize o cadastro e tente novamente.');
+        return res.redirect("/");
       }
 
       const { medico, isMatch } = resultado;
 
       if (!isMatch) {
-        return res.status(401).send(
-          "Credenciais inválidas!"
-        );
+        req.flash('danger', 'Credenciais inválidas!');
+        return res.redirect("/");
       }
 
       const token = jwt.sign(
@@ -110,6 +109,7 @@ router.post("/login/medico", (req, res) => {
         { expiresIn: "8h" }
       );
 
+      req.flash('success', 'Login efetuado com sucesso!');
       return res.cookie("token", token, 
         {
           httpOnly: true,
@@ -122,9 +122,8 @@ router.post("/login/medico", (req, res) => {
     .catch((error) => {
       console.error("Erro ao fazer login:", error);
 
-      return res.status(500).send(
-        "Falha interna ao fazer login."
-      );
+      req.flash('danger', 'Falha interna ao fazer login.');
+      return res.redirect("/");
     });
 });
 

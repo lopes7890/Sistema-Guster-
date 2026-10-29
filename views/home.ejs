@@ -5,6 +5,13 @@
         <div class="layout-conteudo">
             <%- include ('partials/topbar.ejs') %>
 
+            <% if (messages.success) { %>
+                <div class="alert alert-success flash-message alert-dismissible fade show">
+                    <button class="btn-close" data-bs-dismiss="alert"></button>
+                    <%= messages.success %>
+                </div>
+            <% } %>
+
             <main class="home">
                 <section class="painel painel-busca">
                     <div class="busca">
@@ -68,5 +75,4 @@
         </div>
     </div>
 <script src="/js/home.js"></script>
-</body>
-</html>
+<%- include ('partials/footer.ejs') %>
