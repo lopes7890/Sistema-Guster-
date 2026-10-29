@@ -18,6 +18,7 @@ const router = express.Router();
 
 
 router.get("/pacientes/filtrar", autenticado, carregarMedico, contagemDiagnostico, (req, res) => {
+        const idMedico = req.medico.id;
         const arquivados = req.query.arquivados === "true";
 
         const { busca = "", periodo = "todos" } = req.query;
@@ -71,32 +72,52 @@ router.get("/pacientes/filtrar", autenticado, carregarMedico, contagemDiagnostic
             };
         }
 
-        Paciente.findAll({
-            where,
-            include: [
-                {
-                    model: Exame,
-                    as: "Exames",
-                    attributes: [
-                        "id",
-                        "data_realizacao",
-                        "status_visualizacao"
-                    ],
-                    separate: true,
-                    order: [
-                        ["data_realizacao", "DESC"]
-                    ],
+        Exame.findAll({
+            attributes: ["id_paciente"],
+            where: {
+                id_medico: idMedico
+            },
+            group: ["id_paciente"]
+        })
+            .then((exames) => {
+                const idsPacientes = exames.map(
+                    (exame) => exame.id_paciente
+                );
+
+                return Paciente.findAll({
+                    where: {
+                        ...where,
+                        id: idsPacientes
+                    },
                     include: [
                         {
-                            model: Processamento,
-                            as: "Processamentos",
-                            attributes: ["id"]
+                            model: Exame,
+                            as: "Exames",
+                            attributes: [
+                                "id",
+                                "data_realizacao",
+                                "status_visualizacao",
+                                "id_medico"
+                            ],
+                            where: {
+                                id_medico: idMedico
+                            },
+                            separate: true,
+                            order: [
+                                ["data_realizacao", "DESC"]
+                            ],
+                            include: [
+                                {
+                                    model: Processamento,
+                                    as: "Processamentos",
+                                    attributes: ["id"]
+                                }
+                            ]
                         }
-                    ]
-                }
-            ],
-            order: [["createdAt", "DESC"]]
-        })
+                    ],
+                    order: [["createdAt", "DESC"]]
+                });
+            })
             .then((lista) => {
                 const pacientesFormatados = lista.map(
                     (paciente) => {
@@ -106,9 +127,7 @@ router.get("/pacientes/filtrar", autenticado, carregarMedico, contagemDiagnostic
                             dadosPaciente.Exames.map((exame) => ({
                                 ...exame,
                                 data_realizacao_formatada:
-                                    formatarData(
-                                        exame.data_realizacao
-                                    )
+                                    formatarData(exame.data_realizacao)
                             }));
 
                         return dadosPaciente;
@@ -136,15 +155,11 @@ router.get("/pacientes/filtrar", autenticado, carregarMedico, contagemDiagnostic
     }
 );
 
-
 router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, contagemDiagnostico, (req, res) => {
         const { diagnostico } = req.query;
+        const idMedico = req.medico.id;
 
-        if (
-            !diagnostico ||
-            !diagnostico.trim() ||
-            diagnostico === "todos"
-        ) {
+        if (!diagnostico || !diagnostico.trim() || diagnostico === "todos") {
             return res.redirect("/pacientes");
         }
 
@@ -158,9 +173,14 @@ router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, contag
                     as: "Exames",
                     attributes: [
                         "id",
-                        "data_realizacao"
+                        "data_realizacao",
+                        "id_medico"
                     ],
+                    where: {
+                        id_medico: idMedico
+                    },
                     required: true,
+                    separate: false,
                     include: [
                         {
                             model: Processamento,
@@ -187,9 +207,7 @@ router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, contag
                             dadosPaciente.Exames.map((exame) => ({
                                 ...exame,
                                 data_realizacao_formatada:
-                                    formatarData(
-                                        exame.data_realizacao
-                                    )
+                                    formatarData(exame.data_realizacao)
                             }));
 
                         return dadosPaciente;
@@ -199,8 +217,10 @@ router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, contag
                 return res.render("pacientes", {
                     pacientes: pacientesFormatados,
                     subtitulo: "Pacientes cadastrados",
+                    médico: req.medico,
                     mostrarNovaConsulta: true,
                     filtro: diagnostico,
+                    contagem: res.locals.contagem,
                     arquivados: false
                 });
             })
@@ -216,6 +236,7 @@ router.get("/pacientes/filtrar/diagnostico", autenticado, carregarMedico, contag
             });
     }
 );
+
 
 
 router.get("/consultas/filtrar", autenticado, carregarMedico, (req, res) => {
