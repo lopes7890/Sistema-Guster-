@@ -5,6 +5,13 @@
         <div class="layout-conteudo">
             <%- include ('partials/topbar.ejs') %>
 
+            <% if (messages.danger) { %>
+                <div class="alert alert-danger flash-message alert-dismissible fase show">
+                    <button class="btn-close" data-bs-dismiss="alert"></button>
+                        <%= messages.danger %>
+                </div>
+            <% } %>
+
             <main class="paciente-novo">
                 <section class="paciente-novo-card">
                     <%- include ('partials/stepper.ejs', { etapaAtual: 1 }) %>

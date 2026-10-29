@@ -10,6 +10,20 @@
         <div class="layout-conteudo">
             <%- include ('partials/topbar.ejs')%>
 
+            <% if (messages.danger) { %>
+                <div class="alert alert-danger flash-message alert-dismissible fade show">
+                    <button class="btn-close" data-bs-dismiss="alert"></button>
+                        <%= messages.danger %>
+                </div>
+            <% } %>
+
+            <% if (messages.success) { %>
+                <div class="alert alert-success flash-message alert-dismissible fade show">
+                    <button class="btn-close" data-bs-dismiss="alert"></button>
+                        <%= messages.success %>
+                </div>
+            <% } %>
+
             <main class="resultados">
                 <section class="painel resultados-card">
                     <h2>Exame com dispositivo BCI: Concluído!</h2>
