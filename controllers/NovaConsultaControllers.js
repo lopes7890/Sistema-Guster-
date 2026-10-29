@@ -55,6 +55,7 @@ router.get("/consulta/conexaoBCI", autenticado, carregarMedico, (req, res) => {
     mostrarNovaConsulta: false,
     id_paciente: id_paciente,
     subtitulo: "Nova Consulta",
+    messages: req.flash()
   });
 });
 
@@ -455,13 +456,16 @@ router.post("/pacientes/novo", autenticado, carregarMedico, upload.single("foto"
                     },
                   }).then((exameConcluido) => {
                     if (exameConcluido) {
-                      return res.redirect(`/resultados/${pacienteExame.id_paciente}`);
+                      req.flash('success', 'Este paciente já possui um prontuário!');
+                      return res.redirect(`/consulta/resultado?id_processamento=${exameConcluido.id}`);
                     }
                   });
                 }
+                req.flash('success', 'Este paciente já possui um cadastro, mas não tem um prontuário!')
                 return res.redirect(`/consulta/conexaoBCI?id_paciente=${pacienteComSintoma.id_paciente}`);
               });
             }
+            
             return res.redirect(`/consulta/informacoes?id_paciente=${pacienteExistente.id}`);
           });
         }
