@@ -18,7 +18,8 @@ router.get("/home", autenticado, carregarMedico, (req, res) => {
                 exames: prepararExames(exames),
                 arquivadas: false,
                 mostrarNovaConsulta: true,  
-                subtitulo: "Painel Central"
+                subtitulo: "Painel Central",
+                messages: req.flash()
             });
         })
         .catch((error) => {

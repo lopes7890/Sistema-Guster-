@@ -1,4 +1,18 @@
 <%- include ('partials/header.ejs') %>
+
+<% if (messages.danger) { %>
+    <div class="alert alert-danger flash-message alert-dismissible fase show">
+        <button class="btn-close" data-bs-dismiss="alert"></button>
+            <%= messages.danger %>
+    </div>
+<% } %>
+
+<% if (messages.success) { %>
+    <div class="alert alert-success flash-message alert-dismissible fase show">
+        <button class="btn-close" data-bs-dismiss="alert"></button>
+            <%= messages.success %>
+    </div>
+<% } %>
     <main>
         <div class="card">
             <div class="header-card">

@@ -79,11 +79,15 @@ app.use("/", NovaConsultaControllers);
 app.use("/", ConfiguracaoControllers);
 
 app.get("/cadastro", (req, res) => {
-    res.render("cadastro");
+    res.render("cadastro", {
+        messages: req.flash()
+    });
 });
 
 app.get("/", (req, res) => {
-    res.render("index");
+    res.render("index", {
+        messages: req.flash()
+    });
 });
 
 const port = 8080;

@@ -1,4 +1,12 @@
 <%- include ('partials/header.ejs') %>
+
+<% if (messages.danger) { %>
+    <div class="alert alert-danger flash-message alert-dismissible fase show">
+        <button class="btn-close" data-bs-dismiss="alert"></button>
+            <%= messages.danger %>
+    </div>
+<% } %>
+
     <main class="cadastro">
         <section class="cadastro-imagem">
             <img class="cadastro-logo img-logo" src="/imgs/Logo-Vetorizada.png" alt="Logo do sistema Guster">
