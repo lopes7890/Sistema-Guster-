@@ -12,7 +12,8 @@
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  background-color: #e0e7ef;
+  background-color: #eff3f8;
+  position: relative;
 }
 
 /* ---------- Painel lateral ---------- */
@@ -122,6 +123,22 @@
   justify-content: space-between;
   gap: 24px;
   background-color: #EAF8FB;
+  position: relative;
+}
+
+.topbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -25px;
+  width: 32px;
+  height: 32px;
+  background: radial-gradient(
+    circle at 100% 100%,
+    transparent 32px,
+    #EAF8FB 32.5px
+  );
+  pointer-events: none;
 }
 
 .topbar-titulo h1 {
