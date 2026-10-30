@@ -11,7 +11,7 @@ const JWT_SECRET = "chave-secreta";
 const router = express.Router();
 
 router.post("/cadastro/medico", (req, res) => {
-  const { cpf, nascimento, nome, crm, cep, endereco, email, senha } = req.body;
+  const { cpf, nascimento, nome, crm, cep, endereco, email, senha, confirmarSenha } = req.body;
 
   if (!cpf || !crm || !nome || !senha || !email) {
     req.flash('danger', 'Preencha todos os dados obrigatórios!');
@@ -21,6 +21,11 @@ router.post("/cadastro/medico", (req, res) => {
   if (!validarCPF(cpf)) {
     req.flash('danger', 'Forneça um CPF válido!');
     return res.redirect("/cadastro");
+  }
+
+  if (senha != confirmarSenha){
+    req.flash('danger', 'As senhas fornecidas são diferentes!');
+    return res.redirect('/cadastro');
   }
 
   const emailNormalizado = email.trim().toLowerCase();
