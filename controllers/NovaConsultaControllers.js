@@ -456,8 +456,8 @@ router.post("/pacientes/novo", autenticado, carregarMedico, upload.single("foto"
                     },
                   }).then((exameConcluido) => {
                     if (exameConcluido) {
-                      req.flash('success', 'Este paciente já possui um prontuário!');
-                      return res.redirect(`/consulta/resultado?id_processamento=${exameConcluido.id}`);
+                      req.flash('danger', 'Este paciente já possui um prontuário!');
+                      return res.redirect(`/consulta/nova`);
                     }
                   });
                 }
