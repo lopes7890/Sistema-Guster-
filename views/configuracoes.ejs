@@ -11,6 +11,20 @@
         <div class="layout-conteudo">
             <%- include ('partials/topbar.ejs') %>
 
+            <% if (messages.danger) { %>
+                <div class="alert alert-danger flash-message alert-dismissible fade show">
+                    <button class="btn-close" data-bs-dismiss="alert"></button>
+                        <%= messages.danger %>
+                </div>
+            <% } %>
+
+            <% if (messages.success) { %>
+                <div class="alert alert-success flash-message alert-dismissible fade show">
+                    <button class="btn-close" data-bs-dismiss="alert"></button>
+                    <%= messages.success %>
+                </div>
+            <% } %>
+
             <main class="configuracoes">
                 <form class="config" action="/configuracoes/editar/<%= dados.id %>" method="post" enctype="multipart/form-data">
                     <!-- Cartão do perfil -->
@@ -100,5 +114,4 @@
         </div>
     </div>
 <script src="/js/configuracoes.js"></script>
-</body>
-</html>
+<%- include ('partials/footer.ejs') %>

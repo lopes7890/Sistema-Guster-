@@ -367,6 +367,7 @@ main.paciente-novo {
     margin-top: auto;     
     margin-bottom: 20px;   
     align-self: center;    
+    width: 200px;
 }
 
 .anexo-foto {

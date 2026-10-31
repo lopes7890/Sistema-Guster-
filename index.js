@@ -2,20 +2,27 @@ import express from "express";
 import connection from "./config/config.js";
 import cookieParser from "cookie-parser";
 import path from "path";
-
-
+import flash from "express-flash";
+import session from "express-session";
 
 const app = express();
 app.use(cookieParser());
 
-app.use("/uploads", express.static(path.resolve("uploads")));
+app.use(session({
+    secret: "guster_secret_key",
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(flash());
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-app.set('view engine', 'ejs');
+app.use("/uploads", express.static(path.resolve("uploads")));
 
 app.use(express.static('public'));
+app.set('view engine', 'ejs');
 
 connection.authenticate().then(() => {
     console.log("Conexão com o banco de dados realizada com sucesso!");
@@ -72,11 +79,15 @@ app.use("/", NovaConsultaControllers);
 app.use("/", ConfiguracaoControllers);
 
 app.get("/cadastro", (req, res) => {
-    res.render("cadastro");
+    res.render("cadastro", {
+        messages: req.flash()
+    });
 });
 
 app.get("/", (req, res) => {
-    res.render("index");
+    res.render("index", {
+        messages: req.flash()
+    });
 });
 
 const port = 8080;
