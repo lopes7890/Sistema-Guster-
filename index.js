@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import flash from "express-flash";
 import session from "express-session";
+import "dotenv/config";
 
 const app = express();
 app.use(cookieParser());
@@ -30,7 +31,7 @@ connection.authenticate().then(() => {
     console.log(`Falha ao se conectar com o banco de dados: ${error}`);
 })
 
-const DB_NAME = 'Guster'
+const DB_NAME = process.env.DB_NAME
 connection.query(`CREATE DATABASE IF NOT EXISTS ${DB_NAME};`).then(() => {
     console.log("Banco de dados criado com sucesso!");
 }).catch((error) => {
