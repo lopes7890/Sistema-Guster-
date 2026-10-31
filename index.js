@@ -37,18 +37,35 @@ connection.query(`CREATE DATABASE IF NOT EXISTS ${DB_NAME};`).then(() => {
     console.log(`Erro ao criar o banco de dados. Erro ${error}`);
 });
 
-Promise.all([
-    Medico.sync({force: false}),
-    Paciente.sync({force: false}),
-    Sintoma.sync({force: false}),
-    Dispositivo.sync({force: false}),
-    TelefonesPaciente.sync({force: false}),
-    Exame.sync({force: false}),
-    PacienteSintoma.sync({force: false}),
-    Processamento.sync({force: false}),
-    Relatorio.sync({force: false})
-]);
+// Promise.all([
+//     Medico.sync({force: false}),
+//     Paciente.sync({force: false}),
+//     Sintoma.sync({force: false}),
+//     Dispositivo.sync({force: false}),
+//     TelefonesPaciente.sync({force: false}),
+//     Exame.sync({force: false}),
+//     PacienteSintoma.sync({force: false}),
+//     Processamento.sync({force: false}),
+//     Relatorio.sync({force: false})
+// ]);
 
+await Medico.sync({ force: false });
+
+await Paciente.sync({ force: false });
+
+await Sintoma.sync({ force: false });
+
+await Dispositivo.sync({ force: false });
+
+await TelefonesPaciente.sync({ force: false });
+
+await PacienteSintoma.sync({ force: false });
+
+await Exame.sync({ force: false });
+
+await Processamento.sync({ force: false });
+
+await Relatorio.sync({ force: false });
 
 import Medico from "./models/Medico.js";
 import Dispositivo from "./models/Dispositivo.js";
