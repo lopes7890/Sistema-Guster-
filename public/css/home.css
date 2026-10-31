@@ -21,7 +21,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #EAF8FB;
+  background-color: #D1EFF4;
 }
 
 .sidebar-marca {
@@ -121,7 +121,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  background-color: #EAF8FB;
+  background-color: #D1EFF4;
 }
 
 .topbar-titulo h1 {
