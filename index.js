@@ -108,7 +108,7 @@ app.get("/", (req, res) => {
     });
 });
 
-const port = 8080;
+const PORT = process.env.PORT || 8080;
 app.listen(port, function(erro){
     if(erro){
         console.log(`Ocorreu um erro! Erro: ${erro}`);
