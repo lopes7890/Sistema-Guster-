@@ -1,4 +1,12 @@
 <%- include ('partials/header.ejs') %>
+
+<% if (messages.danger) { %>
+    <div class="alert alert-danger flash-message alert-dismissible fade show">
+        <button class="btn-close" data-bs-dismiss="alert"></button>
+            <%= messages.danger %>
+    </div>
+<% } %>
+
     <main class="cadastro">
         <section class="cadastro-imagem">
             <img class="cadastro-logo img-logo" src="/imgs/Logo-Vetorizada.png" alt="Logo do sistema Guster">
@@ -66,7 +74,7 @@
                 <div class="campo-senha">
                     <div class="field">
                         <label for="confirma-senha">Confirmar Senha</label>
-                        <input type="password" id="confirma-senha" name="confirmar-senha" placeholder="************" required>
+                        <input type="password" id="confirma-senha" name="confirmarSenha" placeholder="************" required>
 
                         <button type="button" class="btn-olho" data-alternar-senha="confirma-senha" aria-label="Mostrar senha" aria-pressed="false">
                             <svg class="icone-visivel" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -102,5 +110,4 @@
 
 <script src="/js/cadastro.js"></script>
 <script src="/js/mostrarSenha.js"></script>
-</body>
-</html>
+<%- include ('partials/footer.ejs') %>

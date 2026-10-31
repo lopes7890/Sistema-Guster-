@@ -1,7 +1,9 @@
 import express from "express";
 import autenticado from "../middlewares/autenticado.js";
 import Medico from "../models/Medico.js";
+
 import carregarMedico from "../middlewares/carregarMedico.js";
+import tratarErroUpload from "../middlewares/tratarErroUpload.js";
 
 import uploadFoto from "../utils/uploadFoto.js";
 import upload from "../config/multer.js";
@@ -35,7 +37,8 @@ router.get("/configuracoes/:id", autenticado, carregarMedico, (req, res) => {
 
             return res.render("configuracoes", {
                 perfil: medico,
-                subtitulo: "Editar Dados"
+                subtitulo: "Editar Dados",
+                messages: req.flash()
             });
         })
         .catch((error) => {
@@ -45,10 +48,12 @@ router.get("/configuracoes/:id", autenticado, carregarMedico, (req, res) => {
 });
 
 // Rota para editar as configurações do médico
-router.post("/configuracoes/editar/:id", autenticado, upload.single("foto"), (req, res) => {
+router.post("/configuracoes/editar/:id", autenticado, tratarErroUpload(upload.single("foto"), (req) => `/configuracoes/${req.params.id}`), 
+    (req, res) => {
         const id = req.params.id;
 
         if (String(id) !== String(req.medico.id)) {
+            req.flash('danger', 'Usuário não identificado! Faça o login novamente.')
             return res.redirect("/configuracoes");
         }
 
@@ -96,10 +101,12 @@ router.post("/configuracoes/editar/:id", autenticado, upload.single("foto"), (re
                 });
             })
             .then(() => {
+                req.flash('success', 'Dados alterados com sucesso!');
                 return res.redirect(`/configuracoes/${id}`);
             })
             .catch((error) => {
                 console.error("Erro ao atualizar configurações:", error);
+                req.flash('danger', 'Erro ao atualizar os dados');
                 return res.redirect(`/configuracoes/${id}`);
             });
     }

@@ -9,6 +9,7 @@ import upload from "../config/multer.js";
 
 import autenticado from "../middlewares/autenticado.js";
 import carregarMedico from "../middlewares/carregarMedico.js";
+import tratarErroUpload from "../middlewares/tratarErroUpload.js";
 
 import validarCPF from "../utils/validarCPF.js";
 import formatarData from "../utils/formatarData.js";
@@ -36,6 +37,7 @@ router.get("/consulta/nova", autenticado, carregarMedico, (req, res) => {
   return res.render("novaConsulta", {
     mostrarNovaConsulta: false,
     subtitulo: "Nova Consulta",
+    messages: req.flash()
   });
 });
 
@@ -54,6 +56,7 @@ router.get("/consulta/conexaoBCI", autenticado, carregarMedico, (req, res) => {
     mostrarNovaConsulta: false,
     id_paciente: id_paciente,
     subtitulo: "Nova Consulta",
+    messages: req.flash()
   });
 });
 
@@ -111,11 +114,13 @@ router.get("/resultados/:id_paciente", autenticado, carregarMedico, (req, res) =
         });
     })
     .then((processamento) => {
+        req.flash('success', 'Resultados gerados com sucesso!')
         return res.redirect(`/consulta/resultado?id_processamento=${processamento.id}`);
     })
     .catch((error) => {
         console.error("Falha ao simular os resultados do exame:", error);
-        return res.status(500).send("Falha ao simular os resultados do exame.");
+        req.flash('danger', 'Falha ao simular os resultados do exame.');
+        return res.redirect(`/resultados/${id_paciente}`);
     });
 });
 
@@ -196,6 +201,7 @@ router.get("/consulta/resultado", autenticado, carregarMedico, (req, res) => {
         exame: exameResultado,
         mostrarNovaConsulta: false,
         subtitulo: "Resultado do Exame",
+        messages: req.flash()
       });
     })
     .catch((error) => {
@@ -402,19 +408,22 @@ router.post("/consulta/informacoes", autenticado, carregarMedico, (req, res) => 
   },
 );
 
-router.post("/pacientes/novo", autenticado, carregarMedico, upload.single("foto"), (req, res) => {
+router.post("/pacientes/novo", autenticado, carregarMedico, tratarErroUpload(upload.single("foto"), (req) => '/consulta/nova'), (req, res) => {
     const { nome, nascimento, telefone, cpf, endereco, cep, email } = req.body;
 
     if (!nome || !nascimento || !telefone || !cpf || !endereco || !cep || !email) {
-      return res.status(400).send("Preencha todos os campos!");
+      req.flash('danger', 'Preencha todos os campos!');
+      return res.redirect("/consulta/nova");
     }
 
-    if(Number(nascimento.split("-")[0]) > new Date().getFullYear()){
-        return res.status(400).send("Data incorreta!");
+    if(Number(nascimento.split("-")[0]) >= new Date().getFullYear()){
+      req.flash('danger', 'Data incorreta! Forneça uma data válida.');
+      return res.redirect("/consulta/nova");;
     }
 
     if (!validarCPF(cpf)) {
-      return res.status(400).send("Forneça um CPF válido!");
+      req.flash('danger', 'CPF inválido! Forneça um CPF válido.');
+      return res.redirect("/consulta/nova");
     }
 
     const emailNormalizado = email.trim().toLowerCase();
@@ -448,13 +457,16 @@ router.post("/pacientes/novo", autenticado, carregarMedico, upload.single("foto"
                     },
                   }).then((exameConcluido) => {
                     if (exameConcluido) {
-                      return res.redirect(`/resultados/${pacienteExame.id_paciente}`);
+                      req.flash('danger', 'Este paciente já possui um prontuário!');
+                      return res.redirect(`/consulta/nova`);
                     }
                   });
                 }
+                req.flash('success', 'Este paciente já possui um cadastro, mas não tem um prontuário!')
                 return res.redirect(`/consulta/conexaoBCI?id_paciente=${pacienteComSintoma.id_paciente}`);
               });
             }
+            
             return res.redirect(`/consulta/informacoes?id_paciente=${pacienteExistente.id}`);
           });
         }
@@ -488,8 +500,8 @@ router.post("/pacientes/novo", autenticado, carregarMedico, upload.single("foto"
         if (res.headersSent) {
           return;
         }
-
-        return res.status(500).send("Falha ao processar o paciente. Tente novamente!");
+        req.flash('danger', 'Falha ao processar o paciente. Tente novamente!');
+        return res.redirect("/consulta/nova");
       });
   },
 );
