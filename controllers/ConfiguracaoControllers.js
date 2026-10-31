@@ -1,7 +1,9 @@
 import express from "express";
 import autenticado from "../middlewares/autenticado.js";
 import Medico from "../models/Medico.js";
+
 import carregarMedico from "../middlewares/carregarMedico.js";
+import tratarErroUpload from "../middlewares/tratarErroUpload.js";
 
 import uploadFoto from "../utils/uploadFoto.js";
 import upload from "../config/multer.js";
@@ -46,7 +48,8 @@ router.get("/configuracoes/:id", autenticado, carregarMedico, (req, res) => {
 });
 
 // Rota para editar as configurações do médico
-router.post("/configuracoes/editar/:id", autenticado, upload.single("foto"), (req, res) => {
+router.post("/configuracoes/editar/:id", autenticado, tratarErroUpload(upload.single("foto"), (req) => `/configuracoes/${req.params.id}`), 
+    (req, res) => {
         const id = req.params.id;
 
         if (String(id) !== String(req.medico.id)) {

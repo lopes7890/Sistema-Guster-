@@ -9,6 +9,7 @@ import upload from "../config/multer.js";
 
 import autenticado from "../middlewares/autenticado.js";
 import carregarMedico from "../middlewares/carregarMedico.js";
+import tratarErroUpload from "../middlewares/tratarErroUpload.js";
 
 import validarCPF from "../utils/validarCPF.js";
 import formatarData from "../utils/formatarData.js";
@@ -407,7 +408,7 @@ router.post("/consulta/informacoes", autenticado, carregarMedico, (req, res) => 
   },
 );
 
-router.post("/pacientes/novo", autenticado, carregarMedico, upload.single("foto"), (req, res) => {
+router.post("/pacientes/novo", autenticado, carregarMedico, tratarErroUpload(upload.single("foto"), (req) => '/consulta/nova'), (req, res) => {
     const { nome, nascimento, telefone, cpf, endereco, cep, email } = req.body;
 
     if (!nome || !nascimento || !telefone || !cpf || !endereco || !cep || !email) {
