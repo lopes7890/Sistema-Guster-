@@ -4,9 +4,10 @@ import validarCPF from "../utils/validarCPF.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import autenticado from "../middlewares/autenticado.js";
+import "dotenv/config"
 
 
-const JWT_SECRET = "chave-secreta";
+const JWT_SECRET = process.env.JWT;
 
 const router = express.Router();
 
