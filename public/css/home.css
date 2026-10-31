@@ -122,8 +122,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  background-color: #EAF8FB;
-position: relative;
+  background-color: #D1EFF4;
+  position: relative;
 }
 
 .topbar::after {
@@ -136,10 +136,11 @@ position: relative;
   background: radial-gradient(
     circle at 100% 100%,
     transparent 32px,
-    #EAF8FB 32.5px
+    #D1EFF4 32.5px
   );
   pointer-events: none;
 }
+
 .topbar-titulo h1 {
   font-family: "Exo 2", sans-serif;
   font-size: 26px;
