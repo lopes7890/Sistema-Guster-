@@ -13,7 +13,10 @@ const upload = multer({
         ];
 
         if (!tiposPermitidos.includes(file.mimetype)) {
-            return cb(new Error("Formato de imagem não permitido."));
+            const erro = new Error("Formato de imagem não permitido.");
+            erro.code = "INVALID_IMAGE_FORMAT";
+
+            return cb(erro);
         }
 
         cb(null, true);
