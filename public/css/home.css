@@ -22,7 +22,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #EAF8FB;
+  background-color: #D1EFF4;
 }
 
 .sidebar-marca {
@@ -123,7 +123,7 @@
   justify-content: space-between;
   gap: 24px;
   background-color: #EAF8FB;
-  position: relative;
+position: relative;
 }
 
 .topbar::after {
@@ -140,7 +140,6 @@
   );
   pointer-events: none;
 }
-
 .topbar-titulo h1 {
   font-family: "Exo 2", sans-serif;
   font-size: 26px;
