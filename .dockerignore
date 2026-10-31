@@ -1,3 +1,9 @@
-node_modules
 .env
-.git
+.env.*
+!.env.example
+
+certs/
+ca.pem
+
+node_modules/
+.git/

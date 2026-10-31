@@ -2,6 +2,8 @@ import Sequelize from "sequelize";
 import "dotenv/config";
 import fs from "fs";
 
+const caminhoCertificado = process.env.DB_SSL_CA_PATH;
+
 const connection = new Sequelize({
     dialect: "mysql",
     host: process.env.DB_HOST,
@@ -14,11 +16,10 @@ const connection = new Sequelize({
 
     dialectOptions: {
         ssl: {
-            ca: fs.readFileSync("./certs/ca.pem")
+            ca: fs.readFileSync(caminhoCertificado),
+            rejectUnauthorized: true
         }
-    },
-
-    logging: console.log
+    }
 });
 
 export default connection;
