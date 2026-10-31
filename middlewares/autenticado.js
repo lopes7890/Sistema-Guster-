@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
+import "dotenv/config";
 
-const JWT_SECRET = "chave-secreta";
+const JWT_SECRET = process.env.JWT;
 
 function autenticado (req, res, next){
   const token = req.cookies.token;
